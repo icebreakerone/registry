@@ -21,7 +21,6 @@ JRUBY_JAR=$MAVEN_REPOSITORY/org/jruby/jruby-complete/${JRUBY_VERSION}/jruby-comp
 rm -f script/.jruby
 cat >script/.jruby <<__EOL
 #!/bin/sh
-export CLASSPATH=`cat script/.classpath.txt`
 java -jar $JRUBY_JAR "\$@"
 __EOL
 chmod a+x script/.jruby
