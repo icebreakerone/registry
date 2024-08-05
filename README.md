@@ -1,1 +1,8 @@
-# registry2
+# IceBreaker One Registry
+
+## Downloading dependencies
+
+```
+script/prepare.sh
+```
+
