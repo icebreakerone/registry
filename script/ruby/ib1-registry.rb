@@ -20,13 +20,10 @@ _require_all("./script/ruby/registry/**/*.rb")
 # Load model
 _require_all("./model/**/*.rb")
 
-# TODO: Configurable prefix
-Ns.namespace(:ib1, "https://registry.ib1.org/ns/1.0#")
-
 require "./ib1_schema/ib1.rb"
 
 model = RdfModel.new
-ResourceClass.all_resources.each do |resource|
+Resource.all_resources.each do |resource|
   model.add(resource)
 end
 model.dump

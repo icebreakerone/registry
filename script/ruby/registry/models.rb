@@ -1,6 +1,18 @@
 # frozen_string_literal: true
 
 class RdfClass
+  attr_reader :uri
+  def initialize(uri)
+    @uri = uri
+  end
+
+  def _to_rdf_value(jmodel)
+    jmodel.createResource(self.uri.to_uri_s)
+  end
+  
+  def _modify_used_prefix(used_prefix)
+    used_prefix[self.uri.prefix] = true
+  end
 end
 
 # ---------------------------------------------------------------------------
@@ -16,6 +28,9 @@ class RdfUri
   end
   def _to_rdf_value(jmodel)
     jmodel.createResource(self.to_uri_s)
+  end
+  def _modify_used_prefix(used_prefix)
+    used_prefix[@prefix] = true
   end
 end
 
@@ -36,7 +51,6 @@ class Ns
     @@all_prefix.each(&block)
   end
 end
-Ns.namespace(:rdf, "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
 
 # ---------------------------------------------------------------------------
 
@@ -64,11 +78,10 @@ end
 
 # ---------------------------------------------------------------------------
 
-class ResourceClass < RdfClass
+class Resource
   attr_reader :uri
 
   @@all_resources = []
-  RDF_TYPE = Ns.rdf("type")
 
   def self.rdf_class(klass)
     self.const_set(:RDF_CLASS, klass)
@@ -76,7 +89,7 @@ class ResourceClass < RdfClass
 
   def initialize(uri)
     @uri = uri
-    @properties = [[RDF_TYPE, self.class.const_get(:RDF_CLASS)]]
+    @properties = [[RDF::Type.uri, self.class.const_get(:RDF_CLASS)]]
     Context._resource_added(self)
     yield self if block_given?
     @@all_resources << self
@@ -92,6 +105,10 @@ class ResourceClass < RdfClass
 
   def self.all_resources
     @@all_resources.dup
+  end
+
+  def _to_rdf_value(jmodel)
+    jmodel.createResource(self.uri.to_uri_s)
   end
 
   def _add_terms_to(jresource, model)
@@ -117,7 +134,7 @@ class RdfModel
     jproperty = @jmodel.createProperty(uri.prefix, uri.suffix)
     jresource.addProperty(jproperty, value.respond_to?(:_to_rdf_value) ? value._to_rdf_value(@jmodel) : value)
     @used_prefix[uri.prefix] = true
-    @used_prefix[value.prefix] = true if value.kind_of?(RdfUri)
+    value._modify_used_prefix(@used_prefix) if value.respond_to?(:_modify_used_prefix)
   end
   def _finish
     # Only include used prefixes for neatness

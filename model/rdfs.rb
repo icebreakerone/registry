@@ -2,8 +2,15 @@
 
 Ns.namespace(:rdfs, "http://www.w3.org/2000/01/rdf-schema#")
 
-class RdfSchemaClass < ResourceClass
-  rdf_class Ns.rdfs("Class")
+module RDFS
+  Class = RdfClass.new(Ns.rdfs("Class"))
+  Property = RdfClass.new(Ns.rdfs("Property"))
+  Resource = RdfClass.new(Ns.rdfs("Resource"))
+  Literal = RdfClass.new(Ns.rdfs("Literal"))
+end
+
+class RdfSchemaClass < Resource
+  rdf_class RDFS::Class.uri
 
   property :sub_class_of, Ns.rdfs("subClassOf"), RdfClass
   property :is_defined_by, Ns.rdfs("isDefinedBy"), RdfUri
@@ -11,8 +18,8 @@ class RdfSchemaClass < ResourceClass
   property :comment, Ns.rdfs("comment"), String
 end
 
-class RdfSchemaProperty < ResourceClass
-  rdf_class Ns.rdfs("Property")
+class RdfSchemaProperty < Resource
+  rdf_class RDFS::Property.uri
 
   property :is_defined_by, Ns.rdfs("isDefinedBy"), RdfUri
   property :label, Ns.rdfs("label"), String
