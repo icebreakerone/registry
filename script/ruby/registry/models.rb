@@ -40,6 +40,30 @@ Ns.namespace(:rdf, "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
 
 # ---------------------------------------------------------------------------
 
+class Context
+  @@stack = []
+  def self.within
+    context = Context.new
+    @@stack.push(context)
+    yield context
+    @@stack.pop
+  end
+  def every_resource(&block)
+    raise "Already set every_resource block" if @every_resource
+    @every_resource = block
+  end
+  def self._resource_added(resource)
+    @@stack.reverse_each do |context|
+      context._resource_added(resource)
+    end
+  end
+  def _resource_added(resource)
+    @every_resource.call(resource) if @every_resource
+  end
+end
+
+# ---------------------------------------------------------------------------
+
 class ResourceClass < RdfClass
   attr_reader :uri
 
@@ -53,6 +77,7 @@ class ResourceClass < RdfClass
   def initialize(uri)
     @uri = uri
     @properties = [[RDF_TYPE, self.class.const_get(:RDF_CLASS)]]
+    Context._resource_added(self)
     yield self if block_given?
     @@all_resources << self
   end
