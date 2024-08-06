@@ -25,17 +25,8 @@ Ns.namespace(:ib1, "https://registry.ib1.org/ns/1.0#")
 
 require "./ib1_schema/ib1.rb"
 
-exit 0
-
-
-model = Jena::ModelFactory.createDefaultModel()
-model.setNsPrefix("ex", "http://example.org/something/")
-# model.setNsPrefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
-model.setNsPrefix("rdfs", "http://www.w3.org/2000/01/rdf-schema#")
-resource = model.createResource("https://example.org/abc2")
-resource.addProperty(model.createProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "type"), 
-  model.createResource("http://www.w3.org/2000/01/rdf-schema#Property"))
-resource.addProperty(model.createProperty("http://example.org/something/", "sdf"), "ABC Two");
-model.createProperty("http://example.org/something/", "sdf")
-
-Jena::RDFDataMgr.write(java.lang.System.out, model, Jena::Lang.TURTLE)
+model = RdfModel.new
+ResourceClass.all_resources.each do |resource|
+  model.add(resource)
+end
+model.dump
