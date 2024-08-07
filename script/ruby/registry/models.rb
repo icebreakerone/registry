@@ -121,6 +121,11 @@ end
 # ---------------------------------------------------------------------------
 
 class RdfModel
+  OUTPUT_FORMATS = [
+    [Jena::Lang.TURTLE, '.ttl', 'RDF (Turtle)'],
+    [Jena::Lang.RDFXML, '.rdf', 'RDF/XML'],
+    [Jena::Lang.JSONLD, '.jsonld', 'RDF (JSON-LD)']
+  ]
   def initialize
     @jmodel = Jena::ModelFactory.createDefaultModel()
     @used_prefix = {}
@@ -137,15 +142,31 @@ class RdfModel
     value._modify_used_prefix(@used_prefix) if value.respond_to?(:_modify_used_prefix)
   end
   def _finish
+    return if @finished
     # Only include used prefixes for neatness
     Ns.each_prefix do |symbol, prefix|
       if @used_prefix[prefix]
         @jmodel.setNsPrefix(symbol, prefix)
       end
     end
+    @finished = true
   end
   def dump
     _finish()
     Jena::RDFDataMgr.write(java.lang.System.out, @jmodel, Jena::Lang.TURTLE)
+  end
+  def write_all_formats(basename, title)
+    _finish()
+    OUTPUT_FORMATS.each do |lang, extension|
+      outputstream = java.io.FileOutputStream.new("#{basename}#{extension}")
+      begin
+        Jena::RDFDataMgr.write(outputstream, @jmodel, lang)
+      ensure
+        outputstream.close
+      end
+    end
+    File.open("#{basename}.html", "w") do |f|
+      f.write Templates::TEMPLATES['rdf.html.erb'].result(binding)
+    end
   end
 end

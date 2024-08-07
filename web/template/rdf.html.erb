@@ -1,0 +1,8 @@
+<p>A GET request made to this URI uses HTTP Content Negotiation. However, if you explicitly wish to retrieve a particular serialisation, you can also do so using the following URLs:</p>
+
+<dl>
+<% OUTPUT_FORMATS.each do |_, extension, name| %>
+  <dt><%= ERB::Util.h(File.basename(basename)) %><%= extension %></dt>
+  <dd><%= name %></dd>
+<% end %>
+</dl>
