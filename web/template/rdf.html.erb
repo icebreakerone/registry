@@ -1,3 +1,34 @@
+<%
+  if resources.length == 1
+    %><table><%
+    props = resources.first._properties_for_template.group_by { |_,_,symbol| symbol }
+    props.each do |symbol, values|
+      %><tr><th><%= values.first.first.suffix %></th><td><%
+      values.each do |uri, value, symbol|
+        %><div><%
+        if value.kind_of? RdfUri
+          display = value.to_uri_s
+          if value.prefix == Ns.ib1_prefix
+            %>ib1:<%= ERB::Util.h(value.suffix.to_s) %><%
+          else
+            if value.prefix == Ns.registry_prefix
+              href = "/"+value.suffix
+            else
+              href = display
+            end
+            %><a href="<%= ERB::Util.h(href) %>"><%= ERB::Util.h(display) %></a><%
+          end
+        else
+          %><%= ERB::Util.h(value.to_s) %><%
+        end
+        %></div><%
+      end
+      %></td></tr><%
+    end
+    %></table><%
+  end
+%>
+
 <p>A GET request made to this URI uses HTTP Content Negotiation. However, if you explicitly wish to retrieve a particular serialisation, you can also do so using the following URLs:</p>
 
 <dl><%

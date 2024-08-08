@@ -99,6 +99,11 @@ class Resource
     @defined_at = caller.find { |e| e.start_with?(REGISTRY_SOURCE) }
   end
 
+  # Private for template
+  def _properties_for_template
+    @properties
+  end
+
   def self.property(symbol, uri, value_class)
     define_method(symbol) do |value|
       raise "Value should be #{value_class.name}" unless value.kind_of?(value_class)
@@ -152,6 +157,7 @@ end
 # ---------------------------------------------------------------------------
 
 class RdfModel
+  attr_reader :resources
   OUTPUT_FORMATS = [
     [Jena::Lang.TURTLE, '.ttl', 'RDF (Turtle)'],
     [Jena::Lang.RDFXML, '.rdf', 'RDF/XML'],
@@ -160,10 +166,12 @@ class RdfModel
   def initialize
     @jmodel = Jena::ModelFactory.createDefaultModel()
     @used_prefix = {}
+    @resources = []
   end
   def add(resource)
     jresource = @jmodel.createResource(resource.uri.to_uri_s)
     resource._add_terms_to(jresource, self)
+    @resources << resource
     self
   end
   def _add_property(jresource, uri, value)
