@@ -38,8 +38,8 @@ end
 
 class Ns
   @@all_prefix = []
-  def self.namespace(symbol, prefix)
-    @@all_prefix << [symbol, prefix]
+  def self.namespace(symbol, prefix, dont_set_as_rdf_prefix = false)
+    @@all_prefix << [symbol, prefix, dont_set_as_rdf_prefix]
     Ns.class.define_method(symbol) do |suffix|
       RdfUri.new(prefix, suffix)
     end
@@ -147,8 +147,8 @@ class RdfModel
   def _finish
     return if @finished
     # Only include used prefixes for neatness
-    Ns.each_prefix do |symbol, prefix|
-      if @used_prefix[prefix]
+    Ns.each_prefix do |symbol, prefix, dont_set_as_rdf_prefix|
+      if @used_prefix[prefix] && !dont_set_as_rdf_prefix
         @jmodel.setNsPrefix(symbol, prefix)
       end
     end

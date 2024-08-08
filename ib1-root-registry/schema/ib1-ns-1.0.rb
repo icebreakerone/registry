@@ -15,6 +15,11 @@ Context.within do |context|
   end
   # TODO: Properties for TrustFramework
 
+  RdfSchemaClass.new(IB1::TrustFrameworkGroup.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+  # TODO: Properties for TrustFrameworkGroup
+
   RdfSchemaClass.new(IB1::MemberGroup.uri) do |c|
     c.sub_class_of RDFS::Resource
   end

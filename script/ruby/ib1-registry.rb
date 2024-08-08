@@ -27,17 +27,16 @@ module Jena
   Lang = org.apache.jena.riot.Lang
 end
 
-def _require_all(pattern)
-  Dir.glob(pattern).sort.each do |file|
-    require file
-  end
-end
-
 # Load scripts
-_require_all("./script/ruby/registry/**/*.rb")
+require "./script/ruby/registry/models.rb"
+require "./script/ruby/registry/templates.rb"
 
 # Load model
-_require_all("./model/**/*.rb")
+require "./model/rdf.rb"
+require "./model/rdfs.rb"
+require "./model/dc.rb"
+require "./model/dcat.rb"
+require "./model/ib1.rb"
 
 # ---------------------------------------------------------------------------
 
@@ -63,6 +62,12 @@ end
 puts "Setting up Registry..."
 registry_info = JSON.parse(File.read(REGISTRY_INFO_JSON))
 puts "Registry: #{registry_info['name']}"
+hostname_part = registry_info['hostnamePart']
+REGISTRY_HOSTNAME_PART = (hostname_part == '') ? '' : hostname_part+'.'
+REGISTRY_HOSTNAME = "registry.#{REGISTRY_HOSTNAME_PART}#{ENVIRONMENT_HOSTNAME_PART}ib1.org"
+puts "Hostname: #{REGISTRY_HOSTNAME}"
+
+Ns.namespace(:registry, "https://#{REGISTRY_HOSTNAME}/", true) # not used as prefix in RDF documents
 
 # ---------------------------------------------------------------------------
 
@@ -72,6 +77,12 @@ require "#{REGISTRY_SOURCE}/resources.rb"
 # ---------------------------------------------------------------------------
 
 puts "Writing Registry RDF and HTML..."
+# All resources as a single file
+model = RdfModel.new
+Resource.all_resources.each do |resource|
+  model.add(resource)
+end
+model.write_all_formats("#{OUTPUT_DIR}/registry", registry_info['name'])
 
 File.open("#{OUTPUT_DIR}/index.html", "w") do |f|
   title = registry_info['name']
