@@ -96,13 +96,19 @@ class Resource
     Context._resource_added(self)
     yield self if block_given?
     @@all_resources << self
+    @defined_at = caller.find { |e| e.start_with?(REGISTRY_SOURCE) }
   end
 
   def self.property(symbol, uri, value_class)
     define_method(symbol) do |value|
       raise "Value should be #{value_class.name}" unless value.kind_of?(value_class)
-      @properties << [uri, value]
+      @properties << [uri, value, symbol]
       self
+    end
+    define_method("first_#{symbol}".to_sym) do
+      value_a = @properties.find { |_,_,s| s == symbol}
+      raise "No #{symbol} property added to resource defined at #{@defined_at}" if value_a.nil?
+      value_a[1]
     end
   end
 
@@ -118,6 +124,21 @@ class Resource
     @properties.each do |uri, value|
       model._add_property(jresource, uri, value)
     end
+  end
+end
+
+# ---------------------------------------------------------------------------
+
+class RegistryResource < Resource
+  def initialize(uri_hint = nil)
+    super(nil)
+    @uri_hint = uri_hint
+  end
+  def uri
+    @uri ||= Ns.registry(self.generate_uri_suffix)
+  end
+  def generate_uri_suffix
+    raise "generate_uri_suffix must be defined for #{self.class.name}"
   end
 end
 

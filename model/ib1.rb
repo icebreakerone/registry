@@ -11,8 +11,16 @@ module IB1
   RequiredMetadata = RdfClass.new(Ns.ib1("RequiredMetadata"))
 end
 
-class TrustFrameworkGroup < Resource
+# ---------------------------------------------------------------------------
+
+class TrustFrameworkGroup < RegistryResource
   rdf_class IB1::TrustFrameworkGroup.uri
+
+  def generate_uri_suffix
+    first_label()
+  end
+
+  property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
   property :member, Ns.dc("relation"), RdfUri # TODO: Better term for member URLs
 end
