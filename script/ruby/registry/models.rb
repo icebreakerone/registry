@@ -82,6 +82,9 @@ class Resource
   attr_reader :uri
 
   @@all_resources = []
+  def self.clear_all
+    @@all_resources.clear
+  end
 
   def self.rdf_class(klass)
     self.const_set(:RDF_CLASS, klass)

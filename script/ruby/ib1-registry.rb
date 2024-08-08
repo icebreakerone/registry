@@ -1,8 +1,23 @@
 # frozen_string_literal: true
 
 require 'fileutils'
+require 'json'
+
+# ---------------------------------------------------------------------------
 
 OUTPUT_DIR = 'output'
+
+abort("No environment specified as first argument") if ARGV[0].nil?
+ENVIRONMENT = ARGV[0]
+ENVIRONMENT_HOSTNAME_PART = (ENVIRONMENT == 'production') ? '' : ENVIRONMENT+'.'
+
+abort("No registry source directory specified as second argument") if ARGV[1].nil?
+abort("Registry source is not a directory") unless File.directory?(ARGV[1])
+REGISTRY_SOURCE = File.expand_path(ARGV[1])
+REGISTRY_INFO_JSON = "#{REGISTRY_SOURCE}/registry.json"
+abort("registry.json does not exist in Registry source directory") unless File.exist?(REGISTRY_INFO_JSON)
+
+# ---------------------------------------------------------------------------
 
 $CLASSPATH.append(File.open("script/.classpath.txt") { |f| f.read.split(':') })
 
@@ -23,13 +38,6 @@ _require_all("./script/ruby/registry/**/*.rb")
 
 # Load model
 _require_all("./model/**/*.rb")
-
-require "./ib1_schema/ib1.rb"
-
-model = RdfModel.new
-Resource.all_resources.each do |resource|
-  model.add(resource)
-end
 
 # ---------------------------------------------------------------------------
 
@@ -52,11 +60,20 @@ end
 
 # ---------------------------------------------------------------------------
 
+puts "Setting up Registry..."
+registry_info = JSON.parse(File.read(REGISTRY_INFO_JSON))
+puts "Registry: #{registry_info['name']}"
+
+# ---------------------------------------------------------------------------
+
+puts "Loading Registry resources..."
+require "#{REGISTRY_SOURCE}/resources.rb"
+
+# ---------------------------------------------------------------------------
+
 puts "Writing Registry RDF and HTML..."
-FileUtils.mkdir_p("#{OUTPUT_DIR}/ns")
-model.write_all_formats("#{OUTPUT_DIR}/ns/1.0", "IB1 RDF Schema")
 
 File.open("#{OUTPUT_DIR}/index.html", "w") do |f|
-  title = "IB1 Registry"
+  title = registry_info['name']
   f.write Templates::TEMPLATES['index.html.erb'].result(binding)
 end
