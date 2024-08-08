@@ -84,6 +84,24 @@ Resource.all_resources.each do |resource|
 end
 model.write_all_formats("#{OUTPUT_DIR}/registry", registry_info['name'])
 
+# Write individual files for resources
+Resource.all_resources.each do |resource|
+  uri = resource.uri
+  if uri.prefix == Ns.registry_prefix
+    suffix = uri.suffix
+    if !suffix.start_with?('/') && suffix =~ /\A([a-zA-Z0-9\/\-]+\/)?([a-zA-Z0-9\-]+)\z/   # basic checks on URI so don't accidently splat files everywhere
+      dir = $1
+      FileUtils.mkdir_p("#{OUTPUT_DIR}/#{dir}") unless dir.nil?
+      single_model = RdfModel.new
+      single_model.add(resource)
+      name = resource.respond_to?(:human_readable_name) ? resource.human_readable_name : "Resource"
+      model.write_all_formats("#{OUTPUT_DIR}/#{suffix}", name)
+    else
+      puts "WARNING: Not writing resource with URI suffix #{suffix} as it fails basic checks"
+    end
+  end
+end
+
 File.open("#{OUTPUT_DIR}/index.html", "w") do |f|
   title = registry_info['name']
   f.write Templates::TEMPLATES['index.html.erb'].result(binding)

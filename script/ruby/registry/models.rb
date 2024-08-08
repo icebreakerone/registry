@@ -140,6 +140,13 @@ class RegistryResource < Resource
   def generate_uri_suffix
     raise "generate_uri_suffix must be defined for #{self.class.name}"
   end
+  def human_readable_name
+    [:comment, :label].each do |try_symbol|
+      @properties.each do |_, value, symbol|
+        return value.to_s if symbol == try_symbol
+      end
+    end
+  end
 end
 
 # ---------------------------------------------------------------------------
