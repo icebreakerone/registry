@@ -1,8 +1,4 @@
-
-<% if registry_info['isRootRegistry'] %>
-  <h2>Namespace URI</h2>
-  <p>The namespace URI for IB1 is <a href="/ns/1.0"><%= Ns.ib1('').to_uri_s %></a></p>
-<% end %>
+<%= registry_index_html %>
 
 <h2>Entire Registry</h2>
 <p>All Registry resources are available in a single file at <a href="/registry"><%= Ns.registry('registry').to_uri_s %></a></p>

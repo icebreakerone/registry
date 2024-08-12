@@ -104,5 +104,6 @@ end
 
 File.open("#{OUTPUT_DIR}/index.html", "w") do |f|
   title = registry_info['name']
+  registry_index_html = ERB.new(File.read("#{REGISTRY_SOURCE}/index.html")).result(binding)
   f.write Templates::TEMPLATES['index.html.erb'].result(binding)
 end
