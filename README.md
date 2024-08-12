@@ -29,6 +29,21 @@ script/ib1-registry <environment> <registry-definition>
 
 The static site is generated within the `output` directory.
 
+## Using Docker
+
+As an alternative to installing Java and Maven, you can use the included Dockerfile to build a suitable image:
+
+```
+docker build -t ib1-registry .
+```
+
+Then run the tool:
+
+```
+docker run -v  $(pwd):/code ib1-registry ib1-registry production ib1-root-registry
+```
+
+
 ## Preview web server
 
 Run
