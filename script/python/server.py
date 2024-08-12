@@ -7,7 +7,7 @@ from http.server import SimpleHTTPRequestHandler, HTTPServer
 class HackyHandler(SimpleHTTPRequestHandler):
     def translate_path(self, path):
       p = super().translate_path(path)
-      if not os.path.exists(p):
+      if os.path.isfile(p + ".html"):
         p = p + '.html'
       return p
 
