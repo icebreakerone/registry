@@ -1,5 +1,5 @@
 <%
-  if resources.length == 1
+  if (resources.length == 1) && (basename != "#{OUTPUT_DIR}/registry")
     %><table><tr><th>URI</th><td><div><%= ERB::Util.h(resources.first.uri.to_uri_s) %></div></td></tr><%
     props = resources.first._properties_for_template.group_by { |_,_,symbol| symbol }
     props.each do |symbol, values|
