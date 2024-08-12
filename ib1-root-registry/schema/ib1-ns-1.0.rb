@@ -33,6 +33,10 @@ Context.within do |context|
     c.sub_class_of RDFS::Resource
   end
 
+  RdfSchemaClass.new(IB1::LicenceInterpretation.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+
   # -------------------------------------------------------------------------
 
   RdfSchemaProperty.new(Ns.ib1("trustFramework")) do |p|
@@ -40,7 +44,19 @@ Context.within do |context|
     p.range IB1::TrustFramework
     p.domain DCAT::Dataset
     p.domain DCAT::DataService
+    p.domain IB1::MemberGroup
     p.domain IB1::SchemeCatalogRequirements
+    p.domain IB1::LicenceInterpretation
+  end
+
+  RdfSchemaProperty.new(Ns.ib1("scheme")) do |p|
+    p.comment "The Scheme which governs this resource."
+    p.range IB1::Scheme
+    p.domain DCAT::Dataset
+    p.domain DCAT::DataService
+    p.domain IB1::MemberGroup
+    p.domain IB1::SchemeCatalogRequirements
+    p.domain IB1::LicenceInterpretation
   end
 
   RdfSchemaProperty.new(Ns.ib1("datasetAssurance")) do |p|
