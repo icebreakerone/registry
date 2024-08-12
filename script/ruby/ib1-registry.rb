@@ -95,7 +95,7 @@ Resource.all_resources.each do |resource|
       single_model = RdfModel.new
       single_model.add(resource)
       name = resource.respond_to?(:human_readable_name) ? resource.human_readable_name : "Resource"
-      model.write_all_formats("#{OUTPUT_DIR}/#{suffix}", name)
+      single_model.write_all_formats("#{OUTPUT_DIR}/#{suffix}", name)
     else
       puts "WARNING: Not writing resource with URI suffix #{suffix} as it fails basic checks"
     end

@@ -18,6 +18,8 @@
             end
             %><a href="<%= ERB::Util.h(href) %>"><%= ERB::Util.h(display) %></a><%
           end
+        elsif value.kind_of? Resource
+            %><a href="/<%= ERB::Util.h(value.uri.suffix) %>"><%= ERB::Util.h(value.uri.to_uri_s) %></a><%          
         else
           %><%= ERB::Util.h(value.to_s) %><%
         end
