@@ -86,3 +86,20 @@ class LicenceInterpretation < SchemeResource
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
 end
+
+# ---------------------------------------------------------------------------
+
+class RequiredMetadata < SchemeResource
+  rdf_class IB1::RequiredMetadata.uri
+  property :endpoint_description, Ns.dcat("endpointDescription"), RdfUri # TODO: Typesafe OpenAPI files
+  property :permit_group, Ns.ib1("permitGroup"), MemberGroup
+  property :licence, Ns.dcterms("licence"), RdfUri # TODO: Typesafe licence URIs
+end
+
+class SchemeCatalogRequirements < SchemeResource
+  rdf_class IB1::SchemeCatalogRequirements.uri
+  type_name_for_url :standard
+  property :label, Ns.rdfs("label"), String
+  property :comment, Ns.rdfs("comment"), String
+  bnode :required_metadata, Ns.ib1("requiredMetadata"), RequiredMetadata
+end

@@ -92,16 +92,20 @@ class Resource
 
   def initialize(uri)
     @uri = uri
-    @properties = [[RDF::Type.uri, self.class.const_get(:RDF_CLASS)]]
+    @properties = [[RDF::Type.uri, self.class.const_get(:RDF_CLASS), :type]]
     Context._resource_added(self)
+    @defined_at = caller.find { |e| e.start_with?(REGISTRY_SOURCE) }
+    return if uri == :bnode
     yield self if block_given?
     @@all_resources << self
-    @defined_at = caller.find { |e| e.start_with?(REGISTRY_SOURCE) }
   end
 
   # Private for template
   def _properties_for_template
     @properties
+  end
+  def _bnodes_for_template
+    @bnodes || []
   end
 
   def self.property(symbol, uri, value_class)
@@ -117,6 +121,17 @@ class Resource
     end
   end
 
+  def self.bnode(symbol, uri, node_class)
+    define_method(symbol) do |&block|
+      @bnodes ||= []
+      bnode = node_class.new(:bnode)
+      bnode.mark_as_bnode!
+      @bnodes << [uri, bnode, symbol]
+      block.call bnode
+      self
+    end
+  end
+
   def self.all_resources
     @@all_resources.dup
   end
@@ -129,14 +144,22 @@ class Resource
     @properties.each do |uri, value|
       model._add_property(jresource, uri, value)
     end
+    (@bnodes || []).each do |uri, bnode|
+      jbnode = model.jmodel.createResource()
+      bnode._add_terms_to(jbnode, model)
+      model._add_property(jresource, uri, jbnode)
+    end
   end
+
+  def mark_as_bnode!; @is_bnode = true; end
+  def is_bnode?; @is_bnode; end
 end
 
 # ---------------------------------------------------------------------------
 
 class RegistryResource < Resource
   def initialize(uri_hint = nil)
-    super(nil)
+    super(uri_hint == :bnode ? :bnode : nil)
     @uri_hint = uri_hint
   end
   def uri
@@ -158,6 +181,7 @@ end
 
 class RdfModel
   attr_reader :resources
+  attr_reader :jmodel
   OUTPUT_FORMATS = [
     [Jena::Lang.TURTLE, '.ttl', 'RDF (Turtle)'],
     [Jena::Lang.RDFXML, '.rdf', 'RDF/XML'],
@@ -169,6 +193,7 @@ class RdfModel
     @resources = []
   end
   def add(resource)
+    raise "Mustn't add bnodes" if resource.is_bnode?
     jresource = @jmodel.createResource(resource.uri.to_uri_s)
     resource._add_terms_to(jresource, self)
     @resources << resource

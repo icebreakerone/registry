@@ -1,33 +1,45 @@
 <%
   if (resources.length == 1) && (basename != "#{OUTPUT_DIR}/registry")
-    %><table><tr><th>URI</th><td><div><%= ERB::Util.h(resources.first.uri.to_uri_s) %></div></td></tr><%
-    props = resources.first._properties_for_template.group_by { |_,_,symbol| symbol }
-    props.each do |symbol, values|
-      %><tr><th><%= values.first.first.suffix %></th><td><%
-      values.each do |uri, value, symbol|
-        %><div><%
-        if value.kind_of? RdfUri
-          display = value.to_uri_s
-          if value.prefix == Ns.ib1_prefix
-            %>ib1:<%= ERB::Util.h(value.suffix.to_s) %><%
-          else
-            if value.prefix == Ns.registry_prefix
-              href = "/"+value.suffix
-            else
-              href = display
-            end
-            %><a href="<%= ERB::Util.h(href) %>"><%= ERB::Util.h(display) %></a><%
-          end
-        elsif value.kind_of? Resource
-            %><a href="/<%= ERB::Util.h(value.uri.suffix) %>"><%= ERB::Util.h(value.uri.to_uri_s) %></a><%          
-        else
-          %><%= ERB::Util.h(value.to_s) %><%
-        end
-        %></div><%
+#    write_rdf_as_html = []
+    write_rdf_as_html = Proc.new do |resource, with_uri|
+      %><table><%
+      if with_uri
+        %><tr><th>URI</th><td><div><%= ERB::Util.h(resource.uri.to_uri_s) %></div></td></tr><%
       end
-      %></td></tr><%
+      props = resource._properties_for_template.group_by { |_,_,symbol| symbol }
+      props.each do |symbol, values|
+        %><tr><th><%= values.first.first.suffix %></th><td><%
+        values.each do |uri, value, symbol|
+          %><div><%
+          if value.kind_of? RdfUri
+            display = value.to_uri_s
+            if value.prefix == Ns.ib1_prefix
+              %>ib1:<%= ERB::Util.h(value.suffix.to_s) %><%
+            else
+              if value.prefix == Ns.registry_prefix
+                href = "/"+value.suffix
+              else
+                href = display
+              end
+              %><a href="<%= ERB::Util.h(href) %>"><%= ERB::Util.h(display) %></a><%
+            end
+          elsif value.kind_of? Resource
+              %><a href="/<%= ERB::Util.h(value.uri.suffix) %>"><%= ERB::Util.h(value.uri.to_uri_s) %></a><%          
+          else
+            %><%= ERB::Util.h(value.to_s) %><%
+          end
+          %></div><%
+        end
+        %></td></tr><%
+      end
+      resource._bnodes_for_template.each do |url, bnode, symbol|
+        %><tr><th><%= url.suffix %></th><td><%
+        write_rdf_as_html.call(bnode, false)
+        %></td></tr><%
+      end
+      %></table><%
     end
-    %></table><%
+    write_rdf_as_html.call(resources.first, true)
   end
 %>
 
