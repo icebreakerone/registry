@@ -45,7 +45,11 @@ if File.directory? OUTPUT_DIR
   puts "Removing old output files..."
   FileUtils.rm_rf OUTPUT_DIR
 end
-FileUtils.mkdir OUTPUT_DIR
+begin
+  FileUtils.mkdir OUTPUT_DIR
+rescue Errno::EEXIST
+  # ignore
+end
 puts "Copying static files..."
 Dir.glob("web/static/**/*").each do |filename|
   unless filename.include?('/.')
