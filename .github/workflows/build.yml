@@ -1,0 +1,25 @@
+name: Build Output
+
+# on:
+#   push:
+#     branches:
+#       - main
+#       - kip/*
+#   workflow_dispatch:
+#     branches:
+#       - kip/*
+
+on: [push]
+
+env:
+  AWS_REGION: eu-west-2 # set this to your preferred AWS region, e.g. us-west-1
+
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup
+        run: |
+          echo "Setting up the environment"
+          . ./script/prepare.sh
