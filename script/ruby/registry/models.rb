@@ -85,9 +85,7 @@ class Context
     @registry_files = RegistryFiles.new(source, destination)
   end
   def self._current_files
-    last_context_with_files = @@stack.reverse.find { |c| !c.registry_files.nil? }
-    raise "No files registered with Context" if last_context_with_files.nil?
-    last_context_with_files.registry_files
+    @@stack.reverse.map {|c| c.registry_files}.compact
   end
 end
 

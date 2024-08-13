@@ -18,15 +18,23 @@ class RegistryFiles
   def self.openapi(api_name, version)
     raise "Bad API name" unless api_name =~ /\A[a-z0-9-]+\z/
     raise "Bad version" unless version =~ /\A([0-9]+\.)*[0-9]+\z/
-    Context._current_files.
-      file("api/#{api_name}/#{version}.json").
-      as(OpenAPIFile)
+    name = "api/#{api_name}/#{version}.json"
+    Context._current_files.each do |rf|
+      if rf.has?(name)
+        return rf.file(name).as(OpenAPIFile)
+      end
+    end
+    raise "File #{name} does not exist in any RegistryFiles available within the Context stack -- check API name and version exists"
+  end
+
+  def has?(name)
+    File.exist?("#{@source}/#{name}")
   end
 
   def file(name)
     # Check file exists - if it does, it will have been validated when the files were declared
     raise "File #{name} does not exist" unless File.exist?("#{@source}/#{name}")
-    Ns.registry("#{@destination}/#{name}")
+    Ns.registry("#{@destination}#{@destination.empty? ? '' : '/'}#{name}")
   end
 
   # -------------------------------------------------------------------------
