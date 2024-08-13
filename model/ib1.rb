@@ -92,6 +92,7 @@ end
 class RequiredMetadata < SchemeResource
   rdf_class IB1::RequiredMetadata.uri
   property :endpoint_description, Ns.dcat("endpointDescription"), OpenAPIFile
+  property :heartbeat_description, Ns.dcat("heartbeatDescription"), OpenAPIFile
   property :permit_group, Ns.ib1("permitGroup"), MemberGroup
   property :licence, Ns.dcterms("licence"), RdfUri # TODO: Typesafe licence URIs
 end
