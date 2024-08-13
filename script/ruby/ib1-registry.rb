@@ -29,6 +29,7 @@ end
 
 # Load scripts
 require "./script/ruby/registry/models.rb"
+require "./script/ruby/registry/files.rb"
 require "./script/ruby/registry/templates.rb"
 
 # Load model
@@ -75,6 +76,9 @@ puts "Loading Registry resources..."
 require "#{REGISTRY_SOURCE}/resources.rb"
 
 # ---------------------------------------------------------------------------
+
+puts "Copying Registry files..."
+RegistryFiles._copy_to_output
 
 puts "Writing Registry RDF and HTML..."
 # All resources as a single file
