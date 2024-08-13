@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+class OpenAPIFile < RdfUri
+end
+
+# ---------------------------------------------------------------------------
+
 class RegistryFiles
   @@all_files = []
   def initialize(source, destination)
@@ -13,7 +18,9 @@ class RegistryFiles
   def self.openapi(api_name, version)
     raise "Bad API name" unless api_name =~ /\A[a-z0-9-]+\z/
     raise "Bad version" unless version =~ /\A([0-9]+\.)*[0-9]+\z/
-    Context._current_files.file("api/#{api_name}/#{version}.json")
+    Context._current_files.
+      file("api/#{api_name}/#{version}.json").
+      as(OpenAPIFile)
   end
 
   def file(name)

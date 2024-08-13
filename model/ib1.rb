@@ -91,7 +91,7 @@ end
 
 class RequiredMetadata < SchemeResource
   rdf_class IB1::RequiredMetadata.uri
-  property :endpoint_description, Ns.dcat("endpointDescription"), RdfUri # TODO: Typesafe OpenAPI files
+  property :endpoint_description, Ns.dcat("endpointDescription"), OpenAPIFile
   property :permit_group, Ns.ib1("permitGroup"), MemberGroup
   property :licence, Ns.dcterms("licence"), RdfUri # TODO: Typesafe licence URIs
 end
