@@ -10,7 +10,7 @@ module IB1
   MemberGroup = RdfClass.new(Ns.ib1("MemberGroup"))
   SchemeCatalogRequirements = RdfClass.new(Ns.ib1("SchemeCatalogRequirements"))
   RequiredMetadata = RdfClass.new(Ns.ib1("RequiredMetadata"))
-  LicenceInterpretation = RdfClass.new(Ns.ib1("Licence"))
+  LicenceInterpretation = RdfClass.new(Ns.ib1("LicenceInterpretation"))
   Grant = RdfClass.new(Ns.ib1("Grant"))
   Obligation = RdfClass.new(Ns.ib1("Obligation"))
 
@@ -145,7 +145,7 @@ class RequiredMetadata < SchemeResource
   property :endpoint_description, Ns.dcat("endpointDescription"), OpenAPIFile
   property :heartbeat_description, Ns.dcat("heartbeatDescription"), OpenAPIFile
   property :permit_group, Ns.ib1("permitGroup"), MemberGroup
-  property :licence, Ns.dcterms("licence"), RdfUri # TODO: Typesafe licence URIs
+  property :licence, Ns.dcterms("licence"), LicenceInterpretation
 end
 
 class SchemeCatalogRequirements < SchemeResource
