@@ -140,12 +140,24 @@ end
 
 # ---------------------------------------------------------------------------
 
-class RequiredMetadata < SchemeResource
+class SchemeResourceWithVisibleProperties < SchemeResource
+  def self.inherited(subclass)
+    subclass.const_set(:PropertyURI, Class.new(RdfUri))
+  end
+  def self.property(symbol, uri, *classes)
+    self.const_set(symbol.to_s.upcase.to_sym, uri.as(self.const_get(:PropertyURI, false)))
+    super
+  end
+end
+
+class RequiredMetadata < SchemeResourceWithVisibleProperties
   rdf_class IB1::RequiredMetadata.uri
   property :endpoint_description, Ns.dcat("endpointDescription"), OpenAPIFile
   property :heartbeat_description, Ns.dcat("heartbeatDescription"), OpenAPIFile
   property :permit_group, Ns.ib1("permitGroup"), MemberGroup
   property :licence, Ns.dcterms("licence"), LicenceInterpretation
+  property :sensitivity_class, Ns.ib1("sensitivityClass"), String # TODO: Should be URL
+  property :dataset_assurance, Ns.ib1("datasetAssurance"), String # TODO: Should be URL
 end
 
 class SchemeCatalogRequirements < SchemeResource
@@ -153,5 +165,10 @@ class SchemeCatalogRequirements < SchemeResource
   type_name_for_url :standard
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
+  property :required_type, Ns.ib1("requiredType"), RdfClass
   bnode :required_metadata, Ns.ib1("requiredMetadata"), RequiredMetadata
+  property :require_all_and_allow_additional, Ns.ib1("requireAllAndAllowAdditional"), RequiredMetadata::PropertyURI
+  property :require_any_one_of, Ns.ib1("requireAnyOneOf"), RequiredMetadata::PropertyURI
+  property :require_any_value, Ns.ib1("requireAnyValue"), RequiredMetadata::PropertyURI
+  property :require_absence_of, Ns.ib1("requireAbsenceOf"), RequiredMetadata::PropertyURI
 end
