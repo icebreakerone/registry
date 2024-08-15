@@ -103,9 +103,14 @@ class Resource
     self.const_set(:RDF_CLASS, klass)
   end
 
+  def self.inherited(subclass)
+    # Typed subclass for Resource URIs
+    subclass.const_set(:URI, Class.new(RdfUri))
+  end
+
   def initialize(uri)
     @uri = uri
-    @properties = [[RDF::Type.uri, self.class.const_get(:RDF_CLASS), :type]]
+    @properties = [[RDF::Type.uri, self.class.const_get(:RDF_CLASS, false), :type]]
     Context._resource_added(self)
     @defined_at = caller.find { |e| e.start_with?(REGISTRY_SOURCE) }
     return if uri == :bnode
@@ -121,9 +126,19 @@ class Resource
     @bnodes || []
   end
 
-  def self.property(symbol, uri, value_class)
+  def self.property(symbol, uri, *value_classes)
+    # Add Resource URI classes to allowed classes
+    classes = value_classes.dup
+    value_classes.each do |klass|
+      begin
+        classes << klass.const_get(:URI, false)
+      rescue NameError
+        # Ignore, not a Resource class
+      end
+    end
+    raise "No value classes set" if classes.empty?
     define_method(symbol) do |value|
-      raise "Value should be #{value_class.name}" unless value.kind_of?(value_class)
+      raise "Value should be #{classes.map { |k| k.name } .join(' or ')}" unless classes.find { |k| value.kind_of?(k) }
       @properties << [uri, value, symbol]
       self
     end
@@ -186,6 +201,11 @@ class RegistryResource < Resource
       @properties.each do |_, value, symbol|
         return value.to_s if symbol == try_symbol
       end
+    end
+  end
+  module AddVersionToUri
+    def generate_uri_suffix
+      super + "/" + self.first_version.to_s
     end
   end
 end
