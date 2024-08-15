@@ -95,8 +95,10 @@ class Resource
   attr_reader :uri
 
   @@all_resources = []
+  @@pending_type_checks = []
   def self.clear_all
     @@all_resources.clear
+    @@pending_type_checks.clear
   end
 
   def self.rdf_class(klass)
@@ -157,6 +159,19 @@ class Resource
       @bnodes << [uri, bnode, symbol]
       block.call bnode
       self
+    end
+  end
+
+  def self.at(uri_suffix)
+    @@pending_type_checks << [self, uri_suffix, caller.find { |e| e.start_with?(REGISTRY_SOURCE) }]
+    self.const_get(:URI).new(Ns.registry_prefix, uri_suffix)
+  end
+
+  def self.perform_final_validation
+    @@pending_type_checks.each do |klass, uri_suffix, defined_at|
+      unless @@all_resources.find { |r| (r.class == klass) && (r.uri.suffix == uri_suffix) }
+        raise "#{klass.name} with suffix #{uri_suffix} hasn't been defined, but was used at #{defined_at}"
+      end
     end
   end
 

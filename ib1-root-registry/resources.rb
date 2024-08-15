@@ -1,6 +1,7 @@
 
 # The root registry also has the RDF schema definition. Write this first, then clear all resources.
 require "#{REGISTRY_SOURCE}/schema/ib1-ns-1.0.rb"
+Resource.perform_final_validation
 begin
   model = RdfModel.new
   Resource.all_resources.each do |resource|

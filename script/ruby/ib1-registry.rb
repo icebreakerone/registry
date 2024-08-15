@@ -74,6 +74,7 @@ Ns.namespace(:registry, "https://#{REGISTRY_HOSTNAME}/", true) # not used as pre
 
 puts "Loading Registry resources..."
 require "#{REGISTRY_SOURCE}/resources.rb"
+Resource.perform_final_validation
 
 # ---------------------------------------------------------------------------
 
