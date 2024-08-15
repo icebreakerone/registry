@@ -93,7 +93,7 @@ Resource.all_resources.each do |resource|
   uri = resource.uri
   if uri.prefix == Ns.registry_prefix
     suffix = uri.suffix
-    if !suffix.start_with?('/') && suffix =~ /\A([a-zA-Z0-9\/\-]+\/)?([a-zA-Z0-9\-]+)\z/   # basic checks on URI so don't accidently splat files everywhere
+    if !suffix.start_with?('/') && suffix =~ /\A([a-zA-Z0-9\/\-]+\/)?([a-zA-Z0-9][a-zA-Z0-9\.\-]*)\z/   # basic checks on URI so don't accidently splat files everywhere
       dir = $1
       FileUtils.mkdir_p("#{OUTPUT_DIR}/#{dir}") unless dir.nil?
       single_model = RdfModel.new
