@@ -59,6 +59,13 @@ Context.within do |context|
     p.domain IB1::LicenceInterpretation
   end
 
+  # TODO: How should version numbers be handled? Nothing seems to have a concept of a version number
+  RdfSchemaProperty.new(Ns.ib1("versionIdentifier")) do |p|
+    p.comment "Identifier of a version, usually a version number."
+    p.range RDFS::Literal
+    p.domain IB1::LicenceInterpretation
+  end
+
   RdfSchemaProperty.new(Ns.ib1("datasetAssurance")) do |p|
     p.comment "Assurance level for a dataset."
     p.range RDFS::Literal  # TODO: This should use Resource URLs as an enum
@@ -140,4 +147,18 @@ Context.within do |context|
     p.domain IB1::SchemeCatalogRequirements
   end
 
+end
+
+IB1::GRANTS.each do |label, comment|
+  Grant.new(Ns.ib1(label)) do |g|
+    g.label label
+    g.comment comment
+  end
+end
+
+IB1::OBLIGATIONS.each do |label, comment|
+  Obligation.new(Ns.ib1(label)) do |g|
+    g.label label
+    g.comment comment
+  end
 end
