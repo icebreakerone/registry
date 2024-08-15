@@ -11,10 +11,13 @@
         %><tr><th><%= values.first.first.suffix %></th><td><%
         values.each do |uri, value, symbol|
           %><div><%
+          value = value.uri if value.kind_of? RdfClass
           if value.kind_of? RdfUri
             display = value.to_uri_s
             if value.prefix == Ns.ib1_prefix
               %>ib1:<%= ERB::Util.h(value.suffix.to_s) %><%
+            elsif value.prefix == Ns.dcat_prefix
+              %>dcat:<%= ERB::Util.h(value.suffix.to_s) %><%
             else
               if value.prefix == Ns.registry_prefix
                 href = "/"+value.suffix
@@ -24,7 +27,7 @@
               %><a href="<%= ERB::Util.h(href) %>"><%= ERB::Util.h(display) %></a><%
             end
           elsif value.kind_of? Resource
-              %><a href="/<%= ERB::Util.h(value.uri.suffix) %>"><%= ERB::Util.h(value.uri.to_uri_s) %></a><%          
+            %><a href="/<%= ERB::Util.h(value.uri.suffix) %>"><%= ERB::Util.h(value.uri.to_uri_s) %></a><%          
           else
             %><%= ERB::Util.h(value.to_s) %><%
           end
