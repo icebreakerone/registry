@@ -15,23 +15,23 @@ module IB1
   Obligation = RdfClass.new(Ns.ib1("Obligation"))
 
   GRANTS = [
-    ['use_any', 'Use the artefact internally for any purpose'],
-    ['use_dev', 'Use the artefact internally for development purposes only (i.e. private or limited development of new works, products or services)'],
-    ['use_noncom', 'Use the artefact internally for non-commercial purposes only (e.g. education, research, charity work etc.)'],
-    ['adapt_any', 'Adapt the artefact for internal use for any purpose'],
-    ['adapt_dev', 'Adapt the artefact for internal use for development purposes only (i.e. private or limited development of new works, products or services)'],
-    ['adapt_noncom', 'Adapt the artefact for internal use for non-commercial purposes only (e.g. education, research, charity work etc.)'],
-    ['combine_any', "Combine ('remix') the artefact with any other artefacts"],
-    ['combine_external', "Combine ('remix') the artefact with other external artefacts"],
-    ['combine_internal', "Combine ('remix') the artefact with the Data Consumer's own products or services"],
-    ['redistribute_original', "Redistribute ('onward share' - including to any customers of the Service Provider) the original artefact"],
-    ['redistribute_derived', "Redistribute ('onward share' - including to any customers of the Service Provider) derivatives of the original artefact not produced from other data sets, i.e. filtered or cleaned data"],
-    ['redistribute_combined', "Redistribute ('onward share' - including to any customers of the Service Provider) derivatives of the artefact produced through artefact combination or use in the Data Consumer's own products or services"]
+    ['GrantUseAny',           'use_any', 'Use the artefact internally for any purpose'],
+    ['GrantUseDevelopment',   'use_dev', 'Use the artefact internally for development purposes only (i.e. private or limited development of new works, products or services)'],
+    ['GrantUseNonCommercial', 'use_noncom', 'Use the artefact internally for non-commercial purposes only (e.g. education, research, charity work etc.)'],
+    ['GrantAdaptAny',         'adapt_any', 'Adapt the artefact for internal use for any purpose'],
+    ['GrantAdaptDevelopment', 'adapt_dev', 'Adapt the artefact for internal use for development purposes only (i.e. private or limited development of new works, products or services)'],
+    ['GrantAdaptNonCommercial','adapt_noncom', 'Adapt the artefact for internal use for non-commercial purposes only (e.g. education, research, charity work etc.)'],
+    ['GrantCombineAny',       'combine_any', "Combine ('remix') the artefact with any other artefacts"],
+    ['GrantCombineExternal',  'combine_external', "Combine ('remix') the artefact with other external artefacts"],
+    ['GrantCombineInternal',  'combine_internal', "Combine ('remix') the artefact with the Data Consumer's own products or services"],
+    ['GrantRedistributeOriginal','redistribute_original', "Redistribute ('onward share' - including to any customers of the Service Provider) the original artefact"],
+    ['GrantRedistributeDerived','redistribute_derived', "Redistribute ('onward share' - including to any customers of the Service Provider) derivatives of the original artefact not produced from other data sets, i.e. filtered or cleaned data"],
+    ['GrantRedistributeCombined','redistribute_combined', "Redistribute ('onward share' - including to any customers of the Service Provider) derivatives of the artefact produced through artefact combination or use in the Data Consumer's own products or services"]
   ]
   OBLIGATIONS = [
-    ['ft', 'Re-users must display the full text of the license every time they use the work'],
-    ['by', 'Re-users must attribute the work to the original source when they use it'],
-    ['sa', 'Re-users who create derivatives of the work must release the derivatives under the same license as the original work, if they choose to distribute the derivatives']
+    ['ObligationFullTextOfLicence', 'ft', 'Re-users must display the full text of the license every time they use the work'],
+    ['ObligationAttribution', 'by', 'Re-users must attribute the work to the original source when they use it'],
+    ['ObligationSameLicence', 'sa', 'Re-users who create derivatives of the work must release the derivatives under the same license as the original work, if they choose to distribute the derivatives']
   ]
 end
 
@@ -108,10 +108,11 @@ class Grant < Resource # Doesn't need to be in a Scheme or TrustFramework
   property :comment, Ns.rdfs("comment"), String
   property :trust_framework, Ns.ib1("trustFramework"), TrustFramework
   property :scheme, Ns.ib1("scheme"), Scheme
+  property :is_replaced_by, Ns.dcterms("isReplacedBy"), Grant
 end
-IB1::GRANTS.each do |label, comment|
+IB1::GRANTS.each do |label, legacy_label, comment|
   uri = Ns.ib1(label).as(Grant::URI)
-  Grant.class.define_method(label.to_sym) { uri }
+  Grant.const_set(label.sub(/\AGrant/,'').to_sym, uri)
 end
 
 class Obligation < Resource # Doesn't need to be in a Scheme or TrustFramework
@@ -120,10 +121,11 @@ class Obligation < Resource # Doesn't need to be in a Scheme or TrustFramework
   property :comment, Ns.rdfs("comment"), String
   property :trust_framework, Ns.ib1("trustFramework"), TrustFramework
   property :scheme, Ns.ib1("scheme"), Scheme
+  property :is_replaced_by, Ns.dcterms("isReplacedBy"), Obligation
 end
-IB1::OBLIGATIONS.each do |label, comment|
+IB1::OBLIGATIONS.each do |label, legacy_label, comment|
   uri = Ns.ib1(label).as(Obligation::URI)
-  Obligation.class.define_method(label.to_sym) { uri }
+  Obligation.const_set(label.sub(/\AObligation/,'').to_sym, uri)
 end
 
 class LicenceInterpretation < SchemeResource

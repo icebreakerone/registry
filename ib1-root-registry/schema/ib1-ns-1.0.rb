@@ -149,16 +149,24 @@ Context.within do |context|
 
 end
 
-IB1::GRANTS.each do |label, comment|
-  Grant.new(Ns.ib1(label)) do |g|
+IB1::GRANTS.each do |label, legacy_label, comment|
+  current = Grant.new(Ns.ib1(label)) do |g|
     g.label label
     g.comment comment
   end
+  Grant.new(Ns.ib1(legacy_label)) do |g|
+    g.label legacy_label
+    g.is_replaced_by current
+  end
 end
 
-IB1::OBLIGATIONS.each do |label, comment|
-  Obligation.new(Ns.ib1(label)) do |g|
-    g.label label
-    g.comment comment
+IB1::OBLIGATIONS.each do |label, legacy_label, comment|
+  current = Obligation.new(Ns.ib1(label)) do |o|
+    o.label label
+    o.comment comment
+  end
+  Obligation.new(Ns.ib1(legacy_label)) do |o|
+    o.label legacy_label
+    o.is_replaced_by current
   end
 end
