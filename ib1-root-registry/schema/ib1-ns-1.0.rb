@@ -37,6 +37,22 @@ Context.within do |context|
     c.sub_class_of RDFS::Resource
   end
 
+  RdfSchemaClass.new(IB1::Grant.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+
+  RdfSchemaClass.new(IB1::Obligation.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+
+  RdfSchemaClass.new(IB1::AssuranceLevel.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+
+  RdfSchemaClass.new(IB1::SensitivityClass.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+
   # -------------------------------------------------------------------------
 
   RdfSchemaProperty.new(Ns.ib1("trustFramework")) do |p|
@@ -66,9 +82,21 @@ Context.within do |context|
     p.domain IB1::LicenceInterpretation
   end
 
+  RdfSchemaProperty.new(Ns.ib1("grant")) do |p|
+    p.comment "Grants when using a licence."
+    p.range IB1::Grant
+    p.domain IB1::LicenceInterpretation
+  end
+
+  RdfSchemaProperty.new(Ns.ib1("obligation")) do |p|
+    p.comment "Obligations when using a licence."
+    p.range IB1::Obligation
+    p.domain IB1::LicenceInterpretation
+  end
+
   RdfSchemaProperty.new(Ns.ib1("datasetAssurance")) do |p|
     p.comment "Assurance level for a dataset."
-    p.range RDFS::Literal  # TODO: This should use Resource URLs as an enum
+    p.range IB1::AssuranceLevel
     p.domain DCAT::Dataset
     p.domain DCAT::DataService
     p.domain IB1::RequiredMetadata
@@ -76,7 +104,7 @@ Context.within do |context|
 
   RdfSchemaProperty.new(Ns.ib1("sensitivityClass")) do |p|
     p.comment "Sensitivity class for a dataset."
-    p.range RDFS::Literal  # TODO: This should use Resource URLs as an enum
+    p.range IB1::SensitivityClass
     p.domain DCAT::Dataset
     p.domain DCAT::DataService
     p.domain IB1::RequiredMetadata
@@ -168,5 +196,19 @@ IB1::OBLIGATIONS.each do |label, legacy_label, comment|
   Obligation.new(Ns.ib1(legacy_label)) do |o|
     o.label legacy_label
     o.is_replaced_by current
+  end
+end
+
+IB1::ASSURANCE_LEVELS.each do |label, comment|
+  AssuranceLevel.new(Ns.ib1(label)) do |l|
+    l.label label
+    l.comment comment
+  end
+end
+
+IB1::SENSITIVITY_CLASSES.each do |label, comment|
+  SensitivityClass.new(Ns.ib1(label)) do |c|
+    c.label label
+    c.comment comment
   end
 end

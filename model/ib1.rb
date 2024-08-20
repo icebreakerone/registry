@@ -13,6 +13,8 @@ module IB1
   LicenceInterpretation = RdfClass.new(Ns.ib1("LicenceInterpretation"))
   Grant = RdfClass.new(Ns.ib1("Grant"))
   Obligation = RdfClass.new(Ns.ib1("Obligation"))
+  AssuranceLevel = RdfClass.new(Ns.ib1("AssuranceLevel"))
+  SensitivityClass = RdfClass.new(Ns.ib1("SensitivityClass"))
 
   GRANTS = [
     ['GrantUseAny',           'use_any', 'Use the artefact internally for any purpose'],
@@ -32,6 +34,16 @@ module IB1
     ['ObligationFullTextOfLicence', 'ft', 'Re-users must display the full text of the license every time they use the work'],
     ['ObligationAttribution', 'by', 'Re-users must attribute the work to the original source when they use it'],
     ['ObligationSameLicence', 'sa', 'Re-users who create derivatives of the work must release the derivatives under the same license as the original work, if they choose to distribute the derivatives']
+  ]
+  ASSURANCE_LEVELS = (1..4).map do |level|
+    ["AssuranceLevel#{level}", "Assurance level #{level}"]
+  end
+  SENSITIVITY_CLASSES = [
+    ['SensitivityClassClosed', 'Closed data - datasets which must not be shared.'],
+    ['SensitivityClassOpen', 'Open Data - full open access, under an open data licence. Free to use, by anyone, for any purpose.'],
+    ['SensitivityClassSharedA', 'Shared data - datasets which can/could be shared, but which require the user to agree to standard T&Cs to access. May include some openly licensed materials (e.g. CC BY-SA or GNU AGPLv3).'],
+    ['SensitivityClassSharedB', 'Shared data - datasets which can/could be shared, but currently require some bilateral contract negotiation. May include data currently shared on the basis of group-based access. May include aggregated, anonymised or pseudonymised data about individuals.'],
+    ['SensitivityClassPersonal', 'Datasets which include personal data, requiring appropriate consent to share, or other legal bases to data processing, as defined by the UK DPA 2018.']
   ]
 end
 
@@ -142,6 +154,34 @@ end
 
 # ---------------------------------------------------------------------------
 
+class AssuranceLevel < Resource # Doesn't need to be in a Scheme or TrustFramework
+  rdf_class IB1::AssuranceLevel.uri
+  property :label, Ns.rdfs("label"), String
+  property :comment, Ns.rdfs("comment"), String
+  property :trust_framework, Ns.ib1("trustFramework"), TrustFramework
+  property :scheme, Ns.ib1("scheme"), Scheme
+end
+IB1::ASSURANCE_LEVELS.each do |label, comment|
+  uri = Ns.ib1(label).as(AssuranceLevel::URI)
+  AssuranceLevel.const_set(label.sub(/\AAssurance/,'').to_sym, uri)
+end
+
+# ---------------------------------------------------------------------------
+
+class SensitivityClass < Resource # Doesn't need to be in a Scheme or TrustFramework
+  rdf_class IB1::SensitivityClass.uri
+  property :label, Ns.rdfs("label"), String
+  property :comment, Ns.rdfs("comment"), String
+  property :trust_framework, Ns.ib1("trustFramework"), TrustFramework
+  property :scheme, Ns.ib1("scheme"), Scheme
+end
+IB1::SENSITIVITY_CLASSES.each do |label, comment|
+  uri = Ns.ib1(label).as(SensitivityClass::URI)
+  SensitivityClass.const_set(label.sub(/\ASensitivityClass/,'').to_sym, uri)
+end
+
+# ---------------------------------------------------------------------------
+
 class SchemeResourceWithVisibleProperties < SchemeResource
   def self.inherited(subclass)
     subclass.const_set(:PropertyURI, Class.new(RdfUri))
@@ -158,8 +198,8 @@ class RequiredMetadata < SchemeResourceWithVisibleProperties
   property :heartbeat_description, Ns.dcat("heartbeatDescription"), OpenAPIFile
   property :permit_group, Ns.ib1("permitGroup"), MemberGroup
   property :licence, Ns.dcterms("licence"), LicenceInterpretation
-  property :sensitivity_class, Ns.ib1("sensitivityClass"), String # TODO: Should be URL
-  property :dataset_assurance, Ns.ib1("datasetAssurance"), String # TODO: Should be URL
+  property :sensitivity_class, Ns.ib1("sensitivityClass"), SensitivityClass
+  property :dataset_assurance, Ns.ib1("datasetAssurance"), AssuranceLevel
 end
 
 class SchemeCatalogRequirements < SchemeResource
