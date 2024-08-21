@@ -39,11 +39,11 @@ module IB1
     ["AssuranceLevel#{level}", "Assurance level #{level}"]
   end
   SENSITIVITY_CLASSES = [
-    ['SensitivityClassClosed', 'Closed data - datasets which must not be shared.'],
-    ['SensitivityClassOpen', 'Open Data - full open access, under an open data licence. Free to use, by anyone, for any purpose.'],
-    ['SensitivityClassSharedA', 'Shared data - datasets which can/could be shared, but which require the user to agree to standard T&Cs to access. May include some openly licensed materials (e.g. CC BY-SA or GNU AGPLv3).'],
-    ['SensitivityClassSharedB', 'Shared data - datasets which can/could be shared, but currently require some bilateral contract negotiation. May include data currently shared on the basis of group-based access. May include aggregated, anonymised or pseudonymised data about individuals.'],
-    ['SensitivityClassPersonal', 'Datasets which include personal data, requiring appropriate consent to share, or other legal bases to data processing, as defined by the UK DPA 2018.']
+    ['SensitivityClassClosed', 'IB1-C', 'Closed data - datasets which must not be shared.'],
+    ['SensitivityClassOpen', 'IB1-O', 'Open Data - full open access, under an open data licence. Free to use, by anyone, for any purpose.'],
+    ['SensitivityClassSharedStandardTerms', 'IB1-SA', 'Shared data - datasets which can/could be shared, but which require the user to agree to standard T&Cs to access. May include some openly licensed materials (e.g. CC BY-SA or GNU AGPLv3).'],
+    ['SensitivityClassSharedAfterNegotiation', 'IB1-SB', 'Shared data - datasets which can/could be shared, but currently require some bilateral contract negotiation. May include data currently shared on the basis of group-based access. May include aggregated, anonymised or pseudonymised data about individuals.'],
+    ['SensitivityClassPersonal', 'IB1-SP', 'Datasets which include personal data, requiring appropriate consent to share, or other legal bases to data processing, as defined by the UK DPA 2018.']
   ]
 end
 
@@ -175,7 +175,7 @@ class SensitivityClass < Resource # Doesn't need to be in a Scheme or TrustFrame
   property :trust_framework, Ns.ib1("trustFramework"), TrustFramework
   property :scheme, Ns.ib1("scheme"), Scheme
 end
-IB1::SENSITIVITY_CLASSES.each do |label, comment|
+IB1::SENSITIVITY_CLASSES.each do |label, legacy_name, comment|
   uri = Ns.ib1(label).as(SensitivityClass::URI)
   SensitivityClass.const_set(label.sub(/\ASensitivityClass/,'').to_sym, uri)
 end
