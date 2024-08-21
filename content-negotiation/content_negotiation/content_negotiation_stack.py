@@ -4,7 +4,6 @@ from aws_cdk import (
     aws_cloudfront as cloudfront,
     aws_cloudfront_origins as origins,
     aws_lambda as _lambda,
-    aws_iam as iam,
     RemovalPolicy,
 )
 from constructs import Construct
@@ -40,7 +39,7 @@ class ContentNegotiationStack(Stack):
         site_bucket.grant_read(origin_access_identity)
 
         # CloudFront distribution
-        cloudfront_distribution = cloudfront.Distribution(
+        cloudfront.Distribution(
             self,
             "SiteDistribution",
             default_root_object="index.html",

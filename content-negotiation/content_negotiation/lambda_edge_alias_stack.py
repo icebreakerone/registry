@@ -1,6 +1,6 @@
 # Lambda@Edge function for content negotiation
 
-from aws_cdk import Stack, aws_lambda as _lambda, aws_iam as iam, CfnOutput
+from aws_cdk import Stack, aws_lambda as _lambda, aws_iam as iam
 from constructs import Construct
 
 

@@ -26,6 +26,6 @@ jobs:
       - name: Run content-negotiation tests
         shell: bash
         run: |
-          # stop the build if there are Python syntax errors or undefined names
+          # stop the build if tests fail
           cd content-negotiation
           pipenv run pytest .
