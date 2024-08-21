@@ -10,7 +10,7 @@ pytest = "==6.2.5"
 "aws-cdk.aws-lambda-python-alpha" = "*"
 
 [dev-packages]
-pytest = "==6.2.5"
+pytest = "*"
 
 [requires]
 python_version = "3.12"

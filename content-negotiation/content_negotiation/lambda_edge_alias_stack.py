@@ -24,7 +24,7 @@ class LambdaEdgeAliasStack(Stack):
             "LambdaContentNegotiation",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="index.handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.Code.from_asset("lambda_code"),
             role=lambda_edge_role,
         )
         # Create a version of the Lambda function
