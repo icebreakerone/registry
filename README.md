@@ -46,7 +46,7 @@ This doesn't do content negotiation yet, but has a small hack to display the HTM
 Run
 
 ```
-script/ib1-registry production ib1-root-registry
+script/ib1-registry production registry/root
 ```
 
 The root registry contains:
@@ -64,7 +64,7 @@ script/ib1-registry production ../registry-core
 
 ## Guided tour
 
-[ib1-root-registry](ib1-root-registry/) -- the definition for the root registry.
+[registry/root](registry/root/) -- the definition for the root registry.
 
 [model](model/) -- models which define the RDF classes for the namespaces used by IB1.
 
