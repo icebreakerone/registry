@@ -1,0 +1,33 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Standard Heartbeat",
+    "version": "0.1",
+    "x-ib1-registry-label": "heartbeat"
+  },
+  "servers": [
+    {
+      "url": "{endpointURL}",
+      "variables": {
+        "endpointURL": {
+          "default": "https://endpointurl-not-specified.ib1.org"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/heartbeat": {
+      "summary": "Heartbeat",
+      "get": {
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "responses": {
+          "default": {
+            "description": "Default error sample response"
+          }
+        }
+      }
+    }
+  }
+}
