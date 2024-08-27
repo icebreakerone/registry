@@ -54,15 +54,25 @@ The root registry contains:
   * The RDF schema definition with the namespace `https://registry.ib1.org/ns/1.0#`
   * A "Trust Framework Group" listing all known Trust Frameworks.
 
-## Generating another Registry
+## Generating a Registry from a definition in this repository
 
-Clone the repository which contains the definition for the registry next to this repository, for example, the Core Trust Framework, then run:
+The Registry definitions are in the [registry](registry) directory. For example, to generate the Core registry, run
 
 ```
-script/ib1-registry production ../registry-core
+script/ib1-registry production registry/core
+```
+
+## Generating a Registry from another repository
+
+Clone the repository which contains the definition for the registry next to this repository, then refer to the location on the command line. For example,
+
+```
+script/ib1-registry production ../registry-example
 ```
 
 ## Guided tour
+
+[registry](registry) -- registry definitions
 
 [registry/root](registry/root/) -- the definition for the root registry.
 
