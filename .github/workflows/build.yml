@@ -47,4 +47,4 @@ jobs:
           pipenv install --system --deploy --ignore-pipfile 
           cdk deploy --all --require-approval never
       - name: Invalidate Cache
-        run: aws cloudfront create-invalidation --distribution-id E2OLIP3E7LAQ2F --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id EPU6D5GFRURJH --paths "/*"
