@@ -2,7 +2,10 @@ def handler(event, context):
     # Extract the request details
     request = event["Records"][0]["cf"]["request"]
     headers = request["headers"]
-
+    print(f"Request URI: {request['uri']}")
+    print(
+        f"Accept header: {headers.get('accept', [{'value': 'text/html'}])[0]['value']}"
+    )
     # Default to HTML if no Accept header is present
     accept_header = headers.get("accept", [{"value": "text/html"}])[0]["value"]
 

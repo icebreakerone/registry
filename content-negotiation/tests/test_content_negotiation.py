@@ -8,7 +8,7 @@ from lambda_code.index import handler
     [
         ("application/ld+json", ".jsonld", "application/ld+json"),
         ("text/turtle", ".ttl", "text/turtle"),
-        ("application/xml", ".xml", "application/xml"),
+        ("application/rdf+xml", ".rdf", "application/rdf+xml"),
         ("text/plain", ".html", "text/html"),  # Default to HTML
         (None, ".html", "text/html"),  # No Accept header
     ],
