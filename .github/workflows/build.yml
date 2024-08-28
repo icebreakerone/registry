@@ -11,7 +11,7 @@ on:
       - kip/*
 
 env:
-  AWS_REGION: eu-west-2 # set this to your preferred AWS region, e.g. us-west-1
+  AWS_REGION: us-east-1 # set this to your preferred AWS region, e.g. us-west-1
 
 jobs:
   build-and-deploy:
@@ -45,6 +45,7 @@ jobs:
           cd content-negotiation
           pip install pipenv
           pipenv install --system --deploy --ignore-pipfile 
+          cdk synthesize
           cdk deploy --all --require-approval never
       - name: Invalidate Cache
         run: aws cloudfront create-invalidation --distribution-id EPU6D5GFRURJH --paths "/*"

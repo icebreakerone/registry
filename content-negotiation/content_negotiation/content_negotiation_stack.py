@@ -1,11 +1,15 @@
 from aws_cdk import (
     Stack,
+    aws_lambda as _lambda,
+    aws_iam as iam,
     aws_s3 as s3,
     aws_cloudfront as cloudfront,
     aws_cloudfront_origins as origins,
     aws_lambda as _lambda,
     RemovalPolicy,
 )
+
+
 from constructs import Construct
 
 
@@ -15,10 +19,37 @@ class ContentNegotiationStack(Stack):
         self,
         scope: Construct,
         construct_id: str,
-        lambda_edge_alias: _lambda.Alias,
         **kwargs,
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
+        lambda_edge_role = iam.Role(
+            self,
+            "LambdaEdgeRole",
+            assumed_by=iam.ServicePrincipal("lambda.amazonaws.com"),
+            managed_policies=[
+                iam.ManagedPolicy.from_aws_managed_policy_name(
+                    "service-role/AWSLambdaBasicExecutionRole"
+                )
+            ],
+        )
+
+        self.lambda_edge_function = _lambda.Function(
+            self,
+            "LambdaContentNegotiation",
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="index.handler",
+            code=_lambda.Code.from_asset("lambda_code"),
+            role=lambda_edge_role,
+        )
+        # Create a version of the Lambda function
+        self.lambda_edge_version = self.lambda_edge_function.current_version
+        # Create an alias for the Lambda function
+        self.lambda_edge_alias = _lambda.Alias(
+            self,
+            "LambdaEdgeAlias",
+            alias_name="live",
+            version=self.lambda_edge_function.current_version,
+        )
 
         # S3 Bucket to store the static site
         site_bucket = s3.Bucket(
@@ -49,7 +80,7 @@ class ContentNegotiationStack(Stack):
                 ),
                 edge_lambdas=[
                     cloudfront.EdgeLambda(
-                        function_version=lambda_edge_alias.version,
+                        function_version=self.lambda_edge_alias.version,
                         event_type=cloudfront.LambdaEdgeEventType.VIEWER_REQUEST,
                     )
                 ],
