@@ -36,7 +36,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
       - name: Sync to S3
-        run: aws s3 sync ./output s3://contentnegotiationstack-sitebucket397a1860-n4pplyx0o81v --delete
+        run: aws s3 sync ./output s3://contentnegotiationstack-sitebucket397a1860-dkzhfwxn3pjv --delete
       - uses: "actions/setup-python@v4"
         with:
           python-version: "3.12"
