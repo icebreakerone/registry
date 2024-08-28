@@ -13,9 +13,9 @@ def handler(event, context):
     elif "text/turtle" in accept_header:
         content_type = "text/turtle"
         file_extension = ".ttl"
-    elif "application/xml" in accept_header or "text/xml" in accept_header:
-        content_type = "application/xml"
-        file_extension = ".xml"
+    elif "application/rdf+xml" in accept_header:
+        content_type = "application/rdf+xml"
+        file_extension = ".rdf"
     else:
         content_type = "text/html"
         file_extension = ".html"
