@@ -8,7 +8,12 @@ def handler(event, context):
     )
     # Default to HTML if no Accept header is present
     accept_header = headers.get("accept", [{"value": "text/html"}])[0]["value"]
-
+    # If the file extension in request['uri'] is present, return the request as is
+    if "." in request["uri"]:
+        return request
+    if request["uri"] == "/":
+        # Return the index page with HTML content type
+        request["uri"] = "/index"
     # Determine the content type based on the Accept header
     if "application/ld+json" in accept_header:
         content_type = "application/ld+json"
