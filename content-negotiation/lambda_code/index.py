@@ -1,3 +1,15 @@
+import re
+
+
+def _has_extension(text: str) -> bool:
+    """
+    Matches "styles.css", "1.0.jsonld", "file.rdf"
+    Does not match /ns/1.0
+    """
+    pattern = r"\.[a-zA-Z]{2,}$"
+    return bool(re.search(pattern, text))
+
+
 def handler(event, context):
     # Extract the request details
     request = event["Records"][0]["cf"]["request"]
@@ -9,7 +21,7 @@ def handler(event, context):
     # Default to HTML if no Accept header is present
     accept_header = headers.get("accept", [{"value": "text/html"}])[0]["value"]
     # If the file extension in request['uri'] is present, return the request as is
-    if "." in request["uri"]:
+    if _has_extension(request["uri"]):
         return request
     if request["uri"] == "/":
         # Return the index page with HTML content type

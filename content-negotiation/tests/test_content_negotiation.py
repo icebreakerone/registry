@@ -45,3 +45,12 @@ def test_requests_with_file_extensions():
     response = handler(event, None)
 
     assert response["uri"] == test_path
+
+
+def test_ignores_namespace():
+    test_path = "/ns/1.0"
+    event = {"Records": [{"cf": {"request": {"uri": test_path, "headers": {}}}}]}
+
+    response = handler(event, None)
+
+    assert response["uri"] == f"{test_path}.html"
