@@ -5,7 +5,6 @@ from aws_cdk import (
     aws_s3 as s3,
     aws_cloudfront as cloudfront,
     aws_cloudfront_origins as origins,
-    aws_lambda as _lambda,
     RemovalPolicy,
 )
 
