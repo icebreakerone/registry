@@ -7,7 +7,7 @@ SchemeCatalogRequirements.new do |r|
     m.endpoint_description RegistryFiles.openapi("consumption-data", "0.0.1")
     m.heartbeat_description RegistryFiles.openapi("heartbeat", "0.1")
     m.licence LicenceInterpretation.at("scheme/perseus/licence/cc-by/4.0")
-    m.sensitivity_class SensitivityClass::Personal
+    m.sensitivity_class SensitivityClass::IB1_SP
     m.dataset_assurance AssuranceLevel::Level2
     m.dataset_assurance AssuranceLevel::Level3
     m.dataset_assurance AssuranceLevel::Level4

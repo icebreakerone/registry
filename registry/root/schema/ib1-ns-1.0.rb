@@ -206,9 +206,9 @@ IB1::ASSURANCE_LEVELS.each do |label, comment|
   end
 end
 
-IB1::SENSITIVITY_CLASSES.each do |label, legacy_name, comment|
+IB1::SENSITIVITY_CLASSES.each do |label, comment|
   SensitivityClass.new(Ns.ib1(label)) do |c|
     c.label label
-    c.comment "#{comment} (#{legacy_name})"
+    c.comment "#{comment} (#{label})"
   end
 end
