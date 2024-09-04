@@ -7,7 +7,7 @@ module IB1
   TrustFramework = RdfClass.new(Ns.ib1("TrustFramework"))
   TrustFrameworkGroup = RdfClass.new(Ns.ib1("TrustFrameworkGroup"))
   Scheme = RdfClass.new(Ns.ib1("Scheme"))
-  MemberGroup = RdfClass.new(Ns.ib1("MemberGroup"))
+  Role = RdfClass.new(Ns.ib1("Role"))
   SchemeCatalogRequirements = RdfClass.new(Ns.ib1("SchemeCatalogRequirements"))
   RequiredMetadata = RdfClass.new(Ns.ib1("RequiredMetadata"))
   LicenceInterpretation = RdfClass.new(Ns.ib1("LicenceInterpretation"))
@@ -105,9 +105,9 @@ end
 
 # ---------------------------------------------------------------------------
 
-class MemberGroup < SchemeResource
-  rdf_class IB1::MemberGroup.uri
-  type_name_for_url :group
+class Role < SchemeResource
+  rdf_class IB1::Role.uri
+  type_name_for_url :role
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
 end
@@ -196,7 +196,7 @@ class RequiredMetadata < SchemeResourceWithVisibleProperties
   rdf_class IB1::RequiredMetadata.uri
   property :endpoint_description, Ns.dcat("endpointDescription"), OpenAPIFile
   property :heartbeat_description, Ns.dcat("heartbeatDescription"), OpenAPIFile
-  property :permit_group, Ns.ib1("permitGroup"), MemberGroup
+  property :permit_role, Ns.ib1("permitRole"), Role
   property :licence, Ns.dcterms("licence"), LicenceInterpretation
   property :sensitivity_class, Ns.ib1("sensitivityClass"), SensitivityClass
   property :dataset_assurance, Ns.ib1("datasetAssurance"), AssuranceLevel

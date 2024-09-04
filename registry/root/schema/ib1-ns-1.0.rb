@@ -20,10 +20,10 @@ Context.within do |context|
   end
   # TODO: Properties for TrustFrameworkGroup
 
-  RdfSchemaClass.new(IB1::MemberGroup.uri) do |c|
+  RdfSchemaClass.new(IB1::Role.uri) do |c|
     c.sub_class_of RDFS::Resource
   end
-  # TODO: Properties for MemberGroup
+  # TODO: Properties for Role
 
   RdfSchemaClass.new(IB1::SchemeCatalogRequirements.uri) do |c|
     c.sub_class_of RDFS::Resource
@@ -60,7 +60,7 @@ Context.within do |context|
     p.range IB1::TrustFramework
     p.domain DCAT::Dataset
     p.domain DCAT::DataService
-    p.domain IB1::MemberGroup
+    p.domain IB1::Role
     p.domain IB1::SchemeCatalogRequirements
     p.domain IB1::LicenceInterpretation
   end
@@ -70,7 +70,7 @@ Context.within do |context|
     p.range IB1::Scheme
     p.domain DCAT::Dataset
     p.domain DCAT::DataService
-    p.domain IB1::MemberGroup
+    p.domain IB1::Role
     p.domain IB1::SchemeCatalogRequirements
     p.domain IB1::LicenceInterpretation
   end
@@ -117,9 +117,9 @@ Context.within do |context|
     p.domain IB1::RequiredMetadata
   end
 
-  RdfSchemaProperty.new(Ns.ib1("permitGroup")) do |p|
-    p.comment "A Group of Trust Framework Members who can access this resource."
-    p.range IB1::MemberGroup
+  RdfSchemaProperty.new(Ns.ib1("permitRole")) do |p|
+    p.comment "Role of Trust Framework Members who can access this resource."
+    p.range IB1::Role
     p.domain DCAT::Dataset
     p.domain DCAT::DataService
     p.domain IB1::RequiredMetadata

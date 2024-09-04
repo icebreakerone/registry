@@ -10,7 +10,7 @@ Context.within do |context|
   end
   context.files "#{File.dirname(__FILE__)}/files", "scheme/perseus"
 
-  require "#{File.dirname(__FILE__)}/groups.rb"
+  require "#{File.dirname(__FILE__)}/roles.rb"
   require "#{File.dirname(__FILE__)}/licence-interpretations.rb"
   require "#{File.dirname(__FILE__)}/scheme-catalog-requirements.rb"
 
