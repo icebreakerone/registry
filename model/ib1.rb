@@ -196,7 +196,7 @@ class RequiredMetadata < SchemeResourceWithVisibleProperties
   rdf_class IB1::RequiredMetadata.uri
   property :endpoint_description, Ns.dcat("endpointDescription"), OpenAPIFile
   property :heartbeat_description, Ns.dcat("heartbeatDescription"), OpenAPIFile
-  property :permit_role, Ns.ib1("permitRole"), Role
+  property :role_required_to_access, Ns.ib1("roleRequiredToAccess"), Role
   property :licence, Ns.dcterms("licence"), LicenceInterpretation
   property :sensitivity_class, Ns.ib1("sensitivityClass"), SensitivityClass
   property :dataset_assurance, Ns.ib1("datasetAssurance"), AssuranceLevel

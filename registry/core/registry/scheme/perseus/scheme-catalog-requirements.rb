@@ -11,8 +11,8 @@ SchemeCatalogRequirements.new do |r|
     m.dataset_assurance AssuranceLevel::Level2
     m.dataset_assurance AssuranceLevel::Level3
     m.dataset_assurance AssuranceLevel::Level4
-    m.permit_role Role.at("scheme/perseus/role/consumption-reader")
+    m.role_required_to_access Role.at("scheme/perseus/role/consumption-reader")
   end
-  r.require_all_and_allow_additional RequiredMetadata::PERMIT_ROLE
+  r.require_all_and_allow_additional RequiredMetadata::ROLE_REQUIRED_TO_ACCESS
   r.require_any_one_of RequiredMetadata::DATASET_ASSURANCE # Effect is "at least level 2"
 end

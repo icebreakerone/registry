@@ -117,7 +117,7 @@ Context.within do |context|
     p.domain IB1::RequiredMetadata
   end
 
-  RdfSchemaProperty.new(Ns.ib1("permitRole")) do |p|
+  RdfSchemaProperty.new(Ns.ib1("roleRequiredToAccess")) do |p|
     p.comment "Role of Trust Framework Members who can access this resource."
     p.range IB1::Role
     p.domain DCAT::Dataset
