@@ -3,6 +3,7 @@ SchemeCatalogRequirements.new do |r|
   r.label "consumption-data"
   r.comment "Consumption data API"
   r.required_type DCAT::DataService
+  r.role_required_to_publish Role.at("scheme/perseus/role/carbon-accounting")
   r.required_metadata do |m|
     m.endpoint_description RegistryFiles.openapi("consumption-data", "0.0.1")
     m.heartbeat_description RegistryFiles.openapi("heartbeat", "0.1")

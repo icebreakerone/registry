@@ -125,6 +125,12 @@ Context.within do |context|
     p.domain IB1::RequiredMetadata
   end
 
+  RdfSchemaProperty.new(Ns.ib1("roleRequiredToPublish")) do |p|
+    p.comment "Role of Trust Framework Members who can publish resources meeting this standard."
+    p.range IB1::Role
+    p.domain IB1::SchemeCatalogRequirements
+  end
+
   RdfSchemaProperty.new(Ns.ib1("heartbeatDescription")) do |p|
     p.comment "URL of an OpenAPI definition of heatbeat service."
     p.range RDFS::Resource

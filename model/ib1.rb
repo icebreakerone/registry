@@ -208,6 +208,7 @@ class SchemeCatalogRequirements < SchemeResource
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
   property :required_type, Ns.ib1("requiredType"), RdfClass
+  property :role_required_to_publish, Ns.ib1("roleRequiredToPublish"), Role
   bnode :required_metadata, Ns.ib1("requiredMetadata"), RequiredMetadata
   property :require_all_and_allow_additional, Ns.ib1("requireAllAndAllowAdditional"), RequiredMetadata::PropertyURI
   property :require_any_one_of, Ns.ib1("requireAnyOneOf"), RequiredMetadata::PropertyURI
