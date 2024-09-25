@@ -64,8 +64,9 @@ puts "Setting up Registry..."
 registry_info = JSON.parse(File.read(REGISTRY_INFO_JSON))
 puts "Registry: #{registry_info['name']}"
 hostname_part = registry_info['hostnamePart']
+DOMAIN_NAME = (hostname_part == '') ? 'ib1.org' : 'trust.ib1.org'
 REGISTRY_HOSTNAME_PART = (hostname_part == '') ? '' : hostname_part+'.'
-REGISTRY_HOSTNAME = "registry.#{REGISTRY_HOSTNAME_PART}#{ENVIRONMENT_HOSTNAME_PART}ib1.org"
+REGISTRY_HOSTNAME = "registry.#{REGISTRY_HOSTNAME_PART}#{ENVIRONMENT_HOSTNAME_PART}#{DOMAIN_NAME}"
 puts "Hostname: #{REGISTRY_HOSTNAME}"
 
 Ns.namespace(:registry, "https://#{REGISTRY_HOSTNAME}/", true) # not used as prefix in RDF documents
