@@ -1,4 +1,6 @@
 
+# TODO: Persues licences, uncomment inclusion in perseus.rb
+
 LicenceInterpretation.new do |l|
   l.label "cc-by"
   l.version "4.0"

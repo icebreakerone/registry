@@ -1,4 +1,6 @@
 
+# TODO: Persues standards, uncomment inclusion in perseus.rb
+
 SchemeCatalogRequirements.new do |r|
   r.label "consumption-data"
   r.comment "Consumption data API"

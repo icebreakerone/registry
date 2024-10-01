@@ -10,5 +10,7 @@ Context.within do |context|
   end
   context.files("#{File.dirname(__FILE__)}/files", "")
 
-  require "#{File.dirname(__FILE__)}/scheme/perseus/perseus.rb"
+  IncludeIn.environment('pilot', 'Persues Scheme') do
+    require "#{File.dirname(__FILE__)}/scheme/perseus/perseus.rb"
+  end
 end
