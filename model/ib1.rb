@@ -77,7 +77,7 @@ end
 # ---------------------------------------------------------------------------
 
 class Scheme < RegistryResource
-  rdf_class IB1::TrustFramework.uri
+  rdf_class IB1::Scheme.uri
 
   def generate_uri_suffix
     "scheme/#{self.first_label}"
