@@ -5,7 +5,7 @@ require 'json'
 
 # ---------------------------------------------------------------------------
 
-OUTPUT_DIR = 'output'
+OUTPUT_DIR = ENV['OUTPUT_DIR'] || 'output'
 
 abort("No environment specified as first argument") if ARGV[0].nil?
 ENVIRONMENT = ARGV[0]
