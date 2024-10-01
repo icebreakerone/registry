@@ -12,4 +12,4 @@ COPY . /code
 WORKDIR /code
 RUN script/prepare.sh
 
-CMD [ "script/ib1-registry", "production", "ib1-root-registry" ]
+CMD [ "script/ib1-registry", "production", "registry/root"]
