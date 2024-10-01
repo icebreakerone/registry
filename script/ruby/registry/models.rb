@@ -91,6 +91,18 @@ end
 
 # ---------------------------------------------------------------------------
 
+module IncludeIn
+  def self.environment(env, name)
+    if ENVIRONMENT == env
+      yield
+    else
+      puts "\n*** Omitting '#{name}' as environment is not '#{env}'\n\n"
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
+
 class Resource
   attr_reader :uri
 
