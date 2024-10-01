@@ -49,3 +49,4 @@ jobs:
           cdk deploy --all --require-approval never
       - name: Invalidate Cache
         run: aws cloudfront create-invalidation --distribution-id E1FG6GPKYYB76V --paths "/*"
+
