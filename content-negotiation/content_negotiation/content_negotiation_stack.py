@@ -12,6 +12,20 @@ from aws_cdk import (
 from constructs import Construct
 
 
+from aws_cdk import (
+    Stack,
+    aws_lambda as _lambda,
+    aws_iam as iam,
+    aws_s3 as s3,
+    aws_cloudfront as cloudfront,
+    aws_cloudfront_origins as origins,
+    aws_certificatemanager as acm,
+    aws_route53 as route53,
+    aws_route53_targets as targets,
+    RemovalPolicy,
+)
+
+
 class ContentNegotiationStack(Stack):
 
     def __init__(
@@ -68,8 +82,21 @@ class ContentNegotiationStack(Stack):
         # Add a policy to the bucket to allow CloudFront OAI to access it
         site_bucket.grant_read(origin_access_identity)
 
+        # Route 53 Hosted Zone
+        hosted_zone = route53.HostedZone.from_lookup(
+            self, "HostedZone", domain_name="registry.ib1.org"
+        )
+
+        # ACM Certificate
+        certificate = acm.Certificate(
+            self,
+            "SiteCertificate",
+            domain_name="registry.ib1.org",
+            validation=acm.CertificateValidation.from_dns(hosted_zone),
+        )
+
         # CloudFront distribution
-        cloudfront.Distribution(
+        distribution = cloudfront.Distribution(
             self,
             "SiteDistribution",
             default_root_object="index.html",
@@ -85,4 +112,17 @@ class ContentNegotiationStack(Stack):
                 ],
                 viewer_protocol_policy=cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
             ),
+            domain_names=["registry.ib1.org"],
+            certificate=certificate,
+        )
+
+        # Route 53 A Record
+        route53.ARecord(
+            self,
+            "SiteAliasRecord",
+            zone=hosted_zone,
+            target=route53.RecordTarget.from_alias(
+                targets.CloudFrontTarget(distribution)
+            ),
+            record_name="registry",
         )
