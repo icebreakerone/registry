@@ -1,5 +1,7 @@
 
 script/.*
+output/*
+
 .DS_Store
 .mypy_cache
 .env
