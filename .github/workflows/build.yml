@@ -1,0 +1,51 @@
+name: Build Output
+
+on:
+  workflow_run:
+    workflows: ["Python tests"]
+    types:
+      - completed
+  push:
+    branches:
+      - main
+      - kip/*
+
+env:
+  AWS_REGION: us-east-1 # set this to your preferred AWS region, e.g. us-west-1
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install AWS CDK
+        run: npm install -g aws-cdk
+
+      - name: Build static site
+        run: |
+          docker build -t builder .
+          ls -al ${{ github.workspace }}
+          docker run --rm -v ${{ github.workspace }}:/code builder bash -c "pwd && ls -al"
+          docker run --rm -v ${{ github.workspace }}/output:/code/output builder bash -c "script/ib1-registry production ib1-root-registry"
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+      - name: Sync to S3
+        run: aws s3 sync ./output s3://contentnegotiationstack-sitebucket397a1860-grk1xvirqcxk --delete
+      - uses: "actions/setup-python@v4"
+        with:
+          python-version: "3.12"
+      - name: Deploy CDK Stack
+        run: |
+          cd content-negotiation
+          pip install pipenv
+          pipenv install --system --deploy --ignore-pipfile 
+          cdk synthesize
+          cdk deploy --all --require-approval never
+      - name: Invalidate Cache
+        run: aws cloudfront create-invalidation --distribution-id E1FG6GPKYYB76V --paths "/*"

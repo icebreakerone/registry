@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+aws-cdk-lib = "==2.151.0"
+constructs = "<11.0.0,>=10.0.0"
+pytest = "==6.2.5"
+"aws-cdk.aws-lambda-python-alpha" = "*"
+
+[dev-packages]
+pytest = "*"
+ruff = "*"
+
+[requires]
+python_version = "3.12"
