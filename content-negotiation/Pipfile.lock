@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4dea3f9bbc986711419c9f4ce33374cdc03d9b1c59e6fcb95ab177b8629e6b24"
+            "sha256": "c665c2f1e4db5a4e28d871a098c8441a29579e8a0222481eebe1d7f562a60c5a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -26,12 +26,12 @@
         },
         "aws-cdk-lib": {
             "hashes": [
-                "sha256:53592054de115cdd38b581b669be700232bff11855d47c1b2308abcf9d845519",
-                "sha256:de4e48c88cc7cc78dd7bf9552d2fb16c23b138389413ecdc339afe4d269e2b59"
+                "sha256:c6775a7c5d02e4272147692a0560071f1bd232c1dc1bf74e84a69f7bdb418362",
+                "sha256:df6142440f9e2754344d9a8f240e0a467d9102261c46b9e133cd16fbdbcd8796"
             ],
             "index": "pypi",
             "markers": "python_version ~= '3.8'",
-            "version": "==2.151.0"
+            "version": "==2.160.0"
         },
         "aws-cdk.asset-awscli-v1": {
             "hashes": [
@@ -57,85 +57,13 @@
             "markers": "python_version ~= '3.8'",
             "version": "==2.1.0"
         },
-        "aws-cdk.aws-events": {
+        "aws-cdk.cloud-assembly-schema": {
             "hashes": [
-                "sha256:1f808d730fafbeb304802a83f4369f7c426478a5d24fb39265c4488d6893c303",
-                "sha256:3c1124406d4d9d1c2467db600e00af90f705fbdaae06539c998523495c88838a"
-            ],
-            "markers": "python_version >= '3.6'",
-            "version": "==0.28.0"
-        },
-        "aws-cdk.aws-iam": {
-            "hashes": [
-                "sha256:50fd128b744191c17567b2c9706ef0bd0fab6db69eede84effe1a12bf27a8fce",
-                "sha256:98212ec862e8c723a604b8a15d75747d334d1325832384c9e6c2a0492b927929"
-            ],
-            "markers": "python_version >= '3.6'",
-            "version": "==0.28.0"
-        },
-        "aws-cdk.aws-kms": {
-            "hashes": [
-                "sha256:94be43d659fd434729732d338e37b136fd42da15916510790b6f1420f2ac39b4",
-                "sha256:cdabf44d7875aeeee39d7e50614dfae65cb32c2533bdb6fb2ab1be7283fe9d96"
-            ],
-            "markers": "python_version >= '3.6'",
-            "version": "==0.28.0"
-        },
-        "aws-cdk.aws-lambda-python-alpha": {
-            "hashes": [
-                "sha256:23778839433bf85bd0e99587321ef933b1a3b2e730df73d3c194651c908ec996",
-                "sha256:c0e66bb2cde277a247f1c78429fee2877e89d2b5727ca38ada8ce51ad0b439ce"
+                "sha256:7c75861adc41f7b959910d4b3b191ea242815402e599dbfa31934892838ae25e",
+                "sha256:92613b46213b460681e9424f09b77f06ff059eb1c773092540364ef82fcecf55"
             ],
             "markers": "python_version ~= '3.8'",
-            "version": "==2.151.0a0"
-        },
-        "aws-cdk.aws-s3": {
-            "hashes": [
-                "sha256:17218d1fc73e1b19659ec1155bd3363f30221190ee7fe4a12a6602acee1fa05a",
-                "sha256:aa5552893b0e98bfa0d44b95dfcbcdf23a3e434ea9fc22c80d64e89f97d965bb"
-            ],
-            "markers": "python_version >= '3.6'",
-            "version": "==0.28.0"
-        },
-        "aws-cdk.aws-s3-deployment": {
-            "hashes": [
-                "sha256:3e595431bc87a43a4033b149909a1998debfb936a962b4cfb1d418b4b576db5c",
-                "sha256:63df21575c1a295023d30e1c563c58b5cab09a4118f167926f95fd5331fa1f13"
-            ],
-            "markers": "python_version >= '3.6'",
-            "version": "==0.28.0"
-        },
-        "aws-cdk.aws-s3-notifications": {
-            "hashes": [
-                "sha256:85f3e8873602a1ee95b49c1ab73457152ca9aea9585fcbe5fa1de6eca754c8bd",
-                "sha256:d859a7501f397463f8a20f9f9de8b0848a28ae00f1a4b06c94588c922bc1b512"
-            ],
-            "markers": "python_version >= '3.6'",
-            "version": "==0.28.0"
-        },
-        "aws-cdk.cdk": {
-            "hashes": [
-                "sha256:862fba274def8b5a1450ddefe68c47ac79cd39a05a1068faff2b5ad4809a6e9f",
-                "sha256:ecb40bb544391c989d9f9f5e3427b8382ab84e7959bd5fa8a5a210504dd6382b"
-            ],
-            "markers": "python_version >= '3.6'",
-            "version": "==0.28.0"
-        },
-        "aws-cdk.cx-api": {
-            "hashes": [
-                "sha256:1abdabeb88b45b0089530f25c61fb12de493a6cebdc431dc59ba278cd6452344",
-                "sha256:58639cdf29ac2ae556232ca11ed22e7232292b7f770d7bb0447849e36b78e1f2"
-            ],
-            "markers": "python_version >= '3.6'",
-            "version": "==0.28.0"
-        },
-        "aws-cdk.region-info": {
-            "hashes": [
-                "sha256:63566c00df79977da510bf4af88cd020e944411dd3de005422cce2e6132c63aa",
-                "sha256:995e2967d72b6979ddd20f49cf728485fa9ee8a177ccfcddd910f6c2732b6edd"
-            ],
-            "markers": "python_version >= '3.6'",
-            "version": "==0.28.0"
+            "version": "==38.0.1"
         },
         "cattrs": {
             "hashes": [
@@ -162,14 +90,6 @@
             "markers": "python_version >= '3.8'",
             "version": "==6.4.5"
         },
-        "iniconfig": {
-            "hashes": [
-                "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3",
-                "sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374"
-            ],
-            "markers": "python_version >= '3.7'",
-            "version": "==2.0.0"
-        },
         "jsii": {
             "hashes": [
                 "sha256:24b96349230ca22f50fcd69c501e69b6c486acf37bbe0b5869f4c185572b079e",
@@ -178,45 +98,12 @@
             "markers": "python_version ~= '3.8'",
             "version": "==1.103.1"
         },
-        "packaging": {
-            "hashes": [
-                "sha256:026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002",
-                "sha256:5b8f2217dbdbd2f7f384c41c628544e6d52f2d0f53c6d0c3ea61aa5d1d7ff124"
-            ],
-            "markers": "python_version >= '3.8'",
-            "version": "==24.1"
-        },
-        "pluggy": {
-            "hashes": [
-                "sha256:2cffa88e94fdc978c4c574f15f9e59b7f4201d439195c3715ca9e2486f1d0cf1",
-                "sha256:44e1ad92c8ca002de6377e165f3e0f1be63266ab4d554740532335b9d75ea669"
-            ],
-            "markers": "python_version >= '3.8'",
-            "version": "==1.5.0"
-        },
         "publication": {
             "hashes": [
                 "sha256:0248885351febc11d8a1098d5c8e3ab2dabcf3e8c0c96db1e17ecd12b53afbe6",
                 "sha256:68416a0de76dddcdd2930d1c8ef853a743cc96c82416c4e4d3b5d901c6276dc4"
             ],
             "version": "==0.0.3"
-        },
-        "py": {
-            "hashes": [
-                "sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719",
-                "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"
-            ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
-            "version": "==1.11.0"
-        },
-        "pytest": {
-            "hashes": [
-                "sha256:131b36680866a76e6781d13f101efb86cf674ebb9762eb70d3082b6f29889e89",
-                "sha256:7310f8d27bc79ced999e760ca304d69f6ba6c6649c0b60fb0e04a4a77cacc134"
-            ],
-            "index": "pypi",
-            "markers": "python_version >= '3.6'",
-            "version": "==6.2.5"
         },
         "python-dateutil": {
             "hashes": [
@@ -233,14 +120,6 @@
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==1.16.0"
-        },
-        "toml": {
-            "hashes": [
-                "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b",
-                "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"
-            ],
-            "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-            "version": "==0.10.2"
         },
         "typeguard": {
             "hashes": [
@@ -260,14 +139,6 @@
         }
     },
     "develop": {
-        "attrs": {
-            "hashes": [
-                "sha256:5cfb1b9148b5b086569baec03f20d7b6bf3bcacc9a42bebf87ffaaca362f6346",
-                "sha256:81921eb96de3191c8258c199618104dd27ac608d9366f5e35d011eae1867ede2"
-            ],
-            "markers": "python_version >= '3.7'",
-            "version": "==24.2.0"
-        },
         "iniconfig": {
             "hashes": [
                 "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3",
@@ -292,22 +163,14 @@
             "markers": "python_version >= '3.8'",
             "version": "==1.5.0"
         },
-        "py": {
-            "hashes": [
-                "sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719",
-                "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"
-            ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
-            "version": "==1.11.0"
-        },
         "pytest": {
             "hashes": [
-                "sha256:131b36680866a76e6781d13f101efb86cf674ebb9762eb70d3082b6f29889e89",
-                "sha256:7310f8d27bc79ced999e760ca304d69f6ba6c6649c0b60fb0e04a4a77cacc134"
+                "sha256:70b98107bd648308a7952b06e6ca9a50bc660be218d53c257cc1fc94fda10181",
+                "sha256:a6853c7375b2663155079443d2e45de913a911a11d669df02a50814944db57b2"
             ],
             "index": "pypi",
-            "markers": "python_version >= '3.6'",
-            "version": "==6.2.5"
+            "markers": "python_version >= '3.8'",
+            "version": "==8.3.3"
         },
         "ruff": {
             "hashes": [
@@ -333,14 +196,6 @@
             "index": "pypi",
             "markers": "python_version >= '3.7'",
             "version": "==0.6.8"
-        },
-        "toml": {
-            "hashes": [
-                "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b",
-                "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"
-            ],
-            "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-            "version": "==0.10.2"
         }
     }
 }
