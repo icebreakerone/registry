@@ -13,7 +13,8 @@ class ContentNegotiationStack(Stack):
 
     def __init__(self, scope: Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
-
+        domain_name = self.node.try_get_context("domainName") or "registry.ib1.org"
+        folder_path = self.node.try_get_context("folderPath") or "../output"
         lambda_edge_role = iam.Role(
             self,
             "LambdaEdgeRole",
@@ -59,7 +60,7 @@ class ContentNegotiationStack(Stack):
         certificate = acm.Certificate(
             self,
             "SiteCertificate",
-            domain_name="registry.ib1.org",
+            domain_name=domain_name,
             validation=acm.CertificateValidation.from_dns(),
         )
 
@@ -79,14 +80,14 @@ class ContentNegotiationStack(Stack):
                 ],
                 viewer_protocol_policy=cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
             ),
-            domain_names=["registry.ib1.org"],
+            domain_names=[domain_name],
             certificate=certificate,
         )
 
         s3_deployment.BucketDeployment(
             self,
             "DeployWebsite",
-            sources=[s3_deployment.Source.asset("../output")],
+            sources=[s3_deployment.Source.asset(folder_path)],
             destination_bucket=site_bucket,
             distribution=distribution,
             distribution_paths=["/*"],

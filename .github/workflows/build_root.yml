@@ -1,0 +1,31 @@
+name: Build Output
+
+on:
+  workflow_run:
+    workflows: ["Python tests"]
+    types:
+      - completed
+  push:
+    branches:
+      - main
+      - kip/*
+
+env:
+  AWS_REGION: us-east-1 # set this to your preferred AWS region, e.g. us-west-1
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install AWS CDK
+        run: npm install -g aws-cdk
+      - name: Deploy root registry
+        uses: ./.github/templates/build/
+        with:
+          registry: root
+          registry_environment: production
+          output_folder: root_registry
+          domain_name: registry.ib1.org
