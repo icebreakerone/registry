@@ -14,7 +14,7 @@ class ContentNegotiationStack(Stack):
     def __init__(self, scope: Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
         domain_name = self.node.try_get_context("domainName") or "registry.ib1.org"
-        folder_path = self.node.try_get_context("folderPath") or "../output"
+        folder_path = self.node.try_get_context("folderPath") or "output"
         lambda_edge_role = iam.Role(
             self,
             "LambdaEdgeRole",
@@ -87,7 +87,7 @@ class ContentNegotiationStack(Stack):
         s3_deployment.BucketDeployment(
             self,
             "DeployWebsite",
-            sources=[s3_deployment.Source.asset(folder_path)],
+            sources=[s3_deployment.Source.asset(f"../{folder_path}")],
             destination_bucket=site_bucket,
             distribution=distribution,
             distribution_paths=["/*"],
