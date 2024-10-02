@@ -27,8 +27,10 @@ runs:
   using: "composite"
   steps:
     - name: Install AWS CDK
+      shell: bash
       run: npm install -g aws-cdk
     - name: Build static site
+    shell: bash
       run: |
         docker build -t builder .
         ls -al ${{ github.workspace }}
@@ -44,6 +46,7 @@ runs:
       with:
         python-version: "3.12"
     - name: Deploy CDK Stack
+      shell: bash
       run: |
         cd content-negotiation
         pip install pipenv
