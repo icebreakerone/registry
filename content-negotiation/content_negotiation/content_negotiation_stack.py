@@ -99,7 +99,7 @@ class ContentNegotiationStack(Stack):
         )
         s3_deployment.BucketDeployment(
             self,
-            "DeployWebsite",
+            "DeployStaticAssets",
             sources=[s3_deployment.Source.asset("./output")],  # Path to local files
             destination_bucket=site_bucket,
             distribution=cloudfront.Distribution,  # Optional: Invalidate CloudFront cache if necessary
