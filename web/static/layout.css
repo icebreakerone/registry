@@ -84,3 +84,16 @@
       background-color: var(--accent-color);
       color: white;
     }
+
+    /* Tables */
+    table tr {
+    }
+    table th {
+      padding-right: 12px;
+      padding-bottom: 8px;
+      vertical-align: top;
+    }
+    table td {
+      padding-bottom: 8px;
+      vertical-align: top;
+    }
