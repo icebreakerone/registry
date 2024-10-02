@@ -1,4 +1,4 @@
-name: Build Output
+name: Build Root Output
 
 on:
   workflow_run:
