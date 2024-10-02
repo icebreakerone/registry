@@ -4,10 +4,11 @@ from aws_cdk import (
     aws_iam as iam,
     aws_s3 as s3,
     aws_cloudfront as cloudfront,
+    aws_s3_deployment as s3_deployment,
     aws_cloudfront_origins as origins,
+    aws_certificatemanager as acm,
     RemovalPolicy,
 )
-
 
 from constructs import Construct
 
@@ -68,6 +69,14 @@ class ContentNegotiationStack(Stack):
         # Add a policy to the bucket to allow CloudFront OAI to access it
         site_bucket.grant_read(origin_access_identity)
 
+        # Request an SSL certificate for the domain
+        certificate = acm.Certificate(
+            self,
+            "SiteCertificate",
+            domain_name="registry.ib1.org",
+            validation=acm.CertificateValidation.from_dns(),  # Validates using DNS
+        )
+
         # CloudFront distribution
         cloudfront.Distribution(
             self,
@@ -85,4 +94,14 @@ class ContentNegotiationStack(Stack):
                 ],
                 viewer_protocol_policy=cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
             ),
+            domain_names=["registry.ib1.org"],  # Custom domain name
+            certificate=certificate,  # Attach the ACM certificate
+        )
+        s3_deployment.BucketDeployment(
+            self,
+            "DeployWebsite",
+            sources=[s3_deployment.Source.asset("./output")],  # Path to local files
+            destination_bucket=site_bucket,
+            distribution=cloudfront.Distribution,  # Optional: Invalidate CloudFront cache if necessary
+            distribution_paths=["/*"],  # Optional: Specify paths to invalidate
         )
