@@ -13,10 +13,21 @@ inputs:
   domain_name:
     description: "Domain name"
     required: true
+  aws-access-key-id:
+    required: true
+    type: string
+  aws-secret-access-key:
+    required: true
+    type: string
+  aws-region:
+    required: true
+    type: string
 
 runs:
   using: "composite"
   steps:
+    - name: Install AWS CDK
+      run: npm install -g aws-cdk
     - name: Build static site
       run: |
         docker build -t builder .
@@ -26,9 +37,9 @@ runs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v3
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: eu-west-2
+        aws-access-key-id: ${{ inputs.aws-access-key-id }}
+        aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
+        aws-region: ${{ inputs.aws-region }}
     - uses: "actions/setup-python@v4"
       with:
         python-version: "3.12"
