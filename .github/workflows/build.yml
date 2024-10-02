@@ -42,8 +42,8 @@ jobs:
         run: |
           cd content-negotiation
           pip install pipenv
-          pipenv install --system --deploy --ignore-pipfile 
-          cdk synthesize
-          cdk deploy --all --require-approval never
+          pipenv install
+          pipenv run cdk synthesize
+          pipenv run cdk deploy --all --require-approval never
       # - name: Invalidate Cache
       #   run: aws cloudfront create-invalidation --distribution-id E1FG6GPKYYB76V --paths "/*"
