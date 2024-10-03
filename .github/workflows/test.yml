@@ -1,0 +1,31 @@
+name: Python tests
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+      - name: Install content-negotiation dependencies
+        shell: bash
+        run: |
+          cd content-negotiation
+          pip install pipenv
+          pipenv install --dev
+      - name: Lint with ruff
+        shell: bash
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          cd content-negotiation
+          pipenv run ruff check .
+      - name: Run content-negotiation tests
+        shell: bash
+        run: |
+          # stop the build if tests fail
+          cd content-negotiation
+          pipenv run pytest .

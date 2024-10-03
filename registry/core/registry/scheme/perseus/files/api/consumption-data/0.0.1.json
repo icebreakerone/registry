@@ -1,0 +1,51 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Consumption data",
+    "version": "0.0.1",
+    "x-ib1-registry-label": "consumption-data"
+  },
+  "servers": [
+    {
+      "url": "{endpointURL}",
+      "variables": {
+        "endpointURL": {
+          "default": "https://endpointurl-not-specified.ib1.org"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/consumption": {
+      "summary": "Consumption data",
+      "get": {
+        "summary": "",
+        "description": "",
+        "operationId": "",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Default error sample response"
+          }
+        }
+      }
+    }
+  }
+}
