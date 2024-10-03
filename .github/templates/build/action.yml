@@ -52,5 +52,5 @@ runs:
         pip install pipenv
         pipenv install --system --deploy --ignore-pipfile 
         cdk context --clear
-        cdk --context deploymentName ${{inputs.registry_environment}}-${{inputs.registry}} --context domainName=${{inputs.domain_name}} --context folderPath=${{inputs.output_folder}} synthesize
-        cdk --context deploymentName ${{inputs.registry_environment}}-${{inputs.registry}} --context domainName=${{inputs.domain_name}} --context folderPath=${{inputs.output_folder}} deploy --require-approval never
+        cdk --context deploymentName=${{inputs.registry_environment}}-${{inputs.registry}} --context domainName=${{inputs.domain_name}} --context folderPath=${{inputs.output_folder}} synthesize
+        cdk --context deploymentName=${{inputs.registry_environment}}-${{inputs.registry}} --context domainName=${{inputs.domain_name}} --context folderPath=${{inputs.output_folder}} deploy --require-approval never
