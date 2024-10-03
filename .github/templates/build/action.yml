@@ -34,7 +34,7 @@ runs:
       run: |
         docker build -q -t builder .
         mkdir -p ${{ github.workspace }}/${{inputs.output_folder}}
-        docker run --rm -v ${{ github.workspace }}/${{inputs.output_folder}}:/code/${{inputs.output_folder}} -e OUTPUT_FOLDER='${{inputs.output_folder}}' builder bash -c "script/ib1-registry ${{inputs.registry_environment}} registry/${{inputs.registry}}"
+        docker run --rm -v ${{ github.workspace }}/${{inputs.output_folder}}:/code/${{inputs.output_folder}} -e OUTPUT_DIR='${{inputs.output_folder}}' builder bash -c "script/ib1-registry ${{inputs.registry_environment}} registry/${{inputs.registry}}"
         ls -al ${{ github.workspace }}/${{inputs.output_folder}}
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v3
