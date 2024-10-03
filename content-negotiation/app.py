@@ -7,9 +7,11 @@ from content_negotiation.content_negotiation_stack import ContentNegotiationStac
 
 app = cdk.App()
 
+deployment_name = app.node.try_get_context("deploymentName") or "production-root"
+
 ContentNegotiationStack(
     app,
-    "ContentNegotiationStack",
+    f"ContentNegotiationStack-{deployment_name}",
     env=cdk.Environment(account=os.getenv("CDK_DEFAULT_ACCOUNT"), region="us-east-1"),
 )
 

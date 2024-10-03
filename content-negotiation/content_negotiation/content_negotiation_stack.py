@@ -1,26 +1,20 @@
-from aws_cdk import (
-    Stack,
-    aws_lambda as _lambda,
-    aws_iam as iam,
-    aws_s3 as s3,
-    aws_cloudfront as cloudfront,
-    aws_cloudfront_origins as origins,
-    RemovalPolicy,
-)
-
-
+from aws_cdk import Stack, RemovalPolicy
+from aws_cdk import aws_lambda as _lambda
+from aws_cdk import aws_iam as iam
+from aws_cdk import aws_s3 as s3
+from aws_cdk import aws_cloudfront as cloudfront
+from aws_cdk import aws_cloudfront_origins as origins
+from aws_cdk import aws_certificatemanager as acm
+from aws_cdk import aws_s3_deployment as s3_deployment
 from constructs import Construct
 
 
 class ContentNegotiationStack(Stack):
 
-    def __init__(
-        self,
-        scope: Construct,
-        construct_id: str,
-        **kwargs,
-    ) -> None:
-        super().__init__(scope, construct_id, **kwargs)
+    def __init__(self, scope: Construct, id: str, **kwargs) -> None:
+        super().__init__(scope, id, **kwargs)
+        domain_name = self.node.try_get_context("domainName") or "registry.ib1.org"
+        folder_path = self.node.try_get_context("folderPath") or "output"
         lambda_edge_role = iam.Role(
             self,
             "LambdaEdgeRole",
@@ -32,7 +26,7 @@ class ContentNegotiationStack(Stack):
             ],
         )
 
-        self.lambda_edge_function = _lambda.Function(
+        lambda_edge_function = _lambda.Function(
             self,
             "LambdaContentNegotiation",
             runtime=_lambda.Runtime.PYTHON_3_12,
@@ -40,36 +34,37 @@ class ContentNegotiationStack(Stack):
             code=_lambda.Code.from_asset("lambda_code"),
             role=lambda_edge_role,
         )
-        # Create a version of the Lambda function
-        self.lambda_edge_version = self.lambda_edge_function.current_version
-        # Create an alias for the Lambda function
-        self.lambda_edge_alias = _lambda.Alias(
+
+        lambda_edge_alias = _lambda.Alias(
             self,
             "LambdaEdgeAlias",
             alias_name="live",
-            version=self.lambda_edge_function.current_version,
+            version=lambda_edge_function.current_version,
         )
 
-        # S3 Bucket to store the static site
         site_bucket = s3.Bucket(
             self,
             "SiteBucket",
             encryption=s3.BucketEncryption.S3_MANAGED,
             block_public_access=s3.BlockPublicAccess.BLOCK_ALL,
-            versioned=False,
             removal_policy=RemovalPolicy.DESTROY,
             server_access_logs_bucket=s3.Bucket(self, "LogsBucket"),
         )
-        # Define an Origin Access Identity (OAI)
+
         origin_access_identity = cloudfront.OriginAccessIdentity(
             self, "OAI", comment="Connects CF with S3"
         )
 
-        # Add a policy to the bucket to allow CloudFront OAI to access it
         site_bucket.grant_read(origin_access_identity)
 
-        # CloudFront distribution
-        cloudfront.Distribution(
+        certificate = acm.Certificate(
+            self,
+            "SiteCertificate",
+            domain_name=domain_name,
+            validation=acm.CertificateValidation.from_dns(),
+        )
+
+        distribution = cloudfront.Distribution(
             self,
             "SiteDistribution",
             default_root_object="index.html",
@@ -79,10 +74,21 @@ class ContentNegotiationStack(Stack):
                 ),
                 edge_lambdas=[
                     cloudfront.EdgeLambda(
-                        function_version=self.lambda_edge_alias.version,
+                        function_version=lambda_edge_alias.version,
                         event_type=cloudfront.LambdaEdgeEventType.VIEWER_REQUEST,
                     )
                 ],
                 viewer_protocol_policy=cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
             ),
+            domain_names=[domain_name],
+            certificate=certificate,
+        )
+
+        s3_deployment.BucketDeployment(
+            self,
+            "DeployWebsite",
+            sources=[s3_deployment.Source.asset(f"../{folder_path}")],
+            destination_bucket=site_bucket,
+            distribution=distribution,
+            distribution_paths=["/*"],
         )

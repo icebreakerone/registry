@@ -1,0 +1,32 @@
+name: Build Core Pilot Output
+
+on:
+  workflow_run:
+    workflows: ["Python tests"]
+    types:
+      - completed
+  push:
+    branches:
+      - main
+      - kip/*
+
+env:
+  AWS_REGION: us-east-1 # set this to your preferred AWS region, e.g. us-west-1
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Deploy core pilot registry
+        uses: ./.github/templates/build/
+        with:
+          registry: core
+          registry_environment: pilot
+          output_folder: core_registry
+          domain_name: registry.core.pilot.trust.ib1.org
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1

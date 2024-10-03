@@ -6,7 +6,7 @@ require 'json'
 # ---------------------------------------------------------------------------
 
 OUTPUT_DIR = ENV['OUTPUT_DIR'] || 'output'
-
+puts "Output directory: #{OUTPUT_DIR}"
 abort("No environment specified as first argument") if ARGV[0].nil?
 ENVIRONMENT = ARGV[0]
 ENVIRONMENT_HOSTNAME_PART = (ENVIRONMENT == 'production') ? '' : ENVIRONMENT+'.'
@@ -73,6 +73,8 @@ REGISTRY_HOSTNAME_PART = (hostname_part == '') ? '' : hostname_part+'.'
 REGISTRY_HOSTNAME = "registry.#{REGISTRY_HOSTNAME_PART}#{ENVIRONMENT_HOSTNAME_PART}#{DOMAIN_NAME}"
 puts "Hostname: #{REGISTRY_HOSTNAME}"
 
+REGISTRY_NAME = registry_info['name'] + (ENVIRONMENT == 'production' ? '' : " (#{ENVIRONMENT})")
+
 Ns.namespace(:registry, "https://#{REGISTRY_HOSTNAME}/", true) # not used as prefix in RDF documents
 
 # ---------------------------------------------------------------------------
@@ -113,7 +115,7 @@ Resource.all_resources.each do |resource|
 end
 
 File.open("#{OUTPUT_DIR}/index.html", "w") do |f|
-  title = registry_info['name']
+  title = REGISTRY_NAME
   registry_index_html = ERB.new(File.read("#{REGISTRY_SOURCE}/index.html")).result(binding)
   f.write Templates::TEMPLATES['index.html.erb'].result(binding)
 end

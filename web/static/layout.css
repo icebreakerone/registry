@@ -1,0 +1,99 @@
+
+    /* Custom color palette based on IB1 brand guidelines */
+    :root {
+      --black: #0D1C22;
+      --dark-blue: #1A3844;
+      --navbar-blue: #485870;
+      --grey-4: #5A7084;
+      --grey-3: #91A9BD;
+      --grey-2: #C8D4DE;
+      --grey-1: #ECF0F1;
+      --orange: #ff4d11;
+      --accent-color: #FFEC00;
+      --white: #fff;
+    }
+
+    body {
+      background-color: rgb(250, 251, 254);
+      color: var(--black);
+      font-family: "Open Sans", sans-serif;
+    }
+    .logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+    /* Center the content */
+    .content-container {
+      max-width: 800px;
+      margin-top: 100px;
+    }
+
+    .section-title {
+      margin-top: 20px;
+    }
+    
+
+    /* Customizing Navbar */
+    .bg-light {
+      background-color: var(--navbar-blue)!important;
+      
+    }
+    .navbar-brand {
+      margin-left:1rem;
+    }
+    .navbar-brand, .nav-link, .btn {
+      color:var(--white)!important;
+    }
+    .navbar>.container-fluid{
+      justify-content: left;
+    }
+    .navbar h1{
+      color: var(--white);
+      font-size:1.5em;
+      font-weight: normal;
+      padding-top: 0.3em;
+    }
+    .navbar-nav .nav-link.active {
+      background-color: transparent;
+      text-decoration: underline;
+      color: var(--accent-color)!important;
+      text-decoration-color: var(--accent-color)!important; /* Accent color for underline */
+      text-underline-offset: 5px; /* Offset the underline slightly for spacing */
+    }
+    h2{
+      border-bottom: 1px solid var(--grey-2);
+      padding: 0.3em 0;
+    }
+    .navbar-nav .nav-link:hover {
+      text-decoration: underline;
+      text-underline-offset: 5px;
+      text-decoration-color: var(--accent-color); /* Keep underline on hover */
+    }
+
+    /* Buttons */
+    .btn{
+      background-color: var(--grey-2);
+      color:var(--grey-4)!important;
+      border-color: var(--grey-4)!important;
+    }
+    .btn-outline-danger {
+      border-color: var(--accent-color);
+    }
+    .btn-outline-danger:hover {
+      background-color: var(--accent-color);
+      color: white;
+    }
+
+    /* Tables */
+    table tr {
+    }
+    table th {
+      padding-right: 12px;
+      padding-bottom: 8px;
+      vertical-align: top;
+    }
+    table td {
+      padding-bottom: 8px;
+      vertical-align: top;
+    }
