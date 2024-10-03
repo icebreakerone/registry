@@ -6,7 +6,7 @@ require 'json'
 # ---------------------------------------------------------------------------
 
 OUTPUT_DIR = ENV['OUTPUT_DIR'] || 'output'
-
+puts "Output directory: #{OUTPUT_DIR}"
 abort("No environment specified as first argument") if ARGV[0].nil?
 ENVIRONMENT = ARGV[0]
 ENVIRONMENT_HOSTNAME_PART = (ENVIRONMENT == 'production') ? '' : ENVIRONMENT+'.'
