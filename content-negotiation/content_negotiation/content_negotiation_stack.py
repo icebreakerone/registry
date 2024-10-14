@@ -106,7 +106,7 @@ class ContentNegotiationStack(Stack):
             include=["*.jsonld", "**/*.jsonld"],
             content_type="application/ld+json",  # Apply Content-Type to all deployed files
             metadata={
-                "Content-Type": "application/rdf+xml"
+                "Content-Type": "application/ld+json"
             },  # Apply metadata to all deployed files
             distribution=distribution,
             distribution_paths=["/*"],
