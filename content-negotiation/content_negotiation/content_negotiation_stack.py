@@ -98,6 +98,19 @@ class ContentNegotiationStack(Stack):
             distribution=distribution,
             distribution_paths=["/*"],
         )
+        s3_deployment.BucketDeployment(
+            self,
+            "DeployJsonldFiles",
+            destination_bucket=site_bucket,
+            sources=[s3_deployment.Source.asset(f"../{folder_path}")],
+            include=["*.jsonld", "**/*.jsonld"],
+            content_type="application/ld+json",  # Apply Content-Type to all deployed files
+            metadata={
+                "Content-Type": "application/rdf+xml"
+            },  # Apply metadata to all deployed files
+            distribution=distribution,
+            distribution_paths=["/*"],
+        )
 
         # Deploy other files with default content type or different metadata
         s3_deployment.BucketDeployment(
@@ -105,7 +118,7 @@ class ContentNegotiationStack(Stack):
             "DeployOtherFiles",
             destination_bucket=site_bucket,
             sources=[s3_deployment.Source.asset(f"../{folder_path}")],
-            exclude=["*.rdf", "**/*.rdf"],
+            exclude=["*.rdf", "**/*.rdf", "*.jsonld", "**/*.jsonld"],
             distribution=distribution,
             distribution_paths=["/*"],
         )
