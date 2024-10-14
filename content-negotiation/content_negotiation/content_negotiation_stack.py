@@ -89,9 +89,12 @@ class ContentNegotiationStack(Stack):
             self,
             "DeployRdfFiles",
             destination_bucket=site_bucket,
-            sources=[s3_deployment.Source.asset(f"../{folder_path}")],
+            sources=[
+                s3_deployment.Source.asset(
+                    f"../{folder_path}", exclude=["!*.rdf", "!**/*.rdf"]
+                )
+            ],
             content_type="application/rdf+xml",  # Apply Content-Type to all deployed files
-            exclude=["*", "!*.rdf"],  # Only deploy .rdf files
             metadata={
                 "Content-Type": "application/rdf+xml"
             },  # Apply metadata to all deployed files
@@ -104,8 +107,11 @@ class ContentNegotiationStack(Stack):
             self,
             "DeployOtherFiles",
             destination_bucket=site_bucket,
-            sources=[s3_deployment.Source.asset(f"../{folder_path}")],
-            exclude=["*.rdf"],  # Exclude .rdf files in this deployment
+            sources=[
+                s3_deployment.Source.asset(
+                    f"../{folder_path}", exclude=["*.rdf", "**/*.rdf"]
+                )
+            ],
             distribution=distribution,
             distribution_paths=["/*"],
         )
