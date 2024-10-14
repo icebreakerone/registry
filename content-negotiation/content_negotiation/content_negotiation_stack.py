@@ -91,7 +91,7 @@ class ContentNegotiationStack(Stack):
             destination_bucket=site_bucket,
             sources=[
                 s3_deployment.Source.asset(
-                    f"../{folder_path}", exclude=["!*.rdf", "!**/*.rdf"]
+                    f"../{folder_path}", exclude=["*", "!*.rdf", "!**/*.rdf"]
                 )
             ],
             content_type="application/rdf+xml",  # Apply Content-Type to all deployed files
