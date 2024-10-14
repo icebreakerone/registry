@@ -3,11 +3,11 @@ name: Build Core Pilot Output
 on:
   workflow_run:
     workflows: ["Python tests"]
+    branches: [main]
     types:
       - completed
-  push:
+  workflow_dispatch:
     branches:
-      - main
       - kip/*
 
 env:
