@@ -92,6 +92,9 @@ class ContentNegotiationStack(Stack):
             sources=[s3_deployment.Source.asset(f"../{folder_path}")],
             content_type="application/rdf+xml",  # Apply Content-Type to all deployed files
             exclude=["*", "!*.rdf"],  # Only deploy .rdf files
+            metadata={
+                "Content-Type": "application/rdf+xml"
+            },  # Apply metadata to all deployed files
             distribution=distribution,
             distribution_paths=["/*"],
         )
