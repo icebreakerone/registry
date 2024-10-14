@@ -89,11 +89,7 @@ class ContentNegotiationStack(Stack):
             self,
             "DeployRdfFiles",
             destination_bucket=site_bucket,
-            sources=[
-                s3_deployment.Source.asset(
-                    f"../{folder_path}", include=["*.rdf", "**/*.rdf"]
-                )
-            ],
+            sources=[s3_deployment.Source.asset(f"../{folder_path}")],
             include=["*.rdf", "**/*.rdf"],
             content_type="application/rdf+xml",  # Apply Content-Type to all deployed files
         )
@@ -101,11 +97,7 @@ class ContentNegotiationStack(Stack):
             self,
             "DeployJsonldFiles",
             destination_bucket=site_bucket,
-            sources=[
-                s3_deployment.Source.asset(
-                    f"../{folder_path}", include=["*.jsonld", "**/*.jsonld"]
-                )
-            ],
+            sources=[s3_deployment.Source.asset(f"../{folder_path}")],
             include=["*.jsonld", "**/*.jsonld"],
             content_type="application/ld+json",  # Apply Content-Type to all deployed files
         )
@@ -115,12 +107,7 @@ class ContentNegotiationStack(Stack):
             self,
             "DeployOtherFiles",
             destination_bucket=site_bucket,
-            sources=[
-                s3_deployment.Source.asset(
-                    f"../{folder_path}",
-                    exclude=["*.rdf", "**/*.rdf", "*.jsonld", "**/*.jsonld"],
-                ),
-            ],
+            sources=[s3_deployment.Source.asset(f"../{folder_path}")],
             exclude=["*.rdf", "**/*.rdf", "*.jsonld", "**/*.jsonld"],
             distribution=distribution,
             distribution_paths=["/*"],
