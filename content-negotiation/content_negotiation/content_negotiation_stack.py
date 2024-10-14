@@ -84,11 +84,25 @@ class ContentNegotiationStack(Stack):
             certificate=certificate,
         )
 
+        # Deploy .rdf files with specific content type
         s3_deployment.BucketDeployment(
             self,
-            "DeployWebsite",
-            sources=[s3_deployment.Source.asset(f"../{folder_path}")],
+            "DeployRdfFiles",
             destination_bucket=site_bucket,
+            sources=[s3_deployment.Source.asset(f"../{folder_path}")],
+            content_type="application/rdf+xml",  # Apply Content-Type to all deployed files
+            exclude=["*", "!*.rdf"],  # Only deploy .rdf files
+            distribution=distribution,
+            distribution_paths=["/*"],
+        )
+
+        # Deploy other files with default content type or different metadata
+        s3_deployment.BucketDeployment(
+            self,
+            "DeployOtherFiles",
+            destination_bucket=site_bucket,
+            sources=[s3_deployment.Source.asset(f"../{folder_path}")],
+            exclude=["*.rdf"],  # Exclude .rdf files in this deployment
             distribution=distribution,
             distribution_paths=["/*"],
         )
