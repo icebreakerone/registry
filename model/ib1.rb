@@ -148,8 +148,8 @@ class LicenceInterpretation < SchemeResource
   property :version, Ns.ib1("versionIdentifier"), String
   property :comment, Ns.rdfs("comment"), String
   property :licence_url, Ns.dcterms("licence"), RdfUri
-  property :grant, Ns.rdfs("grant"), Grant
-  property :obligation, Ns.rdfs("obligation"), Obligation
+  property :grant, Ns.ib1("grant"), Grant
+  property :obligation, Ns.ib1("obligation"), Obligation
 end
 
 # ---------------------------------------------------------------------------
