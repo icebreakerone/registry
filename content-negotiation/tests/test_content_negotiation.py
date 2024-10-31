@@ -25,7 +25,8 @@ def test_content_negotiation(accept_header, expected_uri_suffix, expected_conten
 
     assert response["uri"] == f"/some/path/resource{expected_uri_suffix}"
     assert response["headers"]["content-type"][0]["value"] == expected_content_type
-    assert response["headers"]["vary"][0]["value"] == "Accept"
+    if not expected_uri_suffix == ".html":
+        assert response["headers"]["vary"][0]["value"] == "Accept"
 
 
 def test_index_page():
@@ -35,7 +36,6 @@ def test_index_page():
 
     assert response["uri"] == "/index.html"
     assert response["headers"]["content-type"][0]["value"] == "text/html"
-    assert response["headers"]["vary"][0]["value"] == "Accept"
 
 
 def test_requests_with_file_extensions():

@@ -22,13 +22,14 @@ def handler(event, context):
     accept_header = headers.get("accept", [{"value": "text/html"}])[0]["value"]
     # If the file extension in request['uri'] is present, return the request as is
     if _has_extension(request["uri"]):
-        return request
-    if request["uri"] == "/":
-        # For CSS files, ensure the Content-Type header is correct
         if request["uri"].endswith(".css"):
             request["headers"]["content-type"] = [
                 {"key": "Content-Type", "value": "text/css"}
             ]
+        return request
+    if request["uri"] == "/":
+        # For CSS files, ensure the Content-Type header is correct
+
         # Return the index page with HTML content type
         request["uri"] = "/index"
     # Determine the content type based on the Accept header
