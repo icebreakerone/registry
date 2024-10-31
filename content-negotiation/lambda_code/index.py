@@ -24,6 +24,11 @@ def handler(event, context):
     if _has_extension(request["uri"]):
         return request
     if request["uri"] == "/":
+        # For CSS files, ensure the Content-Type header is correct
+        if request["uri"].endswith(".css"):
+            request["headers"]["content-type"] = [
+                {"key": "Content-Type", "value": "text/css"}
+            ]
         # Return the index page with HTML content type
         request["uri"] = "/index"
     # Determine the content type based on the Accept header
@@ -47,7 +52,8 @@ def handler(event, context):
     request["headers"]["content-type"] = [
         {"key": "Content-Type", "value": content_type}
     ]
-    request["headers"]["vary"] = [{"key": "Vary", "value": "Accept"}]
-
+    if content_type != "text/html":
+        request["headers"]["vary"] = [{"key": "Vary", "value": "Accept"}]
+    print(f"Modified URI: {request['uri']}")
     # Return the modified request to be sent to the origin (S3)
     return request
