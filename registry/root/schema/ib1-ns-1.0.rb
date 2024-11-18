@@ -33,15 +33,7 @@ Context.within do |context|
     c.sub_class_of RDFS::Resource
   end
 
-  RdfSchemaClass.new(IB1::LicenceInterpretation.uri) do |c|
-    c.sub_class_of RDFS::Resource
-  end
-
-  RdfSchemaClass.new(IB1::Grant.uri) do |c|
-    c.sub_class_of RDFS::Resource
-  end
-
-  RdfSchemaClass.new(IB1::Obligation.uri) do |c|
+  RdfSchemaClass.new(IB1::Licence.uri) do |c|
     c.sub_class_of RDFS::Resource
   end
 
@@ -62,7 +54,7 @@ Context.within do |context|
     p.domain DCAT::DataService
     p.domain IB1::Role
     p.domain IB1::SchemeCatalogRequirements
-    p.domain IB1::LicenceInterpretation
+    p.domain IB1::Licence
   end
 
   RdfSchemaProperty.new(Ns.ib1("scheme")) do |p|
@@ -72,26 +64,44 @@ Context.within do |context|
     p.domain DCAT::DataService
     p.domain IB1::Role
     p.domain IB1::SchemeCatalogRequirements
-    p.domain IB1::LicenceInterpretation
+    p.domain IB1::Licence
   end
 
   # TODO: How should version numbers be handled? Nothing seems to have a concept of a version number
   RdfSchemaProperty.new(Ns.ib1("versionIdentifier")) do |p|
     p.comment "Identifier of a version, usually a version number."
     p.range RDFS::Literal
-    p.domain IB1::LicenceInterpretation
+    p.domain IB1::Licence
   end
 
-  RdfSchemaProperty.new(Ns.ib1("grant")) do |p|
-    p.comment "Grants when using a licence."
-    p.range IB1::Grant
-    p.domain IB1::LicenceInterpretation
+  RdfSchemaProperty.new(Ns.ib1("licenceTerms")) do |p|
+    p.comment "URL of the licence terms."
+    p.range RDFS::Resource
+    p.domain IB1::Licence
   end
 
-  RdfSchemaProperty.new(Ns.ib1("obligation")) do |p|
-    p.comment "Obligations when using a licence."
-    p.range IB1::Obligation
-    p.domain IB1::LicenceInterpretation
+  RdfSchemaProperty.new(Ns.ib1("licenceDuration")) do |p|
+    p.comment "Licence duration as a structured string."
+    p.range RDFS::Literal
+    p.domain IB1::Licence
+  end
+
+  RdfSchemaProperty.new(Ns.ib1("permittedUse")) do |p|
+    p.comment "Permitted use allowed by a licence."
+    p.range RDFS::Literal
+    p.domain IB1::Licence
+  end
+
+  RdfSchemaProperty.new(Ns.ib1("additionalCondition")) do |p|
+    p.comment "Additional conditions for a licence."
+    p.range RDFS::Literal
+    p.domain IB1::Licence
+  end
+
+  RdfSchemaProperty.new(Ns.ib1("permissionText")) do |p|
+    p.comment "Permission text which must be used to seek permission from an end user."
+    p.range RDFS::Literal
+    p.domain IB1::Licence
   end
 
   RdfSchemaProperty.new(Ns.ib1("datasetAssurance")) do |p|
@@ -181,28 +191,6 @@ Context.within do |context|
     p.domain IB1::SchemeCatalogRequirements
   end
 
-end
-
-IB1::GRANTS.each do |label, legacy_label, comment|
-  current = Grant.new(Ns.ib1(label)) do |g|
-    g.label label
-    g.comment comment
-  end
-  Grant.new(Ns.ib1(legacy_label)) do |g|
-    g.label legacy_label
-    g.is_replaced_by current
-  end
-end
-
-IB1::OBLIGATIONS.each do |label, legacy_label, comment|
-  current = Obligation.new(Ns.ib1(label)) do |o|
-    o.label label
-    o.comment comment
-  end
-  Obligation.new(Ns.ib1(legacy_label)) do |o|
-    o.label legacy_label
-    o.is_replaced_by current
-  end
 end
 
 IB1::ASSURANCE_LEVELS.each do |label, comment|

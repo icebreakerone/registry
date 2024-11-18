@@ -10,31 +10,10 @@ module IB1
   Role = RdfClass.new(Ns.ib1("Role"))
   SchemeCatalogRequirements = RdfClass.new(Ns.ib1("SchemeCatalogRequirements"))
   RequiredMetadata = RdfClass.new(Ns.ib1("RequiredMetadata"))
-  LicenceInterpretation = RdfClass.new(Ns.ib1("LicenceInterpretation"))
-  Grant = RdfClass.new(Ns.ib1("Grant"))
-  Obligation = RdfClass.new(Ns.ib1("Obligation"))
+  Licence = RdfClass.new(Ns.ib1("Licence"))
   AssuranceLevel = RdfClass.new(Ns.ib1("AssuranceLevel"))
   SensitivityClass = RdfClass.new(Ns.ib1("SensitivityClass"))
 
-  GRANTS = [
-    ['GrantUseAny',           'use_any', 'Use the artefact internally for any purpose'],
-    ['GrantUseDevelopment',   'use_dev', 'Use the artefact internally for development purposes only (i.e. private or limited development of new works, products or services)'],
-    ['GrantUseNonCommercial', 'use_noncom', 'Use the artefact internally for non-commercial purposes only (e.g. education, research, charity work etc.)'],
-    ['GrantAdaptAny',         'adapt_any', 'Adapt the artefact for internal use for any purpose'],
-    ['GrantAdaptDevelopment', 'adapt_dev', 'Adapt the artefact for internal use for development purposes only (i.e. private or limited development of new works, products or services)'],
-    ['GrantAdaptNonCommercial','adapt_noncom', 'Adapt the artefact for internal use for non-commercial purposes only (e.g. education, research, charity work etc.)'],
-    ['GrantCombineAny',       'combine_any', "Combine ('remix') the artefact with any other artefacts"],
-    ['GrantCombineExternal',  'combine_external', "Combine ('remix') the artefact with other external artefacts"],
-    ['GrantCombineInternal',  'combine_internal', "Combine ('remix') the artefact with the Data Consumer's own products or services"],
-    ['GrantRedistributeOriginal','redistribute_original', "Redistribute ('onward share' - including to any customers of the Service Provider) the original artefact"],
-    ['GrantRedistributeDerived','redistribute_derived', "Redistribute ('onward share' - including to any customers of the Service Provider) derivatives of the original artefact not produced from other data sets, i.e. filtered or cleaned data"],
-    ['GrantRedistributeCombined','redistribute_combined', "Redistribute ('onward share' - including to any customers of the Service Provider) derivatives of the artefact produced through artefact combination or use in the Data Consumer's own products or services"]
-  ]
-  OBLIGATIONS = [
-    ['ObligationFullTextOfLicence', 'ft', 'Re-users must display the full text of the license every time they use the work'],
-    ['ObligationAttribution', 'by', 'Re-users must attribute the work to the original source when they use it'],
-    ['ObligationSameLicence', 'sa', 'Re-users who create derivatives of the work must release the derivatives under the same license as the original work, if they choose to distribute the derivatives']
-  ]
   ASSURANCE_LEVELS = (1..4).map do |level|
     ["AssuranceLevel#{level}", "Assurance level #{level}"]
   end
@@ -114,42 +93,18 @@ end
 
 # ---------------------------------------------------------------------------
 
-class Grant < Resource # Doesn't need to be in a Scheme or TrustFramework
-  rdf_class IB1::Grant.uri
-  property :label, Ns.rdfs("label"), String
-  property :comment, Ns.rdfs("comment"), String
-  property :trust_framework, Ns.ib1("trustFramework"), TrustFramework
-  property :scheme, Ns.ib1("scheme"), Scheme
-  property :is_replaced_by, Ns.dcterms("isReplacedBy"), Grant
-end
-IB1::GRANTS.each do |label, legacy_label, comment|
-  uri = Ns.ib1(label).as(Grant::URI)
-  Grant.const_set(label.sub(/\AGrant/,'').to_sym, uri)
-end
-
-class Obligation < Resource # Doesn't need to be in a Scheme or TrustFramework
-  rdf_class IB1::Obligation.uri
-  property :label, Ns.rdfs("label"), String
-  property :comment, Ns.rdfs("comment"), String
-  property :trust_framework, Ns.ib1("trustFramework"), TrustFramework
-  property :scheme, Ns.ib1("scheme"), Scheme
-  property :is_replaced_by, Ns.dcterms("isReplacedBy"), Obligation
-end
-IB1::OBLIGATIONS.each do |label, legacy_label, comment|
-  uri = Ns.ib1(label).as(Obligation::URI)
-  Obligation.const_set(label.sub(/\AObligation/,'').to_sym, uri)
-end
-
-class LicenceInterpretation < SchemeResource
+class Licence < SchemeResource
   include RegistryResource::AddVersionToUri
-  rdf_class IB1::LicenceInterpretation.uri
+  rdf_class IB1::Licence.uri
   type_name_for_url :licence
   property :label, Ns.rdfs("label"), String
   property :version, Ns.ib1("versionIdentifier"), String
   property :comment, Ns.rdfs("comment"), String
-  property :licence_url, Ns.dcterms("licence"), RdfUri
-  property :grant, Ns.ib1("grant"), Grant
-  property :obligation, Ns.ib1("obligation"), Obligation
+  property :licence_terms, Ns.ib1("licenceTerms"), LicenceTermsFile
+  property :licence_duration, Ns.ib1("licenceDuration"), String
+  property :permitted_use, Ns.ib1("permittedUse"), String
+  property :additional_condition, Ns.ib1("additionalCondition"), String
+  property :permission_text, Ns.ib1("permissionText"), String
 end
 
 # ---------------------------------------------------------------------------
@@ -197,7 +152,7 @@ class RequiredMetadata < SchemeResourceWithVisibleProperties
   property :endpoint_description, Ns.dcat("endpointDescription"), OpenAPIFile
   property :heartbeat_description, Ns.dcat("heartbeatDescription"), OpenAPIFile
   property :role_required_to_access, Ns.ib1("roleRequiredToAccess"), Role
-  property :licence, Ns.dcterms("licence"), LicenceInterpretation
+  property :licence, Ns.dcterms("licence"), Licence
   property :sensitivity_class, Ns.ib1("sensitivityClass"), SensitivityClass
   property :dataset_assurance, Ns.ib1("datasetAssurance"), AssuranceLevel
 end
