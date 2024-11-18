@@ -3,6 +3,9 @@
 class OpenAPIFile < RdfUri
 end
 
+class LicenceTermsFile < RdfUri
+end
+
 # ---------------------------------------------------------------------------
 
 class RegistryFiles
@@ -13,6 +16,18 @@ class RegistryFiles
     raise "#{source} doesn't exist" unless File.directory?(@source)
     validate_all_files()
     @@all_files << self
+  end
+
+  def self.licence_terms(licence_name, version)
+    raise "Bad Licence name" unless licence_name =~ /\A[a-z0-9-]+\z/
+    raise "Bad version" unless version =~ /\A([0-9]+\.)*[0-9]+\z/
+    name = "terms/#{licence_name}/#{version}.txt"
+    Context._current_files.each do |rf|
+      if rf.has?(name)
+        return rf.file(name).as(LicenceTermsFile)
+      end
+    end
+    raise "Licence #{name} does not exist in any RegistryFiles available within the Context stack -- check Licence name and version exists"
   end
 
   def self.openapi(api_name, version)
@@ -55,6 +70,8 @@ class RegistryFiles
       contents = File.read(pathname)
       if filename =~ /\Aapi\/([a-z0-9-]+)\/(([0-9]+\.)*[0-9]+)\.json\z/
         validate_openapi(contents, $1, $2)
+      elsif filename =~ /\Aterms\/([a-z0-9-]+)\/(([0-9]+\.)*[0-9]+)\.txt\z/
+        # No validation needed of text file
       else
         raise "Filename doesn't match known pattern for validation: #{filename}"
       end
