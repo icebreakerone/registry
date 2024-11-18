@@ -97,3 +97,13 @@
       padding-bottom: 8px;
       vertical-align: top;
     }
+
+    table.rdf-resource td div + div {
+      border-top: 1px solid #ccc;
+      padding-top: 8px;
+      margin-bottom: 8px;
+    }
+  
+    table.rdf-resource {
+      margin-bottom: 48px;
+    }

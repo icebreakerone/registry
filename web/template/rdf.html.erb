@@ -2,7 +2,7 @@
   if (resources.length == 1) && (basename != "#{OUTPUT_DIR}/registry")
 #    write_rdf_as_html = []
     write_rdf_as_html = Proc.new do |resource, with_uri|
-      %><table><%
+      %><table class="rdf-resource"><%
       if with_uri
         %><tr><th>URI</th><td><div><%= ERB::Util.h(resource.uri.to_uri_s) %></div></td></tr><%
       end
@@ -29,7 +29,7 @@
           elsif value.kind_of? Resource
             %><a href="/<%= ERB::Util.h(value.uri.suffix) %>"><%= ERB::Util.h(value.uri.to_uri_s) %></a><%          
           else
-            %><%= ERB::Util.h(value.to_s) %><%
+            %><%= ERB::Util.h(value.to_s).gsub(/\n+/,"<br/>") %><%
           end
           %></div><%
         end
