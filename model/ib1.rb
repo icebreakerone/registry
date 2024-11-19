@@ -93,6 +93,35 @@ end
 
 # ---------------------------------------------------------------------------
 
+class SchemeEnum < SchemeResource
+  def self.inherited(subclass)
+    subclass.rdf_class RDFS::Class.uri
+  end
+  def init(uri)
+    super
+    self.sub_class_of RDFS::Resource
+  end
+  property :sub_class_of, Ns.rdfs("subClassOf"), RdfClass
+  property :label, Ns.rdfs("label"), String
+  property :comment, Ns.rdfs("comment"), String
+
+  def name(symbol, description)
+    enum_class = self
+    @klass ||= Class.new(SchemeResource) do |c|
+      c.rdf_class enum_class.uri
+      c.type_name_for_url "#{enum_class.type_name_for_url}/#{enum_class.first_label}"
+      property :label, Ns.rdfs("label"), String
+      property :comment, Ns.rdfs("comment"), String
+    end
+    @klass.new do |n|
+      n.label symbol
+      n.comment description
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
+
 class Licence < SchemeResource
   include RegistryResource::AddVersionToUri
   rdf_class IB1::Licence.uri
@@ -119,6 +148,12 @@ end
 IB1::ASSURANCE_LEVELS.each do |label, comment|
   uri = Ns.ib1(label).as(AssuranceLevel::URI)
   AssuranceLevel.const_set(label.sub(/\AAssurance/,'').to_sym, uri)
+end
+
+# ---------------------------------------------------------------------------
+
+class AssuranceEnum < SchemeEnum
+  type_name_for_url :assurance
 end
 
 # ---------------------------------------------------------------------------
