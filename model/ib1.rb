@@ -13,6 +13,7 @@ module IB1
   Licence = RdfClass.new(Ns.ib1("Licence"))
   AssuranceLevel = RdfClass.new(Ns.ib1("AssuranceLevel"))
   SensitivityClass = RdfClass.new(Ns.ib1("SensitivityClass"))
+  SourceType = RdfClass.new(Ns.ib1("SourceType"))
 
   ASSURANCE_LEVELS = (1..4).map do |level|
     ["AssuranceLevel#{level}", "Assurance level #{level}"]
@@ -154,6 +155,15 @@ end
 
 class AssuranceEnum < SchemeEnum
   type_name_for_url :assurance
+end
+
+# ---------------------------------------------------------------------------
+
+class SourceType < SchemeResource
+  rdf_class IB1::SourceType.uri
+  type_name_for_url "source-type".to_sym
+  property :label, Ns.rdfs("label"), String
+  property :comment, Ns.rdfs("comment"), String
 end
 
 # ---------------------------------------------------------------------------

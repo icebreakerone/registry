@@ -45,6 +45,10 @@ Context.within do |context|
     c.sub_class_of RDFS::Resource
   end
 
+  RdfSchemaClass.new(IB1::SourceType.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+
   # -------------------------------------------------------------------------
 
   RdfSchemaProperty.new(Ns.ib1("trustFramework")) do |p|
