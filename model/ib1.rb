@@ -14,6 +14,7 @@ module IB1
   AssuranceLevel = RdfClass.new(Ns.ib1("AssuranceLevel"))
   SensitivityClass = RdfClass.new(Ns.ib1("SensitivityClass"))
   SourceType = RdfClass.new(Ns.ib1("SourceType"))
+  Process = RdfClass.new(Ns.ib1("Process"))
 
   ASSURANCE_LEVELS = (1..4).map do |level|
     ["AssuranceLevel#{level}", "Assurance level #{level}"]
@@ -178,6 +179,16 @@ end
 IB1::SENSITIVITY_CLASSES.each do |label, comment|
   uri = Ns.ib1(label).as(SensitivityClass::URI)
   SensitivityClass.const_set(label.sub(/\-/,'_').to_sym, uri)
+end
+
+# ---------------------------------------------------------------------------
+
+class ProcessDescription < SchemeResource # Not Process because name clashes with Ruby builtin
+  rdf_class IB1::Process.uri
+  type_name_for_url "process"
+  property :label, Ns.rdfs("label"), String
+  property :comment, Ns.rdfs("comment"), String
+  # TODO: Registry description of Processes
 end
 
 # ---------------------------------------------------------------------------
