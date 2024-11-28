@@ -53,6 +53,10 @@ Context.within do |context|
     c.sub_class_of RDFS::Resource
   end
 
+  RdfSchemaClass.new(IB1::Policy.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+
   # -------------------------------------------------------------------------
 
   RdfSchemaProperty.new(Ns.ib1("trustFramework")) do |p|
@@ -80,6 +84,7 @@ Context.within do |context|
     p.comment "Identifier of a version, usually a version number."
     p.range RDFS::Literal
     p.domain IB1::Licence
+    p.domain IB1::Policy
   end
 
   RdfSchemaProperty.new(Ns.ib1("licenceTerms")) do |p|
@@ -110,6 +115,12 @@ Context.within do |context|
     p.comment "Permission text which must be used to seek permission from an end user."
     p.range RDFS::Resource
     p.domain IB1::Licence
+  end
+
+  RdfSchemaProperty.new(Ns.ib1("policyText")) do |p|
+    p.comment "URL of the licence terms."
+    p.range RDFS::Resource
+    p.domain IB1::Policy
   end
 
   RdfSchemaProperty.new(Ns.ib1("datasetAssurance")) do |p|

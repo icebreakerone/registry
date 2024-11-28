@@ -17,5 +17,6 @@ Context.within do |context|
   require "#{File.dirname(__FILE__)}/provenance.rb"
   require "#{File.dirname(__FILE__)}/assurance.rb"
   require "#{File.dirname(__FILE__)}/processes.rb"
+  require "#{File.dirname(__FILE__)}/policies.rb"
 
 end

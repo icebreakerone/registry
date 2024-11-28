@@ -15,6 +15,7 @@ module IB1
   SensitivityClass = RdfClass.new(Ns.ib1("SensitivityClass"))
   SourceType = RdfClass.new(Ns.ib1("SourceType"))
   Process = RdfClass.new(Ns.ib1("Process"))
+  Policy = RdfClass.new(Ns.ib1("Policy"))
 
   ASSURANCE_LEVELS = (1..4).map do |level|
     ["AssuranceLevel#{level}", "Assurance level #{level}"]
@@ -189,6 +190,18 @@ class ProcessDescription < SchemeResource # Not Process because name clashes wit
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
   # TODO: Registry description of Processes
+end
+
+# ---------------------------------------------------------------------------
+
+class Policy < SchemeResource
+  include RegistryResource::AddVersionToUri
+  rdf_class IB1::Policy.uri
+  type_name_for_url "policy"
+  property :label, Ns.rdfs("label"), String
+  property :version, Ns.ib1("version"), String
+  property :comment, Ns.rdfs("comment"), String
+  property :policy_text, Ns.dcat("policyText"), PolicyFile
 end
 
 # ---------------------------------------------------------------------------
