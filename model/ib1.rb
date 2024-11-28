@@ -129,13 +129,13 @@ class Licence < SchemeResource
   rdf_class IB1::Licence.uri
   type_name_for_url :licence
   property :label, Ns.rdfs("label"), String
-  property :version, Ns.ib1("versionIdentifier"), String
+  property :version, Ns.ib1("version"), String
   property :comment, Ns.rdfs("comment"), String
   property :licence_terms, Ns.ib1("licenceTerms"), LicenceTermsFile
   property :licence_duration, Ns.ib1("licenceDuration"), String
   property :permitted_use, Ns.ib1("permittedUse"), String
   property :additional_condition, Ns.ib1("additionalCondition"), String
-  property :permission_text, Ns.ib1("permissionText"), String
+  property :permission_text, Ns.ib1("permissionText"), LicencePermissionTextFile
 end
 
 # ---------------------------------------------------------------------------

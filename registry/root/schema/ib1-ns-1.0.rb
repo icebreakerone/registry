@@ -76,7 +76,7 @@ Context.within do |context|
   end
 
   # TODO: How should version numbers be handled? Nothing seems to have a concept of a version number
-  RdfSchemaProperty.new(Ns.ib1("versionIdentifier")) do |p|
+  RdfSchemaProperty.new(Ns.ib1("version")) do |p|
     p.comment "Identifier of a version, usually a version number."
     p.range RDFS::Literal
     p.domain IB1::Licence
@@ -108,7 +108,7 @@ Context.within do |context|
 
   RdfSchemaProperty.new(Ns.ib1("permissionText")) do |p|
     p.comment "Permission text which must be used to seek permission from an end user."
-    p.range RDFS::Literal
+    p.range RDFS::Resource
     p.domain IB1::Licence
   end
 

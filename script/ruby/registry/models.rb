@@ -27,7 +27,7 @@ class RdfUri
     @prefix + (@suffix || '')
   end
   def as(klass)
-    raise "Class must be direct subtype of RdfUri" unless klass.superclass == RdfUri
+    raise "Class must be subtype of RdfUri" unless klass <= RdfUri
     klass.new(@prefix, @suffix)
   end
   def _to_rdf_value(jmodel)

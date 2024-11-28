@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Consumption data",
-    "version": "0.0.1",
+    "version": "2024-10-03",
     "x-ib1-registry-label": "consumption-data"
   },
   "servers": [
