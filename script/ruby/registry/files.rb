@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'digest'
+
+
 class OpenAPIFile < RdfUri
   def self.name(api_name, version)
     raise "Bad API name" unless api_name =~ /\A[a-z0-9-]+\z/
@@ -44,21 +47,18 @@ class RegistryFiles
 
   def self.find_in_context_stack(name, klass)
     Context._current_files.each do |rf|
-      if rf.has?(name)
-        return rf.file(name).as(klass)
-      end
+      file = rf._maybe_file(name)
+      return file.as(klass) if file
     end
     raise "File #{name} does not exist in any RegistryFiles available within the Context stack -- check name and version exists"
   end
 
-  def has?(name)
-    File.exist?("#{@source}/#{name}")
-  end
-
-  def file(name)
-    # Check file exists - if it does, it will have been validated when the files were declared
-    raise "File #{name} does not exist" unless File.exist?("#{@source}/#{name}")
-    Ns.registry("#{@destination}#{@destination.empty? ? '' : '/'}#{name}")
+  def _maybe_file(name)
+    pathname = "#{@source}/#{name}"
+    return nil unless File.exist?(pathname)
+    suffix = "#{@destination}#{@destination.empty? ? '' : '/'}#{name}\#"
+    suffix += Digest::SHA256.file(pathname).hexdigest
+    Ns.registry(suffix)
   end
 
   # -------------------------------------------------------------------------
