@@ -28,9 +28,6 @@ def handler(event, context):
             ]
         return request
     if request["uri"] == "/":
-        # For CSS files, ensure the Content-Type header is correct
-
-        # Return the index page with HTML content type
         request["uri"] = "/index"
     # Determine the content type based on the Accept header
     if "application/ld+json" in accept_header:

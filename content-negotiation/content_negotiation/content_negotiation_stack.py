@@ -1,4 +1,4 @@
-from aws_cdk import Stack, RemovalPolicy
+from aws_cdk import Stack, RemovalPolicy, CfnOutput
 from aws_cdk import aws_lambda as _lambda
 from aws_cdk import aws_iam as iam
 from aws_cdk import aws_s3 as s3
@@ -84,23 +84,34 @@ class ContentNegotiationStack(Stack):
             certificate=certificate,
         )
 
-        # Deploy .rdf files with specific content type
-        s3_deployment.BucketDeployment(
-            self,
-            "DeployRdfFiles",
-            destination_bucket=site_bucket,
-            sources=[s3_deployment.Source.asset(f"../{folder_path}")],
-            include=["*.rdf", "**/*.rdf"],
-            content_type="application/rdf+xml",  # Apply Content-Type to all deployed files
-        )
-
-        # Deploy other files with default content type or different metadata
+        # Deploy all files
         s3_deployment.BucketDeployment(
             self,
             "DeployOtherFiles",
             destination_bucket=site_bucket,
             sources=[s3_deployment.Source.asset(f"../{folder_path}")],
-            exclude=["*.rdf", "**/*.rdf"],
             distribution=distribution,
             distribution_paths=["/*"],
+        )
+
+        # Outputs
+        CfnOutput(
+            self,
+            "SiteBucketName",
+            value=site_bucket.bucket_name,
+            description="Name of the S3 bucket for the site",
+        )
+
+        CfnOutput(
+            self,
+            "CloudFrontDistributionId",
+            value=distribution.distribution_id,
+            description="ID of the CloudFront distribution",
+        )
+
+        CfnOutput(
+            self,
+            "CloudFrontDomainName",
+            value=distribution.distribution_domain_name,
+            description="Domain name of the CloudFront distribution",
         )
