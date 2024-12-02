@@ -43,9 +43,32 @@
       %></table><%
     end
     write_rdf_as_html.call(resources.first, true)
+
+    linked = resources.first.find_all_linked_resources
+    unless linked.empty?
+      %><h2>Related resources</h2><%
+      by_classname = Hash.new {|h,k| h[k] = [] }
+      linked.each do |lr|
+        if lr.respond_to?(:human_readable_name) && !lr.is_bnode?
+          by_classname[lr.class.name || '_Anon'] << lr
+        end
+      end
+      by_classname.keys.sort.each do |classname|
+        res = by_classname[classname]
+        %>
+          <h3 id="<%= ERB::Util.h(classname) %>"><%= ERB::Util.h(classname) %></h3>
+          <ul>
+        <%
+        res.each do |r|
+          %><li><a href="/<%= ERB::Util.h(r.uri.suffix) %>"><%= ERB::Util.h(r.human_readable_name) %></a></li><%
+        end
+        %></ul><%
+      end
+    end
   end
 %>
 
+<h2>Definitive version (machine readable)</h2>
 <p>A GET request made to this URI uses HTTP Content Negotiation. However, if you explicitly wish to retrieve a particular serialisation, you can also do so using the following URLs:</p>
 
 <dl><%

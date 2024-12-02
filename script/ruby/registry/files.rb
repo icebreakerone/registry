@@ -1,10 +1,38 @@
 # frozen_string_literal: true
 
+require 'digest'
+
+
 class OpenAPIFile < RdfUri
+  def self.name(api_name, version)
+    raise "Bad API name" unless api_name =~ /\A[a-z0-9-]+\z/
+    raise "Bad version" unless version =~ /\A([0-9]+-)*[0-9]+\z/
+    name = "api/#{api_name}@#{version}.json"
+    RegistryFiles.find_in_context_stack(name, OpenAPIFile)
+  end
 end
 
-class LicenceTermsFile < RdfUri
+class MarkdownFile < RdfUri
+  @@allow_directory_names = {}
+  def self.allowed_directory?(directory_name)
+    @@allow_directory_names[directory_name]
+  end
+  def self.make_class(directory_name)
+    @@allow_directory_names[directory_name] = true
+    Class.new(MarkdownFile) do |c|
+      c.define_singleton_method(:name) do |text_name, version|
+        raise "Bad markdown filename" unless text_name =~ /\A[a-z0-9-]+\z/
+        raise "Bad version" unless version =~ /\A([0-9]+-)*[0-9]+\z/
+        name = "#{directory_name}/#{text_name}@#{version}.txt"
+        RegistryFiles.find_in_context_stack(name, c)
+      end
+    end
+  end
 end
+
+LicenceTermsFile = MarkdownFile.make_class("terms")
+LicencePermissionTextFile = MarkdownFile.make_class("permission-text")
+PolicyFile = MarkdownFile.make_class("policy")
 
 # ---------------------------------------------------------------------------
 
@@ -18,38 +46,20 @@ class RegistryFiles
     @@all_files << self
   end
 
-  def self.licence_terms(licence_name, version)
-    raise "Bad Licence name" unless licence_name =~ /\A[a-z0-9-]+\z/
-    raise "Bad version" unless version =~ /\A([0-9]+\.)*[0-9]+\z/
-    name = "terms/#{licence_name}/#{version}.txt"
+  def self.find_in_context_stack(name, klass)
     Context._current_files.each do |rf|
-      if rf.has?(name)
-        return rf.file(name).as(LicenceTermsFile)
-      end
+      file = rf._maybe_file(name)
+      return file.as(klass) if file
     end
-    raise "Licence #{name} does not exist in any RegistryFiles available within the Context stack -- check Licence name and version exists"
+    raise "File #{name} does not exist in any RegistryFiles available within the Context stack -- check name and version exists"
   end
 
-  def self.openapi(api_name, version)
-    raise "Bad API name" unless api_name =~ /\A[a-z0-9-]+\z/
-    raise "Bad version" unless version =~ /\A([0-9]+\.)*[0-9]+\z/
-    name = "api/#{api_name}/#{version}.json"
-    Context._current_files.each do |rf|
-      if rf.has?(name)
-        return rf.file(name).as(OpenAPIFile)
-      end
-    end
-    raise "File #{name} does not exist in any RegistryFiles available within the Context stack -- check API name and version exists"
-  end
-
-  def has?(name)
-    File.exist?("#{@source}/#{name}")
-  end
-
-  def file(name)
-    # Check file exists - if it does, it will have been validated when the files were declared
-    raise "File #{name} does not exist" unless File.exist?("#{@source}/#{name}")
-    Ns.registry("#{@destination}#{@destination.empty? ? '' : '/'}#{name}")
+  def _maybe_file(name)
+    pathname = "#{@source}/#{name}"
+    return nil unless File.exist?(pathname)
+    suffix = "#{@destination}#{@destination.empty? ? '' : '/'}#{name}\#"
+    suffix += Digest::SHA256.file(pathname).hexdigest
+    Ns.registry(suffix)
   end
 
   # -------------------------------------------------------------------------
@@ -68,12 +78,16 @@ class RegistryFiles
       pathname = "#{@source}/#{filename}"
       next if File.directory? pathname
       contents = File.read(pathname)
-      if filename =~ /\Aapi\/([a-z0-9-]+)\/(([0-9]+\.)*[0-9]+)\.json\z/
-        validate_openapi(contents, $1, $2)
-      elsif filename =~ /\Aterms\/([a-z0-9-]+)\/(([0-9]+\.)*[0-9]+)\.txt\z/
-        # No validation needed of text file
-      else
+      unless filename =~ /\A([a-z0-9-]+)\/([a-z0-9-]+)\@(([0-9]+-?)+)\.([a-z]+)\z/
         raise "Filename doesn't match known pattern for validation: #{filename}"
+      end
+      directory, name, version, extension = $1, $2, $3, $5
+      if directory == "api" && extension == "json"
+        validate_openapi(contents, name, version)
+      elsif MarkdownFile.allowed_directory?(directory) && extension == "txt"
+        validate_markdown(contents)
+      else
+        raise "Unknown file type for validation: #{filename}"
       end
     end
   end
@@ -98,5 +112,9 @@ class RegistryFiles
       "endpointURL" => { "default" => "https://endpointurl-not-specified.ib1.org" }
     }
   }]
+  
+  def validate_markdown(contents)
+    # No validation needed
+  end
 
 end

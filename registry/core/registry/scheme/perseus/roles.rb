@@ -5,11 +5,12 @@ Role.new do |g|
 end
 
 Role.new do |g|
-  g.label "carbon-accounting-platform"
-  g.comment "Carbon Accounting Platforms"
+  g.label "carbon-accounting-provider"
+  g.comment "Carbon Accounting Provider"
 end
 
 Role.new do |g|
-  g.label "finance-provider"
-  g.comment "Finance Providers"
+  g.label "financial-service-provider"
+  g.comment "Financial Service Provider"
 end
+

@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+if ! [ -f script/.jruby ]
+then
+    echo "run script/prepare.sh before using this script" >&2
+    exit 1
+fi
+
+script/.jruby script/ruby/quick-check-urls-exist-in-registry.rb "$@"

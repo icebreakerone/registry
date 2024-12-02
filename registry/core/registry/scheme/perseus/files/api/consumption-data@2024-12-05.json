@@ -1,0 +1,380 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Consumption data",
+    "version": "2024-12-05",
+    "x-ib1-registry-label": "consumption-data"
+  },
+  "servers": [
+    {
+      "url": "{endpointURL}",
+      "variables": {
+        "endpointURL": {
+          "default": "https://endpointurl-not-specified.ib1.org"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Root",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Root  Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasources": {
+      "get": {
+        "summary": "Datasources",
+        "operationId": "datasources_datasources_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Datasources"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/datasources/{id}/{measure}": {
+      "get": {
+        "summary": "Consumption",
+        "operationId": "consumption_datasources__id___measure__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "measure",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Measure"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "From"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "To"
+            }
+          },
+          {
+            "name": "x-amzn-mtls-clientcert",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Amzn-Mtls-Clientcert"
+            }
+          },
+          {
+            "name": "x-fapi-interaction-id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Fapi-Interaction-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeterData"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Consumption": {
+        "properties": {
+          "value": {
+            "type": "number",
+            "title": "Value"
+          },
+          "unitCode": {
+            "type": "string",
+            "title": "Unitcode"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value",
+          "unitCode"
+        ],
+        "title": "Consumption"
+      },
+      "Datasource": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "availableMeasures": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Availablemeasures"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "availableMeasures"
+        ],
+        "title": "Datasource"
+      },
+      "Datasources": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/Datasource"
+            },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "Datasources"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "MeterData": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/Reading"
+            },
+            "type": "array",
+            "title": "Data"
+          },
+          "provenance": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "items": {},
+                  "type": "array"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Provenance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "provenance"
+        ],
+        "title": "MeterData",
+        "examples": [
+          {
+            "data": [
+              {
+                "cumulative": {
+                  "unitCode": "WHR",
+                  "value": 1234.5
+                },
+                "energy": {
+                  "unitCode": "WHR",
+                  "value": 123.45
+                },
+                "from": "2023-10-18T00:00:00Z",
+                "takenAt": "2023-10-19T00:00:00Z",
+                "to": "2023-10-18T00:30:00Z",
+                "type": "Electricity"
+              }
+            ],
+            "provenance": [
+              [
+                "eyJpZCI6IlVSZDB3Z3MiLCJ0eXBlIjoidHJhbnNmZXIiLCJmcm9tIjoiaHR0cHM6……...MyOjU2WiJ9",
+                "eyJpZCI6Iml0SU5zR3RVIiwidHlwZSI6InJlY2VpcHQiLCJmcm9tIjoiaHR0cH………..jE2OjMxWiJ9",
+                [
+                  0,
+                  "123456",
+                  "2024-10-17T12:16:31Z",
+                  "MEUCIQDNk3nS64bmGvMJwfdVWfyGuheGDEbB8-b5Ur2H9Iat9gIgc……..eGO3GvzH2EJut707lA="
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "from": {
+            "type": "string",
+            "format": "date-time",
+            "title": "From"
+          },
+          "to": {
+            "type": "string",
+            "format": "date-time",
+            "title": "To"
+          },
+          "takenAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Takenat"
+          },
+          "energy": {
+            "$ref": "#/components/schemas/Consumption"
+          },
+          "cumulative": {
+            "$ref": "#/components/schemas/Consumption"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "to",
+          "takenAt",
+          "energy",
+          "cumulative"
+        ],
+        "title": "Reading"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

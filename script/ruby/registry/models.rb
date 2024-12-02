@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'date'
+
+
 class RdfClass
   attr_reader :uri
   def initialize(uri)
@@ -27,7 +30,7 @@ class RdfUri
     @prefix + (@suffix || '')
   end
   def as(klass)
-    raise "Class must be direct subtype of RdfUri" unless klass.superclass == RdfUri
+    raise "Class must be subtype of RdfUri" unless klass <= RdfUri
     klass.new(@prefix, @suffix)
   end
   def _to_rdf_value(jmodel)
@@ -55,6 +58,8 @@ class Ns
     @@all_prefix.each(&block)
   end
 end
+
+Ns.namespace(:xsd, "http://www.w3.org/2001/XMLSchema#")
 
 # ---------------------------------------------------------------------------
 
@@ -191,6 +196,26 @@ class Resource
     @@all_resources.dup
   end
 
+  def find_all_linked_resources
+    @@all_resources.filter do |r|
+      r.is_linked_to?(self)
+    end
+  end
+
+  def is_linked_to?(resource)
+    suffix = resource.uri.suffix
+    @properties.each do |uri, value, symbol|
+      v = value.kind_of?(Resource) ? value.uri : value
+      return true if v.kind_of?(RdfUri) && v.suffix == suffix
+    end
+    if @bnodes
+      @bnodes.each do |uri, bn, symbol|
+        return true if bn.is_linked_to?(resource)
+      end
+    end
+    false
+  end
+
   def _to_rdf_value(jmodel)
     jmodel.createResource(self.uri.to_uri_s)
   end
@@ -230,14 +255,18 @@ class RegistryResource < Resource
       end
     end
   end
-  module AddVersionToUri
-    def generate_uri_suffix
-      super + "/" + self.first_version.to_s
-    end
-  end
 end
 
 # ---------------------------------------------------------------------------
+
+class Date
+  def _to_rdf_value(jmodel)
+    jmodel.createTypedLiteral(
+      self.to_s(),
+      Jena::XSDDatatype::XSDdate
+    )
+  end
+end
 
 class RdfModel
   attr_reader :resources
@@ -249,7 +278,9 @@ class RdfModel
   ]
   def initialize
     @jmodel = Jena::ModelFactory.createDefaultModel()
-    @used_prefix = {}
+    @used_prefix = {
+      "http://www.w3.org/2001/XMLSchema#" => true # for value types
+    }
     @resources = []
   end
   def add(resource)
