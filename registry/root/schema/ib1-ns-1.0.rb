@@ -8,7 +8,13 @@ Context.within do |context|
     resource.label resource.uri.suffix
   end
 
+  versioned_classes = []
+
   # -------------------------------------------------------------------------
+
+  RdfSchemaClass.new(IB1::RegistryChange.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
 
   RdfSchemaClass.new(IB1::TrustFramework.uri) do |c|
     c.sub_class_of RDFS::Resource
@@ -28,6 +34,7 @@ Context.within do |context|
   RdfSchemaClass.new(IB1::SchemeCatalogRequirements.uri) do |c|
     c.sub_class_of RDFS::Resource
   end
+  versioned_classes << IB1::SchemeCatalogRequirements
 
   RdfSchemaClass.new(IB1::RequiredMetadata.uri) do |c|
     c.sub_class_of RDFS::Resource
@@ -36,6 +43,7 @@ Context.within do |context|
   RdfSchemaClass.new(IB1::Licence.uri) do |c|
     c.sub_class_of RDFS::Resource
   end
+  versioned_classes << IB1::Licence
 
   RdfSchemaClass.new(IB1::AssuranceLevel.uri) do |c|
     c.sub_class_of RDFS::Resource
@@ -52,10 +60,12 @@ Context.within do |context|
   RdfSchemaClass.new(IB1::Process.uri) do |c|
     c.sub_class_of RDFS::Resource
   end
+  versioned_classes << IB1::Process
 
   RdfSchemaClass.new(IB1::Policy.uri) do |c|
     c.sub_class_of RDFS::Resource
   end
+  versioned_classes << IB1::Policy
 
   # -------------------------------------------------------------------------
 
@@ -79,13 +89,52 @@ Context.within do |context|
     p.domain IB1::Licence
   end
 
-  # TODO: How should version numbers be handled? Nothing seems to have a concept of a version number
+  # -------------------------------------------------------------------------
+  # Registry versioning
+
   RdfSchemaProperty.new(Ns.ib1("version")) do |p|
     p.comment "Identifier of a version, usually a version number."
     p.range RDFS::Literal
-    p.domain IB1::Licence
-    p.domain IB1::Policy
+    versioned_classes.each { |klass| p.domain klass }
   end
+
+  RdfSchemaProperty.new(Ns.ib1("availableFrom")) do |p|
+    p.comment "Earliest time when this resource may be used."
+    p.range RDFS::Literal
+    versioned_classes.each { |klass| p.domain klass }
+  end
+
+  RdfSchemaProperty.new(Ns.ib1("deprecatedAfter")) do |p|
+    p.comment "Latest time this resource may be used for new applications. Not present or in the future for the current version."
+    p.range RDFS::Literal
+    versioned_classes.each { |klass| p.domain klass }
+  end
+
+  RdfSchemaProperty.new(Ns.ib1("prohibitedAfter")) do |p|
+    p.comment "May not be used after this time. ib1:deprecatedAfter must be set, with a datetime no later than this time."
+    p.range RDFS::Literal
+    versioned_classes.each { |klass| p.domain klass }
+  end
+
+  RdfSchemaProperty.new(Ns.ib1("hasCurrentVersion")) do |p|
+    p.comment "URI of the current version of this resource. The current version has a URL pointing to itself."
+    p.range RDFS::Resource
+    versioned_classes.each { |klass| p.domain klass }
+  end
+
+  RdfSchemaProperty.new(Ns.ib1("previousVersion")) do |p|
+    p.comment "URI of the previous version."
+    p.range RDFS::Resource
+    versioned_classes.each { |klass| p.domain klass }
+  end
+
+  RdfSchemaProperty.new(Ns.ib1("registryChange")) do |p|
+    p.comment "URI of a resource which explains why the Registry was changed."
+    p.range IB1::RegistryChange
+    versioned_classes.each { |klass| p.domain klass }
+  end
+
+  # -------------------------------------------------------------------------
 
   RdfSchemaProperty.new(Ns.ib1("licenceTerms")) do |p|
     p.comment "URL of the licence terms."
