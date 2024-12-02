@@ -93,11 +93,11 @@ class RegistryFiles
   end
 
   def validate_openapi(contents, api_name, api_version)
-    e = "OpenAPI validation of #{@source}/api/#{api_name}/#{api_version}.json:"
+    e = "OpenAPI validation of #{@source}/api/#{api_name}@#{api_version}.json:"
     openapi = begin
       JSON.parse(contents)
-    rescue
-      raise "#{e} invalid JSON"
+    rescue => exception
+      raise "#{e} invalid JSON: #{exception}"
     end
     raise "#{e} not OpenAPI file" unless openapi["openapi"]
     raise "#{e} no info section" unless openapi["info"]
