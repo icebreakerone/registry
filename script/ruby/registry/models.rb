@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'date'
+
+
 class RdfClass
   attr_reader :uri
   def initialize(uri)
@@ -55,6 +58,8 @@ class Ns
     @@all_prefix.each(&block)
   end
 end
+
+Ns.namespace(:xsd, "http://www.w3.org/2001/XMLSchema#")
 
 # ---------------------------------------------------------------------------
 
@@ -250,14 +255,18 @@ class RegistryResource < Resource
       end
     end
   end
-  module AddVersionToUri
-    def generate_uri_suffix
-      super + "/" + self.first_version.to_s
-    end
-  end
 end
 
 # ---------------------------------------------------------------------------
+
+class Date
+  def _to_rdf_value(jmodel)
+    jmodel.createTypedLiteral(
+      self.to_s(),
+      Jena::XSDDatatype::XSDdate
+    )
+  end
+end
 
 class RdfModel
   attr_reader :resources
@@ -269,7 +278,9 @@ class RdfModel
   ]
   def initialize
     @jmodel = Jena::ModelFactory.createDefaultModel()
-    @used_prefix = {}
+    @used_prefix = {
+      "http://www.w3.org/2001/XMLSchema#" => true # for value types
+    }
     @resources = []
   end
   def add(resource)

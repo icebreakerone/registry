@@ -25,6 +25,7 @@ module Jena
   ModelFactory = org.apache.jena.rdf.model.ModelFactory
   RDFDataMgr = org.apache.jena.riot.RDFDataMgr
   Lang = org.apache.jena.riot.Lang
+  XSDDatatype = org.apache.jena.datatypes.xsd.XSDDatatype
 end
 
 # Load scripts
