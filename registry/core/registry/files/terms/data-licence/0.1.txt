@@ -14,7 +14,7 @@ Accordingly any term consisting of two words separated by a colon absent any int
 
 Prefix namespaces used in this licence are:
     dcterms http://purl.org/dc/terms#
-    ib1     https://registry.ib1.org/ns/1.0#
+    ib1     https://registry.trust.ib1.org/ns/1.0#
 
 		
 Other definitions

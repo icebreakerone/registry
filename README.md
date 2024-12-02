@@ -66,7 +66,7 @@ script/ib1-registry production registry/root
 
 The root registry contains:
 
-  * The RDF schema definition with the namespace `https://registry.ib1.org/ns/1.0#`
+  * The RDF schema definition with the namespace `https://registry.trust.ib1.org/ns/1.0#`
   * A "Trust Framework Group" listing all known Trust Frameworks.
 
 ## Generating a Registry from a definition in this repository

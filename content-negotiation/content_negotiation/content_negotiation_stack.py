@@ -13,7 +13,7 @@ class ContentNegotiationStack(Stack):
 
     def __init__(self, scope: Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
-        domain_name = self.node.try_get_context("domainName") or "registry.ib1.org"
+        domain_name = self.node.try_get_context("domainName") or "registry.trust.ib1.org"
         folder_path = self.node.try_get_context("folderPath") or "output"
         lambda_edge_role = iam.Role(
             self,
