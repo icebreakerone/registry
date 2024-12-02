@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # TODO: Configurable prefix
-Ns.namespace(:ib1, "https://registry.ib1.org/ns/1.0#")
+Ns.namespace(:ib1, "https://registry.trust.ib1.org/ns/1.0#")
 
 module IB1
   RegistryChange = RdfClass.new(Ns.ib1("RegistryChange"))
