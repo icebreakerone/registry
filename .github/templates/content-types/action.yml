@@ -1,0 +1,35 @@
+name: deploy
+description: Deploy content negotiated service
+inputs:
+  stackname:
+    description: "Which stack will be updated"
+    required: true
+  aws-access-key-id:
+    required: true
+    type: string
+  aws-secret-access-key:
+    required: true
+    type: string
+  aws-region:
+    required: false
+    type: string
+    default:"us-east-1"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: "actions/setup-python@v4"
+      with:
+        python-version: "3.12"
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+        aws-access-key-id: ${{ inputs.aws-access-key-id }}
+        aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
+        aws-region: ${{ inputs.aws-region }}
+    - name: Deploy CDK Stack
+      shell: bash
+      run: |
+        cd content-negotiation
+        pip install boto3
+        python content-negotiation/content_negotiation/scripts/contenttypes.py ${{inputs.stackname}}
