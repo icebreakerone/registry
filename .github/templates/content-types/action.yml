@@ -30,5 +30,7 @@ runs:
     - name: Deploy CDK Stack
       shell: bash
       run: |
+        pwd
+        ls -al
         pip install boto3
-        python content-negotiation/content_negotiation/scripts/contenttypes.py ${{inputs.stackname}}
+        python content-negotiation/scripts/contenttypes.py ${{inputs.stackname}}
