@@ -1,4 +1,5 @@
 import boto3
+import argparse
 
 # Define a mapping of file extensions to content types
 CONTENT_TYPE_MAPPING = {
@@ -8,6 +9,19 @@ CONTENT_TYPE_MAPPING = {
     ".txt": "text/plain",
     ".html": "text/html",
 }
+
+
+def get_outputs_from_stack(stack_name: str, region_name: str = "us-east-1"):
+    """
+    Get the outputs from a CloudFormation stack.
+    """
+    cf = boto3.client("cloudformation", region_name)
+    response = cf.describe_stacks(StackName=stack_name)
+    outputs = {
+        output["OutputKey"]: output["OutputValue"]
+        for output in response["Stacks"][0]["Outputs"]
+    }
+    return outputs
 
 
 def update_content_type(bucket_name):
@@ -40,8 +54,7 @@ def update_content_type(bucket_name):
 
 def create_invalidation(distribution_id, paths=["/*"]):
     cloudfront = boto3.client("cloudfront")
-
-    response = cloudfront.create_invalidation(
+    cloudfront.create_invalidation(
         DistributionId=distribution_id,
         InvalidationBatch={
             "Paths": {"Quantity": len(paths), "Items": paths},
@@ -51,19 +64,17 @@ def create_invalidation(distribution_id, paths=["/*"]):
         },
     )
 
-    print("Invalidation created:")
-    print(response)
+
+def update_for_stack(stack_name):
+    outputs = get_outputs_from_stack(stack_name)
+    update_content_type(outputs["SiteBucketName"])
+    create_invalidation(outputs["CloudFrontDistributionId"], ["/*"])
 
 
 if __name__ == "__main__":
-    """
-    To use with a deployment, make this work with the bucket name and distribution ID exported from the stack.
-    """
-    core_distribution = "E2AF0MERI34NYN"
-    core_bucket = "contentnegotiationstack-pilot-c-sitebucket397a1860-5opqne0jjnwb"
-    root_distribution = "ETH1GEJK83GPD"
-    root_bucket = "contentnegotiationstack-product-sitebucket397a1860-qcqrn5evowzy"
-
-    update_content_type(core_bucket)
-    # aws cloudfront create-invalidation --distribution-id ETH1GEJK83GPD --paths "/*"
-    create_invalidation(core_distribution, ["/*"])
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument("stack_name", help="Name of the CloudFormation stack")
+    args = argparser.parse_args()
+    update_for_stack(args.stack_name)
+    # update_for_stack("ContentNegotiationStack-production-root")
+    # update_for_stack("ContentNegotiationStack-pilot-core")
