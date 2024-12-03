@@ -54,8 +54,7 @@ def update_content_type(bucket_name):
 
 def create_invalidation(distribution_id, paths=["/*"]):
     cloudfront = boto3.client("cloudfront")
-
-    response = cloudfront.create_invalidation(
+    cloudfront.create_invalidation(
         DistributionId=distribution_id,
         InvalidationBatch={
             "Paths": {"Quantity": len(paths), "Items": paths},
