@@ -33,7 +33,7 @@ jobs:
       - name: Update core pilot registry content types
         uses: ./.github/templates/content-types/
         with:
-          stack_name: ContentNegotiationStack-production-root
+          stackname: ContentNegotiationStack-production-root
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
