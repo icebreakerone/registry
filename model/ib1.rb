@@ -150,9 +150,15 @@ class SchemeEnum < SchemeResource
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
 
+  def enum_descriptive_name(class_name)
+    @class_name = class_name
+  end
+
   def name(symbol, description)
+    class_name = @class_name
     enum_class = self
     @klass ||= Class.new(SchemeResource) do |c|
+      c.define_singleton_method(:class_human_readable_name) { class_name }
       c.rdf_class enum_class.uri
       c.type_name_for_url "#{enum_class.type_name_for_url}/#{enum_class.first_label}"
       property :label, Ns.rdfs("label"), String
@@ -225,6 +231,9 @@ end
 # ---------------------------------------------------------------------------
 
 class ProcessDescription < VersionedSchemeResource # Not Process because name clashes with Ruby builtin
+  def self.class_human_readable_name
+    "Process"
+  end
   rdf_class IB1::Process.uri
   type_name_for_url "process"
   property :label, Ns.rdfs("label"), String

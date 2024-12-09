@@ -1,5 +1,6 @@
 
 AssuranceEnum.new do |e|
+  e.enum_descriptive_name "PerseusAssuranceDataSource"
   e.label "data-source"
   e.comment "Perseus assurance signal that describes how the data was collected or estimated, as an indicator of overall reliability and accuracy of patterns of usage."
   # ----
@@ -8,6 +9,7 @@ AssuranceEnum.new do |e|
 end
 
 AssuranceEnum.new do |e|
+  e.enum_descriptive_name "PerseusAssuranceMissingData"
   e.label "missing-data"
   e.comment "Perseus assurance signal that indicates whether the dataset has any missing data."
   # ----
@@ -17,6 +19,7 @@ AssuranceEnum.new do |e|
 end
 
 AssuranceEnum.new do |e|
+  e.enum_descriptive_name "PerseusAssuranceProcessing"
   e.label "processing"
   e.comment "Perseus assurance signal that describes data processing and calculations."
   # ----
@@ -26,6 +29,7 @@ AssuranceEnum.new do |e|
 end
 
 AssuranceEnum.new do |e|
+  e.enum_descriptive_name "PerseusAssuranceProcessingVirtualMeter"
   e.label "processing-virtual-meter"
   e.comment "VirtualMeter additional assurance signal to describe the method used to allocate consumption to the virtual meter."
   # ----

@@ -50,7 +50,8 @@
       by_classname = Hash.new {|h,k| h[k] = [] }
       linked.each do |lr|
         if lr.respond_to?(:human_readable_name) && !lr.is_bnode?
-          by_classname[lr.class.name || '_Anon'] << lr
+          klass = lr.class
+          by_classname[(klass.respond_to?(:class_human_readable_name) ? klass.class_human_readable_name : klass.name) || '_Anon'] << lr
         end
       end
       by_classname.keys.sort.each do |classname|
@@ -59,6 +60,7 @@
           <h3 id="<%= ERB::Util.h(classname) %>"><%= ERB::Util.h(classname) %></h3>
           <ul>
         <%
+        res.sort! { |a,b| a.human_readable_name <=> b.human_readable_name }
         res.each do |r|
           %><li><a href="/<%= ERB::Util.h(r.uri.suffix) %>"><%= ERB::Util.h(r.human_readable_name) %></a></li><%
         end
