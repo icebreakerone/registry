@@ -1,48 +1,51 @@
-Data Licence Terms
+# Data Licence Terms
 
-Interpretation
+## Interpretation
 
-These licence terms are intended for use as the ib1:licenceTerms property of an RDF resource of type ib1:Licence ("this Licence"). Where this Licence is applied (see below) it will give effect to a licence on these licence terms. This Schedule will be recorded as standard in the Registry, a copy is presented below for transparency.
+These licence terms are intended for use as the `ib1:licenceTerms` property of an RDF resource of type `ib1:Licence` ("this Licence"). Where this Licence is applied (see below) it will give effect to a licence on these licence terms. This Schedule will be recorded as standard in the Registry, a copy is presented below for transparency.
 
-Definitions
+## Definitions
 
-RDF properties
+### RDF properties
 
 These terms will refer to a number of properties and RDF data types of that resource with abbreviated URLs using the specification in the Turtle language defined by the W3C.
 
 Accordingly any term consisting of two words separated by a colon absent any intervening white space - in other words in the form as "prefix:name" - shall be interpreted as a URL where the first word is expanded to the URL prefix in the table below, with the second word appended.
 
 Prefix namespaces used in this licence are:
-    dcterms http://purl.org/dc/terms#
-    ib1     https://registry.trust.ib1.org/ns/1.0#
+
+    ib1      https://registry.trust.ib1.org/ns/1.0#
 
 		
-Other definitions
+## Other definitions
 
 In these terms:
 
-"Member". "Data Provider" and "Catalog Entry" are defined in the ib1:trustFramework
+"Member". "Data Provider" and "Catalog Entry" are defined in the `ib1:trustFramework`
 "Grantor" means the Member identified by the certificate which signs the transfer step (defined below).
+
 "Grantee" means the Member identified by the "to" property of the transfer step.
+
 "Data" means the data identified by the transfer step.
+
 "Its data rights" in relation to a Member and specific data, means those property rights capable of subsisting in data, and in particular the sui generis database right, that either belong to it, or which are licensed to it.
 
-Application of these terms
+## Application of these terms
 
-This Licence may be applied to any transfer of data by including the URL of the ib1:Licence resource in the Registry in a transfer step ("this transfer step") of a provenance record accompanying that transfer, where  a "transfer step" is an association of keys with values, such as a JavaScript Object Notation (JSON) file and 'including' a licence means that the 'licence' value contains a URL to the ib1:Licence.
+This Licence may be applied to any transfer of data by including the URL of the `ib1:Licence` resource in the Registry in a transfer step ("this transfer step") of a provenance record accompanying that transfer, where  a "transfer step" is an association of keys with values, such as a JavaScript Object Notation (JSON) file and 'including' a licence means that the 'licence' value contains a URL to the `ib1:Licence`.
 
-Licence grant
+## Licence grant
 
-The Grantor grants a licence over its data rights in the Data to the Grantee, a non-exclusive, non-transferrable, royalty-free, irrevocable licence to use the data for any ib1:permittedUse, subject to the following conditions:
+The Grantor grants a licence over its data rights in the Data to the Grantee, a non-exclusive, non-transferrable, royalty-free, irrevocable licence to use the data for any `ib1:permittedUse`, subject to the following conditions:
 
-* If the ib1:scheme imposes further conditions of use, for example relating to the protection of personal data, those conditions shall apply;
-* If the licence includes an ib1:permissionText term, the party providing the data must adhere to the Scheme Policies defining the correct use of Perseus permission text and associated evidencing processes
-* If the ib1:licenceDuration term is present, the licence shall cease after that time interval from the timestamp property in the transfer step.
-* Use of the data is restricted to a territory specified as an ib1:licenseTerritory term if that term is present
-* Any additional conditions specified as ib1:additionalCondition term.
+* If the `ib1:scheme` imposes further conditions of use, for example relating to the protection of personal data, those conditions shall apply;
+* If the licence includes an `ib1:permissionText` term, the party providing the data must adhere to the Scheme Policies defining the correct use of Perseus permission text and associated evidencing processes
+* If the `ib1:licenceDuration` term is present, the licence shall cease after that time interval from the timestamp property in the transfer step.
+* Use of the data is restricted to a territory specified as an `ib1:licenseTerritory` term if that term is present
+* Any additional conditions specified as `ib1:additionalCondition` term.
 
-Where an ib1:permittedUse property permits the transfer of the data to another Member ("the recipient") then the licence includes a right to sublicense to the recipient on these terms, provided that the licence metadata accompanying the sublicense complies with the applicable licence terms specified in the ib1:scheme.
+Where an `ib1:permittedUse` property permits the transfer of the data to another Member ("the recipient") then the licence includes a right to sublicense to the recipient on these terms, provided that the licence metadata accompanying the sublicense complies with the applicable licence terms specified in the `ib1:scheme`.
 
-In interpreting the text of an ib1:permittedUse property, the term "consumer" refers to any person, whether natural or legal, 
+In interpreting the text of an `ib1:permittedUse` property, the term "consumer" refers to any person, whether natural or legal, 
 
 This licence is to be interpreted in accordance with the law of England and Wales.
