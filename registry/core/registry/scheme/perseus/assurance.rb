@@ -10,7 +10,7 @@ AssuranceEnum.new do |e|
 end
 
 AssuranceEnum.new do |e|
-  e.enum_descriptive_name "PerseusOriginMethod"
+  e.enum_descriptive_name "PerseusAssuranceOriginMethod"
   e.label "origin-method"
   e.comment "Assurance signal that describes data processing for data which originates outside the Scheme"
   # ----
