@@ -40,7 +40,7 @@ class RegistryChange < RegistryResource
 
   def generate_uri_suffix
     # TODO: Don't assume it's within a scheme
-    "scheme/" + first_scheme().first_label() + "/" + first_label()
+    "scheme/" + first_scheme().first_label() + "/change/" + first_label()
   end
 
   property :label, Ns.rdfs("label"), String # version number used in for all resources in change
