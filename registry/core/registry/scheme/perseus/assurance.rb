@@ -23,7 +23,6 @@ AssuranceEnum.new do |e|
   e.label "processing"
   e.comment "Perseus assurance signal that describes data processing and calculations."
   # ----
-  e.name "Emissions", "Calculations performed by the CAP using half-hourly grid intensity and half-hourly consumption. Perseus requires this to be the sum of the products of the half-hourly consumption and the corresponding grid intensity at the meter postcode."
   e.name "SmartDCCOtherUser", "The values for consumption, tariff, export were passed through unchanged from those received from SmartDCC."
   e.name "VirtualMeter", "The values for consumption, tariff, export were derived from a shared meter reading."
 end
