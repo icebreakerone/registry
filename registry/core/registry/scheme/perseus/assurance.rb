@@ -1,17 +1,8 @@
 
 AssuranceEnum.new do |e|
-  e.enum_descriptive_name "PerseusAssuranceDataSource"
-  e.label "data-source"
-  e.comment "Perseus assurance signal that describes how the data was collected or estimated, as an indicator of overall reliability and accuracy of patterns of usage."
-  # ----
-  e.name "SmartMeter", "Unchanged data from a single smart meter"
-  e.name "VirtualMeter", "Data derived from partial or multiple meter readings"
-end
-
-AssuranceEnum.new do |e|
   e.enum_descriptive_name "PerseusAssuranceMissingData"
   e.label "missing-data"
-  e.comment "Perseus assurance signal that indicates whether the dataset has any missing data."
+  e.comment "Assurance signal that indicates whether the dataset has any missing data"
   # ----
   e.name "Complete", "Data is available for every measurement period"
   e.name "Missing", "Some measurement periods do not have data"
@@ -19,22 +10,22 @@ AssuranceEnum.new do |e|
 end
 
 AssuranceEnum.new do |e|
-  e.enum_descriptive_name "PerseusAssuranceProcessing"
-  e.label "processing"
-  e.comment "Perseus assurance signal that describes data processing and calculations."
+  e.enum_descriptive_name "PerseusOriginMethod"
+  e.label "origin-method"
+  e.comment "Assurance signal that describes data processing for data which originates outside the Scheme"
   # ----
-  e.name "Emissions", "Calculations performed by the CAP using half-hourly grid intensity and half-hourly consumption. Perseus requires this to be the sum of the products of the half-hourly consumption and the corresponding grid intensity at the meter postcode."
-  e.name "SmartDCCOtherUser", "The values for consumption, tariff, export were passed through unchanged from those received from SmartDCC."
-  e.name "VirtualMeter", "The values for consumption, tariff, export were derived from a shared meter reading."
+  e.name "SmartDCCOtherUser", "The values for consumption, tariff, export were passed through unchanged from those received from SmartDCC"
+  e.name "Exact", "The values for consumption, tariff, export have been processed to provide accurate half-hourly readings"
+  e.name "Derived", "The values for consumption, tariff, export were derived from another data source which may involve estimation"
 end
 
 AssuranceEnum.new do |e|
-  e.enum_descriptive_name "PerseusAssuranceProcessingVirtualMeter"
-  e.label "processing-virtual-meter"
-  e.comment "VirtualMeter additional assurance signal to describe the method used to allocate consumption to the virtual meter."
+  e.enum_descriptive_name "PerseusAssuranceOriginMethodDerived"
+  e.label "origin-method-derived"
+  e.comment "Assurance signal that describes the method used to derive data"
   # ----
-  e.name "AreaOccupied", "Proportional to the area occupied by this occupant within the area supplied by the meter."
-  e.name "NumberOfOccupants", "Proportional to the number of people using the area."
-  e.name "AdditionalMetering", "Measurement by an meter in addition to the supply meter."
-  e.name "Other", "Another method."
+  e.name "AreaOccupied", "Proportional to the area occupied by this occupant within the area supplied by the meter"
+  e.name "NumberOfOccupants", "Proportional to the number of people consuming the power"
+  e.name "AdditionalMetering", "Measurement by a meter in addition to the supply meter"
+  e.name "Other", "Another method"
 end

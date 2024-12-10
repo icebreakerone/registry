@@ -1,19 +1,20 @@
 As a reminder, ([Carbon accounting provider]) (“we”) need to have your consent to access the following data provided by [insert source of data]:
 
-Your electricity consumption (taken every 30 minutes) 
-Electricity tariff data
+* Your electricity consumption (taken every 30 minutes) 
+* Electricity tariff data
 
 In order to compute the following (“emissions data”):
 
-An estimate of your current GHG emissions, sourced from the preceding 12 months of data where available
-An estimate of projected emissions following any proposed intervention(s) that could be financed: a one-off estimate prior to the intervention, delivered once.
-A periodic update to corroborate projected emissions savings: derived GHG emissions at monthly resolution, delivered annually
+* An estimate of your current GHG emissions, sourced from the preceding 12 months of data where available
+* An estimate of projected emissions following any proposed intervention(s) that could be financed: a one-off estimate prior to the intervention, delivered once.
+* A periodic update to corroborate projected emissions savings: derived GHG emissions at monthly resolution, delivered annually
 
 and then use the emissions data as follows:
 
-Share it with your chosen financial service provider(s) to facilitate your access to green finance products from that provider or providers.
-Produce personalised recommendations of actions that your business could take to decarbonise (either financed or non-financed)
+* Share it with your chosen financial service provider(s) to facilitate your access to green finance products from that provider or providers.
+* Produce personalised recommendations of actions that your business could take to decarbonise (either financed or non-financed)
 
 Now, on behalf of [insert specific name of financial services provider], we seek your consent for them to process the emissions data:
-In order to consider your eligibility for green finance products
-If you are offered any green finance products as a consequence of our providing emissions data to them,  in order to allow them to manage your use of that product, including monitoring your compliance with any conditions imposed by it.
+
+* In order to consider your eligibility for green finance products
+* If you are offered any green finance products as a consequence of our providing emissions data to them, in order to allow them to manage your use of that product, including monitoring your compliance with any conditions imposed by it.
