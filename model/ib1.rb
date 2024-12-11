@@ -248,7 +248,7 @@ class Policy < VersionedSchemeResource
   type_name_for_url "policy"
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
-  property :policy_text, Ns.dcat("policyText"), PolicyFile
+  property :policy_text, Ns.dcat("policyText"), PolicyFile, PdfFile
 end
 
 # ---------------------------------------------------------------------------
