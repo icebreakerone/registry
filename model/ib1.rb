@@ -243,6 +243,16 @@ end
 
 # ---------------------------------------------------------------------------
 
+class Agreement < VersionedSchemeResource
+  rdf_class IB1::Policy.uri
+  type_name_for_url "agreement"
+  property :label, Ns.rdfs("label"), String
+  property :comment, Ns.rdfs("comment"), String
+  property :agreement_text, Ns.dcat("agreementText"), PdfFile
+end
+
+# ---------------------------------------------------------------------------
+
 class Policy < VersionedSchemeResource
   rdf_class IB1::Policy.uri
   type_name_for_url "policy"
