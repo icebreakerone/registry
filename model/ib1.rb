@@ -16,6 +16,7 @@ module IB1
   SensitivityClass = RdfClass.new(Ns.ib1("SensitivityClass"))
   SourceType = RdfClass.new(Ns.ib1("SourceType"))
   Process = RdfClass.new(Ns.ib1("Process"))
+  Agreement = RdfClass.new(Ns.ib1("Agreement"))
   Policy = RdfClass.new(Ns.ib1("Policy"))
 
   ASSURANCE_LEVELS = (1..4).map do |level|
@@ -243,12 +244,22 @@ end
 
 # ---------------------------------------------------------------------------
 
+class Agreement < VersionedSchemeResource
+  rdf_class IB1::Agreement.uri
+  type_name_for_url "agreement"
+  property :label, Ns.rdfs("label"), String
+  property :comment, Ns.rdfs("comment"), String
+  property :agreement_text, Ns.dcat("agreementText"), PdfFile
+end
+
+# ---------------------------------------------------------------------------
+
 class Policy < VersionedSchemeResource
   rdf_class IB1::Policy.uri
   type_name_for_url "policy"
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
-  property :policy_text, Ns.dcat("policyText"), PolicyFile
+  property :policy_text, Ns.dcat("policyText"), PolicyFile, PdfFile
 end
 
 # ---------------------------------------------------------------------------

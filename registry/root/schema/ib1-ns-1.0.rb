@@ -62,6 +62,11 @@ Context.within do |context|
   end
   versioned_classes << IB1::Process
 
+  RdfSchemaClass.new(IB1::Agreement.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+  versioned_classes << IB1::Agreement
+
   RdfSchemaClass.new(IB1::Policy.uri) do |c|
     c.sub_class_of RDFS::Resource
   end
@@ -164,6 +169,12 @@ Context.within do |context|
     p.comment "Permission text which must be used to seek permission from an end user."
     p.range RDFS::Resource
     p.domain IB1::Licence
+  end
+
+  RdfSchemaProperty.new(Ns.ib1("agreementText")) do |p|
+    p.comment "URL of the agreement terms."
+    p.range RDFS::Resource
+    p.domain IB1::Agreement
   end
 
   RdfSchemaProperty.new(Ns.ib1("policyText")) do |p|

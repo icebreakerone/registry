@@ -4,3 +4,9 @@ Policy.new do |p|
   p.comment "Use of Perseus consent text in Scheme data transfers"
   p.policy_text PolicyFile.name("data-licence", INITIAL_REGISTRY_VERSION)
 end
+
+Policy.new do |p|
+  p.label "information-provision"
+  p.comment "Information Provision"
+  p.policy_text PdfFile.name("information-provision-policy", INITIAL_REGISTRY_VERSION)
+end

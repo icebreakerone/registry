@@ -34,6 +34,15 @@ LicenceTermsFile = MarkdownFile.make_class("terms")
 LicencePermissionTextFile = MarkdownFile.make_class("permission-text")
 PolicyFile = MarkdownFile.make_class("policy")
 
+class PdfFile < RdfUri
+  def self.name(api_name, version)
+    raise "Bad PDF name" unless api_name =~ /\A[a-z0-9-]+\z/
+    raise "Bad version" unless version =~ /\A([0-9]+-)*[0-9]+\z/
+    name = "pdf/#{api_name}@#{version}.pdf"
+    RegistryFiles.find_in_context_stack(name, PdfFile)
+  end
+end
+
 # ---------------------------------------------------------------------------
 
 class RegistryFiles
@@ -86,6 +95,8 @@ class RegistryFiles
         validate_openapi(contents, name, version)
       elsif MarkdownFile.allowed_directory?(directory) && extension == "txt"
         validate_markdown(contents)
+      elsif directory == "pdf" && extension == "pdf"
+        validate_pdf(contents)
       else
         raise "Unknown file type for validation: #{filename}"
       end
@@ -115,6 +126,10 @@ class RegistryFiles
   
   def validate_markdown(contents)
     # No validation needed
+  end
+
+  def validate_pdf(contents)
+    # TODO: Validation
   end
 
 end
