@@ -7,7 +7,7 @@ SchemeCatalogRequirements.new do |r|
   r.required_metadata do |m|
     m.endpoint_description OpenAPIFile.name("consumption-data", INITIAL_REGISTRY_VERSION)
     m.heartbeat_description OpenAPIFile.name("heartbeat", INITIAL_REGISTRY_VERSION)
-    m.licence Licence.at("scheme/perseus/licence/energy-consumption-data/#{INITIAL_REGISTRY_VERSION}")
+    m.license License.at("scheme/perseus/license/energy-consumption-data/#{INITIAL_REGISTRY_VERSION}")
     m.sensitivity_class SensitivityClass::IB1_SP
     m.dataset_assurance AssuranceLevel::Level2
     m.dataset_assurance AssuranceLevel::Level3
@@ -27,7 +27,7 @@ SchemeCatalogRequirements.new do |r|
     # TODO: OpenAPI file for emissions report
     # m.endpoint_description RegistryFiles.openapi("emissions-report", INITIAL_REGISTRY_VERSION)
     m.heartbeat_description OpenAPIFile.name("heartbeat", INITIAL_REGISTRY_VERSION)
-    m.licence Licence.at("scheme/perseus/licence/emissions-report/#{INITIAL_REGISTRY_VERSION}")
+    m.license License.at("scheme/perseus/license/emissions-report/#{INITIAL_REGISTRY_VERSION}")
     m.sensitivity_class SensitivityClass::IB1_SP
     m.dataset_assurance AssuranceLevel::Level2
     m.dataset_assurance AssuranceLevel::Level3

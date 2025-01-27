@@ -30,8 +30,8 @@ class MarkdownFile < RdfUri
   end
 end
 
-LicenceTermsFile = MarkdownFile.make_class("terms")
-LicencePermissionTextFile = MarkdownFile.make_class("permission-text")
+LicenseTermsFile = MarkdownFile.make_class("terms")
+LicensePermissionTextFile = MarkdownFile.make_class("permission-text")
 PolicyFile = MarkdownFile.make_class("policy")
 
 class PdfFile < RdfUri

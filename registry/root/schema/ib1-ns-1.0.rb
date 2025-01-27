@@ -40,10 +40,10 @@ Context.within do |context|
     c.sub_class_of RDFS::Resource
   end
 
-  RdfSchemaClass.new(IB1::Licence.uri) do |c|
+  RdfSchemaClass.new(IB1::License.uri) do |c|
     c.sub_class_of RDFS::Resource
   end
-  versioned_classes << IB1::Licence
+  versioned_classes << IB1::License
 
   RdfSchemaClass.new(IB1::AssuranceLevel.uri) do |c|
     c.sub_class_of RDFS::Resource
@@ -81,7 +81,7 @@ Context.within do |context|
     p.domain DCAT::DataService
     p.domain IB1::Role
     p.domain IB1::SchemeCatalogRequirements
-    p.domain IB1::Licence
+    p.domain IB1::License
   end
 
   RdfSchemaProperty.new(Ns.ib1("scheme")) do |p|
@@ -91,7 +91,7 @@ Context.within do |context|
     p.domain DCAT::DataService
     p.domain IB1::Role
     p.domain IB1::SchemeCatalogRequirements
-    p.domain IB1::Licence
+    p.domain IB1::License
   end
 
   # -------------------------------------------------------------------------
@@ -141,34 +141,34 @@ Context.within do |context|
 
   # -------------------------------------------------------------------------
 
-  RdfSchemaProperty.new(Ns.ib1("licenceTerms")) do |p|
-    p.comment "URL of the licence terms."
+  RdfSchemaProperty.new(Ns.ib1("licenseTerms")) do |p|
+    p.comment "URL of the license terms."
     p.range RDFS::Resource
-    p.domain IB1::Licence
+    p.domain IB1::License
   end
 
-  RdfSchemaProperty.new(Ns.ib1("licenceDuration")) do |p|
-    p.comment "Licence duration as a structured string."
+  RdfSchemaProperty.new(Ns.ib1("licenseDuration")) do |p|
+    p.comment "License duration as a structured string."
     p.range RDFS::Literal
-    p.domain IB1::Licence
+    p.domain IB1::License
   end
 
   RdfSchemaProperty.new(Ns.ib1("permittedUse")) do |p|
-    p.comment "Permitted use allowed by a licence."
+    p.comment "Permitted use allowed by a license."
     p.range RDFS::Literal
-    p.domain IB1::Licence
+    p.domain IB1::License
   end
 
   RdfSchemaProperty.new(Ns.ib1("additionalCondition")) do |p|
-    p.comment "Additional conditions for a licence."
+    p.comment "Additional conditions for a license."
     p.range RDFS::Literal
-    p.domain IB1::Licence
+    p.domain IB1::License
   end
 
   RdfSchemaProperty.new(Ns.ib1("permissionText")) do |p|
     p.comment "Permission text which must be used to seek permission from an end user."
     p.range RDFS::Resource
-    p.domain IB1::Licence
+    p.domain IB1::License
   end
 
   RdfSchemaProperty.new(Ns.ib1("agreementText")) do |p|
@@ -178,7 +178,7 @@ Context.within do |context|
   end
 
   RdfSchemaProperty.new(Ns.ib1("policyText")) do |p|
-    p.comment "URL of the licence terms."
+    p.comment "URL of the license terms."
     p.range RDFS::Resource
     p.domain IB1::Policy
   end

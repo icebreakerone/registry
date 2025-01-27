@@ -11,7 +11,7 @@ module IB1
   Role = RdfClass.new(Ns.ib1("Role"))
   SchemeCatalogRequirements = RdfClass.new(Ns.ib1("SchemeCatalogRequirements"))
   RequiredMetadata = RdfClass.new(Ns.ib1("RequiredMetadata"))
-  Licence = RdfClass.new(Ns.ib1("Licence"))
+  License = RdfClass.new(Ns.ib1("License"))
   AssuranceLevel = RdfClass.new(Ns.ib1("AssuranceLevel"))
   SensitivityClass = RdfClass.new(Ns.ib1("SensitivityClass"))
   SourceType = RdfClass.new(Ns.ib1("SourceType"))
@@ -24,7 +24,7 @@ module IB1
   end
   SENSITIVITY_CLASSES = [
     ['IB1-C', 'Closed data - datasets which must not be shared.'],
-    ['IB1-O', 'Open Data - full open access, under an open data licence. Free to use, by anyone, for any purpose.'],
+    ['IB1-O', 'Open Data - full open access, under an open data license. Free to use, by anyone, for any purpose.'],
     ['IB1-SA', 'Shared data - datasets which can/could be shared, but which require the user to agree to standard T&Cs to access. May include some openly licensed materials (e.g. CC BY-SA or GNU AGPLv3).'],
     ['IB1-SB', 'Shared data - datasets which can/could be shared, but currently require some bilateral contract negotiation. May include data currently shared on the basis of group-based access. May include aggregated, anonymised or pseudonymised data about individuals.'],
     ['IB1-SP', 'Datasets which include personal data, requiring appropriate consent to share, or other legal bases to data processing, as defined by the UK DPA 2018.']
@@ -174,16 +174,16 @@ end
 
 # ---------------------------------------------------------------------------
 
-class Licence < VersionedSchemeResource
-  rdf_class IB1::Licence.uri
-  type_name_for_url :licence
+class License < VersionedSchemeResource
+  rdf_class IB1::License.uri
+  type_name_for_url :license
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
-  property :licence_terms, Ns.ib1("licenceTerms"), LicenceTermsFile
-  property :licence_duration, Ns.ib1("licenceDuration"), String
+  property :license_terms, Ns.ib1("licenseTerms"), LicenseTermsFile
+  property :license_duration, Ns.ib1("licenseDuration"), String
   property :permitted_use, Ns.ib1("permittedUse"), String
   property :additional_condition, Ns.ib1("additionalCondition"), String
-  property :permission_text, Ns.ib1("permissionText"), LicencePermissionTextFile
+  property :permission_text, Ns.ib1("permissionText"), LicensePermissionTextFile
 end
 
 # ---------------------------------------------------------------------------
@@ -279,7 +279,7 @@ class RequiredMetadata < SchemeResourceWithVisibleProperties
   property :endpoint_description, Ns.dcat("endpointDescription"), OpenAPIFile
   property :heartbeat_description, Ns.dcat("heartbeatDescription"), OpenAPIFile
   property :role_required_to_access, Ns.ib1("roleRequiredToAccess"), Role
-  property :licence, Ns.dcterms("licence"), Licence
+  property :license, Ns.dcterms("license"), License
   property :sensitivity_class, Ns.ib1("sensitivityClass"), SensitivityClass
   property :dataset_assurance, Ns.ib1("datasetAssurance"), AssuranceLevel
 end
