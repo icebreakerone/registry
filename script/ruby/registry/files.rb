@@ -36,7 +36,7 @@ PolicyFile = MarkdownFile.make_class("policy")
 
 class PdfFile < RdfUri
   def self.name(api_name, version)
-    raise "Bad PDF name" unless api_name =~ /\A[a-z0-9-]+\z/
+    raise "Bad PDF name" unless api_name =~ /\A[A-Za-z0-9-]+\z/
     raise "Bad version" unless version =~ /\A([0-9]+-)*[0-9]+\z/
     name = "pdf/#{api_name}@#{version}.pdf"
     RegistryFiles.find_in_context_stack(name, PdfFile)
@@ -87,7 +87,7 @@ class RegistryFiles
       pathname = "#{@source}/#{filename}"
       next if File.directory? pathname
       contents = File.read(pathname)
-      unless filename =~ /\A([a-z0-9-]+)\/([a-z0-9-]+)\@(([0-9]+-?)+)\.([a-z]+)\z/
+      unless filename =~ /\A([a-z0-9-]+)\/([A-Za-z0-9-]+)\@(([0-9]+-?)+)\.([a-z]+)\z/
         raise "Filename doesn't match known pattern for validation: #{filename}"
       end
       directory, name, version, extension = $1, $2, $3, $5
