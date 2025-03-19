@@ -49,6 +49,10 @@ Context.within do |context|
     c.sub_class_of RDFS::Resource
   end
 
+  RdfSchemaClass.new(IB1::SensitivityClassRequirement.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+
   RdfSchemaClass.new(IB1::SensitivityClass.uri) do |c|
     c.sub_class_of RDFS::Resource
   end
@@ -189,6 +193,12 @@ Context.within do |context|
     p.domain DCAT::Dataset
     p.domain DCAT::DataService
     p.domain IB1::RequiredMetadata
+  end
+
+  RdfSchemaProperty.new(Ns.ib1("sensitivityClassRequirement")) do |p|
+    p.comment "Sensitivity class for a dataset."
+    p.range IB1::SensitivityClassRequirement
+    p.domain IB1::SensitivityClass
   end
 
   RdfSchemaProperty.new(Ns.ib1("sensitivityClass")) do |p|

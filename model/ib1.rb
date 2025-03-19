@@ -15,6 +15,7 @@ module IB1
   License = RdfClass.new(Ns.ib1("License"))
   DatasetAssuranceLevel = RdfClass.new(Ns.ib1("DatasetAssuranceLevel"))
   SensitivityClass = RdfClass.new(Ns.ib1("SensitivityClass"))
+  SensitivityClassRequirement = RdfClass.new(Ns.ib1("SensitivityClassRequirement"))
   SourceType = RdfClass.new(Ns.ib1("SourceType"))
   Process = RdfClass.new(Ns.ib1("Process"))
   Agreement = RdfClass.new(Ns.ib1("Agreement"))
@@ -28,9 +29,15 @@ module IB1
   GENERIC_SENSITIVITY_CLASSES = [
     ['IB1-C', 'Closed data - datasets which must not be shared.'],
     ['IB1-O', 'Open Data - full open access, under an open data license. Free to use, by anyone, for any purpose.'],
-    ['IB1-SA', 'Shared data - datasets which can/could be shared, but which require the user to agree to standard T&Cs to access. May include some openly licensed materials (e.g. CC BY-SA or GNU AGPLv3).'],
-    ['IB1-SB', 'Shared data - datasets which can/could be shared, but currently require some bilateral contract negotiation. May include data currently shared on the basis of group-based access. May include aggregated, anonymised or pseudonymised data about individuals.'],
-    ['IB1-SP', 'Datasets which include personal data, requiring appropriate consent to share, or other legal bases to data processing, as defined by the UK DPA 2018.']
+    ['IB1-SA', 'Shared data - datasets which can/could be shared, but which require the user to agree to standard T&Cs to access. May include some openly licensed materials (e.g. CC BY-SA or GNU AGPLv3).', :Authentication, :FAPI],
+    ['IB1-SB', 'Shared data - datasets which can/could be shared, but currently require some bilateral contract negotiation. May include data currently shared on the basis of group-based access. May include aggregated, anonymised or pseudonymised data about individuals.', :Authentication, :FAPI],
+    ['IB1-SP', 'Datasets which include personal data, requiring appropriate consent to share, or other legal bases to data processing, as defined by the UK DPA 2018.', :Authentication, :FAPI, :EndUserPermission]
+  ]
+  # URIs for requirements as SensitivityClassRequirement::Authentication ...
+  SENSITIVITY_CLASS_REQUIREMENTS = [
+    ['Authentication', 'Access requires authentication'],
+    ['FAPI', 'Access requires use of FAPI compliant APIs'],
+    ['EndUserPermission', 'Access requires permission from end user']
   ]
 end
 
@@ -223,6 +230,20 @@ end
 
 # ---------------------------------------------------------------------------
 
+class SensitivityClassRequirement < RegistryResource
+  def generate_uri_suffix
+    "sensitivity-class-requirement/" + first_label()
+  end
+  rdf_class IB1::SensitivityClassRequirement.uri
+  property :label, Ns.rdfs("label"), String
+  property :comment, Ns.rdfs("comment"), String
+end
+IB1::SENSITIVITY_CLASS_REQUIREMENTS.each do |label, comment|
+  uri = Ns.ib1root("sensitivity-class-requirement/#{label}").as(SensitivityClassRequirement::URI)
+  SensitivityClassRequirement.const_set(label.to_sym, uri)
+end
+
+
 class SensitivityClass < RegistryResource # Doesn't need to be in a Scheme or TrustFramework
   def generate_uri_suffix
     "sensitivity-class/" + first_label()
@@ -232,6 +253,7 @@ class SensitivityClass < RegistryResource # Doesn't need to be in a Scheme or Tr
   property :comment, Ns.rdfs("comment"), String
   property :trust_framework, Ns.ib1("trustFramework"), TrustFramework
   property :scheme, Ns.ib1("scheme"), Scheme
+  property :sensitivity_class_requirement, Ns.ib1("sensitivityClassRequirement"), SensitivityClassRequirement
 end
 IB1::GENERIC_SENSITIVITY_CLASSES.each do |label, comment|
   uri = Ns.ib1root("sensitivity-class/#{label}").as(SensitivityClass::URI)
