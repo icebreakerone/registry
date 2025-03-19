@@ -13,4 +13,7 @@ begin
 end
 
 # Registry resources
+require "#{REGISTRY_SOURCE}/registry/dataset-assurance-levels.rb"
+require "#{REGISTRY_SOURCE}/registry/sensitivity-classes.rb"
+
 require "#{REGISTRY_SOURCE}/registry/trust-frameworks.rb"

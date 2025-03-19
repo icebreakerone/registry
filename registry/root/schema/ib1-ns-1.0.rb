@@ -45,7 +45,7 @@ Context.within do |context|
   end
   versioned_classes << IB1::License
 
-  RdfSchemaClass.new(IB1::AssuranceLevel.uri) do |c|
+  RdfSchemaClass.new(IB1::DatasetAssuranceLevel.uri) do |c|
     c.sub_class_of RDFS::Resource
   end
 
@@ -185,7 +185,7 @@ Context.within do |context|
 
   RdfSchemaProperty.new(Ns.ib1("datasetAssurance")) do |p|
     p.comment "Assurance level for a dataset."
-    p.range IB1::AssuranceLevel
+    p.range IB1::DatasetAssuranceLevel
     p.domain DCAT::Dataset
     p.domain DCAT::DataService
     p.domain IB1::RequiredMetadata
@@ -272,16 +272,3 @@ Context.within do |context|
 
 end
 
-IB1::ASSURANCE_LEVELS.each do |label, comment|
-  AssuranceLevel.new(Ns.ib1(label)) do |l|
-    l.label label
-    l.comment comment
-  end
-end
-
-IB1::SENSITIVITY_CLASSES.each do |label, comment|
-  SensitivityClass.new(Ns.ib1(label)) do |c|
-    c.label label
-    c.comment "#{comment} (#{label})"
-  end
-end

@@ -2,6 +2,7 @@
 
 # TODO: Configurable prefix
 Ns.namespace(:ib1, "https://registry.trust.ib1.org/ns/1.0#")
+Ns.namespace(:ib1root, "https://registry.trust.ib1.org/")
 
 module IB1
   RegistryChange = RdfClass.new(Ns.ib1("RegistryChange"))
@@ -12,17 +13,19 @@ module IB1
   SchemeCatalogRequirements = RdfClass.new(Ns.ib1("SchemeCatalogRequirements"))
   RequiredMetadata = RdfClass.new(Ns.ib1("RequiredMetadata"))
   License = RdfClass.new(Ns.ib1("License"))
-  AssuranceLevel = RdfClass.new(Ns.ib1("AssuranceLevel"))
+  DatasetAssuranceLevel = RdfClass.new(Ns.ib1("DatasetAssuranceLevel"))
   SensitivityClass = RdfClass.new(Ns.ib1("SensitivityClass"))
   SourceType = RdfClass.new(Ns.ib1("SourceType"))
   Process = RdfClass.new(Ns.ib1("Process"))
   Agreement = RdfClass.new(Ns.ib1("Agreement"))
   Policy = RdfClass.new(Ns.ib1("Policy"))
 
-  ASSURANCE_LEVELS = (1..4).map do |level|
-    ["AssuranceLevel#{level}", "Assurance level #{level}"]
+  # URIs for generic assurance levels as DatasetAssuranceLevel::GenericLevel1 ... 4
+  GENERIC_ASSURANCE_LEVELS = (1..4).map do |level|
+    ["Level#{level}", "Assurance level #{level}"]
   end
-  SENSITIVITY_CLASSES = [
+  # URIs for generic sensitivity classes as SensitivityClass::IB1_C etc (hyphen replaced with underscore)
+  GENERIC_SENSITIVITY_CLASSES = [
     ['IB1-C', 'Closed data - datasets which must not be shared.'],
     ['IB1-O', 'Open Data - full open access, under an open data license. Free to use, by anyone, for any purpose.'],
     ['IB1-SA', 'Shared data - datasets which can/could be shared, but which require the user to agree to standard T&Cs to access. May include some openly licensed materials (e.g. CC BY-SA or GNU AGPLv3).'],
@@ -188,16 +191,19 @@ end
 
 # ---------------------------------------------------------------------------
 
-class AssuranceLevel < Resource # Doesn't need to be in a Scheme or TrustFramework
-  rdf_class IB1::AssuranceLevel.uri
+class DatasetAssuranceLevel < RegistryResource
+  def generate_uri_suffix
+    "dataset-assurance-level/" + first_label()
+  end
+  rdf_class IB1::DatasetAssuranceLevel.uri
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
   property :trust_framework, Ns.ib1("trustFramework"), TrustFramework
   property :scheme, Ns.ib1("scheme"), Scheme
 end
-IB1::ASSURANCE_LEVELS.each do |label, comment|
-  uri = Ns.ib1(label).as(AssuranceLevel::URI)
-  AssuranceLevel.const_set(label.sub(/\AAssurance/,'').to_sym, uri)
+IB1::GENERIC_ASSURANCE_LEVELS.each do |label, comment|
+  uri = Ns.ib1root("dataset-assurance-level/#{label}").as(DatasetAssuranceLevel::URI)
+  DatasetAssuranceLevel.const_set("Generic#{label}".to_sym, uri)
 end
 
 # ---------------------------------------------------------------------------
@@ -217,15 +223,18 @@ end
 
 # ---------------------------------------------------------------------------
 
-class SensitivityClass < Resource # Doesn't need to be in a Scheme or TrustFramework
+class SensitivityClass < RegistryResource # Doesn't need to be in a Scheme or TrustFramework
+  def generate_uri_suffix
+    "sensitivity-class/" + first_label()
+  end
   rdf_class IB1::SensitivityClass.uri
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
   property :trust_framework, Ns.ib1("trustFramework"), TrustFramework
   property :scheme, Ns.ib1("scheme"), Scheme
 end
-IB1::SENSITIVITY_CLASSES.each do |label, comment|
-  uri = Ns.ib1(label).as(SensitivityClass::URI)
+IB1::GENERIC_SENSITIVITY_CLASSES.each do |label, comment|
+  uri = Ns.ib1root("sensitivity-class/#{label}").as(SensitivityClass::URI)
   SensitivityClass.const_set(label.sub(/\-/,'_').to_sym, uri)
 end
 
@@ -281,7 +290,7 @@ class RequiredMetadata < SchemeResourceWithVisibleProperties
   property :role_required_to_access, Ns.ib1("roleRequiredToAccess"), Role
   property :license, Ns.dcterms("license"), License
   property :sensitivity_class, Ns.ib1("sensitivityClass"), SensitivityClass
-  property :dataset_assurance, Ns.ib1("datasetAssurance"), AssuranceLevel
+  property :dataset_assurance, Ns.ib1("datasetAssurance"), DatasetAssuranceLevel
 end
 
 class SchemeCatalogRequirements < VersionedSchemeResource
