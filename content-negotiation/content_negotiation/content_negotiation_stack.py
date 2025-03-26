@@ -1,11 +1,17 @@
-from aws_cdk import Stack, RemovalPolicy, CfnOutput
-from aws_cdk import aws_lambda as _lambda
-from aws_cdk import aws_iam as iam
-from aws_cdk import aws_s3 as s3
-from aws_cdk import aws_cloudfront as cloudfront
-from aws_cdk import aws_cloudfront_origins as origins
-from aws_cdk import aws_certificatemanager as acm
-from aws_cdk import aws_s3_deployment as s3_deployment
+from aws_cdk import (
+    Stack,
+    RemovalPolicy,
+    CfnOutput,
+    aws_lambda as _lambda,
+    aws_iam as iam,
+    aws_s3 as s3,
+    aws_cloudfront as cloudfront,
+    aws_cloudfront_origins as origins,
+    aws_certificatemanager as acm,
+    aws_s3_deployment as s3_deployment,
+    aws_route53 as route53,
+    aws_route53_targets as targets,
+)
 from constructs import Construct
 
 
@@ -84,6 +90,20 @@ class ContentNegotiationStack(Stack):
             ),
             domain_names=[domain_name],
             certificate=certificate,
+        )
+
+        hosted_zone = route53.HostedZone.from_lookup(
+            self, "HostedZone", domain_name="trust.ib1.org"
+        )
+
+        route53.ARecord(
+            self,
+            "SiteAliasRecord",
+            record_name=domain_name,
+            target=route53.RecordTarget.from_alias(
+                targets.CloudFrontTarget(distribution)
+            ),
+            zone=hosted_zone,
         )
 
         # Deploy all files
