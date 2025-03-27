@@ -24,15 +24,18 @@ Context.within do |context|
     end
   end
 
-#  context.files "#{File.dirname(__FILE__)}/files", "scheme/assured-open-data"
+context.files "#{File.dirname(__FILE__)}/files", "scheme/assured-open-data"
 
+# Assured Open Data publication doesn't require roles
 #  require "#{File.dirname(__FILE__)}/roles.rb"
+# Scheme doesn't mandate which Open Data licences are used
 #  require "#{File.dirname(__FILE__)}/licenses.rb"
 #  require "#{File.dirname(__FILE__)}/scheme-catalog-requirements.rb"
 #  require "#{File.dirname(__FILE__)}/provenance.rb"
 #  require "#{File.dirname(__FILE__)}/assurance.rb"
 #  require "#{File.dirname(__FILE__)}/processes.rb"
-#  require "#{File.dirname(__FILE__)}/agreements.rb"
+
+require "#{File.dirname(__FILE__)}/agreements.rb"
 #  require "#{File.dirname(__FILE__)}/policies.rb"
 
 end
