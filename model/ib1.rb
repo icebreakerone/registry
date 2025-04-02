@@ -280,7 +280,7 @@ class Agreement < VersionedSchemeResource
   type_name_for_url "agreement"
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
-  property :agreement_text, Ns.dcat("agreementText"), PdfFile
+  property :agreement_text, Ns.ib1("agreementText"), PdfFile
 end
 
 # ---------------------------------------------------------------------------
@@ -290,7 +290,7 @@ class Policy < VersionedSchemeResource
   type_name_for_url "policy"
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
-  property :policy_text, Ns.dcat("policyText"), PolicyFile, PdfFile
+  property :policy_text, Ns.ib1("policyText"), PolicyFile, PdfFile
 end
 
 # ---------------------------------------------------------------------------
