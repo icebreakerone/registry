@@ -187,6 +187,12 @@ Context.within do |context|
     p.domain IB1::Policy
   end
 
+  RdfSchemaProperty.new(Ns.ib1("processDescription")) do |p|
+    p.comment "Formal human readable description of the Process."
+    p.range RDFS::Resource
+    p.domain IB1::Process
+  end
+
   RdfSchemaProperty.new(Ns.ib1("datasetAssurance")) do |p|
     p.comment "Assurance level for a dataset."
     p.range IB1::DatasetAssuranceLevel
@@ -196,7 +202,7 @@ Context.within do |context|
   end
 
   RdfSchemaProperty.new(Ns.ib1("sensitivityClassRequirement")) do |p|
-    p.comment "Sensitivity class for a dataset."
+    p.comment "Requirements for data processed with a Sensitivity class."
     p.range IB1::SensitivityClassRequirement
     p.domain IB1::SensitivityClass
   end

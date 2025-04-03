@@ -270,7 +270,7 @@ class ProcessDescription < VersionedSchemeResource # Not Process because name cl
   type_name_for_url "process"
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
-  # TODO: Registry description of Processes
+  property :process_description, Ns.ib1("processDescription"), String
 end
 
 # ---------------------------------------------------------------------------
