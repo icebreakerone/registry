@@ -9,6 +9,7 @@ module IB1
   TrustFramework = RdfClass.new(Ns.ib1("TrustFramework"))
   TrustFrameworkGroup = RdfClass.new(Ns.ib1("TrustFrameworkGroup"))
   Scheme = RdfClass.new(Ns.ib1("Scheme"))
+  TechnicalProfile = RdfClass.new(Ns.ib1("TechnicalProfile"))
   Role = RdfClass.new(Ns.ib1("Role"))
   SchemeCatalogRequirements = RdfClass.new(Ns.ib1("SchemeCatalogRequirements"))
   RequiredMetadata = RdfClass.new(Ns.ib1("RequiredMetadata"))
@@ -136,6 +137,32 @@ class VersionedSchemeResource < SchemeResource
   property :prohibited_after, Ns.ib1("prohibitedAfter"), VersionedSchemeResource
   property :has_current_version, Ns.ib1("hasCurrentVersion"), VersionedSchemeResource
   property :previous_version, Ns.ib1("previousVersion"), VersionedSchemeResource
+end
+
+# ---------------------------------------------------------------------------
+
+class TechnicalProfile < VersionedSchemeResource
+  rdf_class IB1::TechnicalProfile.uri
+  type_name_for_url "technical-profile".to_sym
+  property :label, Ns.rdfs("label"), String
+  property :comment, Ns.rdfs("comment"), String
+  property :uses, Ns.ib1("uses"), RdfUri
+end
+
+# TODO: Remove this hacky additional definition for TF profiles when the publication process does versioning automatically.
+class TechnicalProfileTF < RegistryResource
+  def generate_uri_suffix
+    "technical-profile/" + self.first_label.to_s + "/" + self.first_version.to_s
+  end
+  def self.class_human_readable_name
+    "TechnicalProfile"
+  end
+  rdf_class IB1::TechnicalProfile.uri
+  property :label, Ns.rdfs("label"), String
+  property :comment, Ns.rdfs("comment"), String
+  property :trust_framework, Ns.ib1("trustFramework"), TrustFramework
+  property :version, Ns.ib1("version"), String
+  property :uses, Ns.ib1("uses"), RdfUri
 end
 
 # ---------------------------------------------------------------------------
@@ -270,7 +297,7 @@ class ProcessDescription < VersionedSchemeResource # Not Process because name cl
   type_name_for_url "process"
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
-  # TODO: Registry description of Processes
+  property :process_description, Ns.ib1("processDescription"), String
 end
 
 # ---------------------------------------------------------------------------

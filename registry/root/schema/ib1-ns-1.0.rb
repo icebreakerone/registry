@@ -26,6 +26,14 @@ Context.within do |context|
   end
   # TODO: Properties for TrustFrameworkGroup
 
+  RdfSchemaClass.new(IB1::Scheme.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+
+  RdfSchemaClass.new(IB1::TechnicalProfile.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+
   RdfSchemaClass.new(IB1::Role.uri) do |c|
     c.sub_class_of RDFS::Resource
   end
@@ -145,6 +153,12 @@ Context.within do |context|
 
   # -------------------------------------------------------------------------
 
+  RdfSchemaProperty.new(Ns.ib1("uses")) do |p|
+    p.comment "URL of a document that is used by the entity represented by the resource."
+    p.range RDFS::Resource
+    p.domain IB1::TechnicalProfile
+  end
+
   RdfSchemaProperty.new(Ns.ib1("licenseTerms")) do |p|
     p.comment "URL of the license terms."
     p.range RDFS::Resource
@@ -187,6 +201,12 @@ Context.within do |context|
     p.domain IB1::Policy
   end
 
+  RdfSchemaProperty.new(Ns.ib1("processDescription")) do |p|
+    p.comment "Formal human readable description of the Process."
+    p.range RDFS::Resource
+    p.domain IB1::Process
+  end
+
   RdfSchemaProperty.new(Ns.ib1("datasetAssurance")) do |p|
     p.comment "Assurance level for a dataset."
     p.range IB1::DatasetAssuranceLevel
@@ -196,7 +216,7 @@ Context.within do |context|
   end
 
   RdfSchemaProperty.new(Ns.ib1("sensitivityClassRequirement")) do |p|
-    p.comment "Sensitivity class for a dataset."
+    p.comment "Requirements for data processed with a Sensitivity class."
     p.range IB1::SensitivityClassRequirement
     p.domain IB1::SensitivityClass
   end
