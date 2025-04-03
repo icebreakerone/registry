@@ -24,6 +24,28 @@ Context.within do |context|
     end
   end
 
+  TechnicalProfile.new do |p|
+    p.label "perseus"
+    p.comment "Perseus Technical Profile"
+    p.uses RdfUri.new("https://specification.docs.ib1.org/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/changelog/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/registry/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/registry-versioning/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/registry-process-resources/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/machine-readable-data-licenses/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/role-based-access-control/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/member-identity-digital-certificates/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/baseline-tls-configuration/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/oauth-with-member-identity-certificates/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/message-delivery-to-applications/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/withdrawal-of-permission/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/permission-records/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/provenance-records/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/data-catalog-records/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/generic-dataset-assurance-levels/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/generic-sensitivity-classes/1.0/", nil)
+  end
+
   context.files "#{File.dirname(__FILE__)}/files", "scheme/perseus"
 
   require "#{File.dirname(__FILE__)}/roles.rb"
