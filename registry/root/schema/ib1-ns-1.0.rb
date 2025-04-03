@@ -26,6 +26,14 @@ Context.within do |context|
   end
   # TODO: Properties for TrustFrameworkGroup
 
+  RdfSchemaClass.new(IB1::Scheme.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+
+  RdfSchemaClass.new(IB1::TechnicalProfile.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+
   RdfSchemaClass.new(IB1::Role.uri) do |c|
     c.sub_class_of RDFS::Resource
   end
@@ -144,6 +152,12 @@ Context.within do |context|
   end
 
   # -------------------------------------------------------------------------
+
+  RdfSchemaProperty.new(Ns.ib1("uses")) do |p|
+    p.comment "URL of a document that is used by the entity represented by the resource."
+    p.range RDFS::Resource
+    p.domain IB1::TechnicalProfile
+  end
 
   RdfSchemaProperty.new(Ns.ib1("licenseTerms")) do |p|
     p.comment "URL of the license terms."
