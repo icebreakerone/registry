@@ -27,8 +27,6 @@ Context.within do |context|
   TechnicalProfile.new do |p|
     p.label "perseus"
     p.comment "Perseus Technical Profile"
-    p.uses RdfUri.new("https://specification.docs.ib1.org/", nil)
-    p.uses RdfUri.new("https://specification.docs.ib1.org/changelog/", nil)
     p.uses RdfUri.new("https://specification.docs.ib1.org/registry/1.0/", nil)
     p.uses RdfUri.new("https://specification.docs.ib1.org/registry-versioning/1.0/", nil)
     p.uses RdfUri.new("https://specification.docs.ib1.org/registry-process-resources/1.0/", nil)

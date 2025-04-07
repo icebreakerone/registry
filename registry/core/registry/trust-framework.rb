@@ -14,8 +14,6 @@ Context.within do |context|
     p.label "core"
     p.comment "Core Trust Framework Technical Profile"
     p.version "2024-09-04"
-    p.uses RdfUri.new("https://specification.docs.ib1.org/", nil)
-    p.uses RdfUri.new("https://specification.docs.ib1.org/changelog/", nil)
     p.uses RdfUri.new("https://specification.docs.ib1.org/registry/1.0/", nil)
     p.uses RdfUri.new("https://specification.docs.ib1.org/registry-versioning/1.0/", nil)
     p.uses RdfUri.new("https://specification.docs.ib1.org/registry-process-resources/1.0/", nil)
