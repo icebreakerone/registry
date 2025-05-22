@@ -211,6 +211,13 @@ Context.within do |context|
     p.domain IB1::Policy
   end
 
+  # TODO: Defined by Assured Open Data -- should it be in a different file?
+  RdfSchemaProperty.new(Ns.ib1("allowedLicense")) do |p|
+    p.comment "URL of an allowed license."
+    p.range RDFS::Resource
+    p.domain IB1::Policy
+  end
+
   RdfSchemaProperty.new(Ns.ib1("processDescription")) do |p|
     p.comment "Formal human readable description of the Process."
     p.range RDFS::Resource

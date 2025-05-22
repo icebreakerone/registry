@@ -376,3 +376,9 @@ class SchemeCatalogRequirements < VersionedSchemeResource
   property :require_any_value, Ns.ib1("requireAnyValue"), RequiredMetadata::PropertyURI
   property :require_absence_of, Ns.ib1("requireAbsenceOf"), RequiredMetadata::PropertyURI
 end
+
+# ---------------------------------------------------------------------------
+
+# Additional models defined by Specifications
+require "#{File.dirname(__FILE__)}/ib1/specification/open-data.rb"
+require "#{File.dirname(__FILE__)}/ib1/specification/assured-open-data.rb"
