@@ -127,7 +127,7 @@ class Resource
     subclass.const_set(:URI, Class.new(RdfUri))
   end
 
-  def initialize(uri)
+  def initialize(uri = nil)
     @uri = uri
     @properties = [[RDF::Type.uri, self.class.const_get(:RDF_CLASS, false), :type]]
     Context._resource_added(self)
@@ -238,10 +238,6 @@ end
 # ---------------------------------------------------------------------------
 
 class RegistryResource < Resource
-  def initialize(uri_hint = nil)
-    super(uri_hint == :bnode ? :bnode : nil)
-    @uri_hint = uri_hint
-  end
   def uri
     @uri ||= Ns.registry(self.generate_uri_suffix)
   end
