@@ -49,6 +49,6 @@ Context.within do |context|
 #  require "#{File.dirname(__FILE__)}/processes.rb"
 
   require "#{File.dirname(__FILE__)}/agreements.rb"
-  #  require "#{File.dirname(__FILE__)}/policies.rb"
+  require "#{File.dirname(__FILE__)}/policies.rb"
 
 end
