@@ -1,7 +1,7 @@
 
 module AssuredOpenData
   module PolicyPurpose
-    AllowedLicenses = Ns.ib1root("assured-open-data/policy-purpose/AllowedLicenses")
+    AllowedLicenses = Ns.ib1root("assured-open-data/policy-purpose/AllowedLicenses").as(::PolicyPurpose::URI)
   end
 end
 
