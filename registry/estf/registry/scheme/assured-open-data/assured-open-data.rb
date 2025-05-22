@@ -24,7 +24,20 @@ Context.within do |context|
     end
   end
 
-context.files "#{File.dirname(__FILE__)}/files", "scheme/assured-open-data"
+  TechnicalProfile.new do |p|
+    p.label "assured-open-data"
+    p.comment "Assured Open Data Technical Profile"
+    p.uses RdfUri.new("https://specification.docs.ib1.org/registry/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/registry-versioning/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/data-catalog-records/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/data-catalog-publishing/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/generic-sensitivity-classes/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/generic-dataset-assurance-levels/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/open-data/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/assured-open-data/1.0/", nil)
+  end
+
+  context.files "#{File.dirname(__FILE__)}/files", "scheme/assured-open-data"
 
 # Assured Open Data publication doesn't require roles
 #  require "#{File.dirname(__FILE__)}/roles.rb"
@@ -35,7 +48,7 @@ context.files "#{File.dirname(__FILE__)}/files", "scheme/assured-open-data"
 #  require "#{File.dirname(__FILE__)}/assurance.rb"
 #  require "#{File.dirname(__FILE__)}/processes.rb"
 
-require "#{File.dirname(__FILE__)}/agreements.rb"
-#  require "#{File.dirname(__FILE__)}/policies.rb"
+  require "#{File.dirname(__FILE__)}/agreements.rb"
+  require "#{File.dirname(__FILE__)}/policies.rb"
 
 end
