@@ -79,6 +79,10 @@ Context.within do |context|
   end
   versioned_classes << IB1::Agreement
 
+  RdfSchemaClass.new(IB1::PolicyPurpose.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+
   RdfSchemaClass.new(IB1::Policy.uri) do |c|
     c.sub_class_of RDFS::Resource
   end
@@ -193,6 +197,12 @@ Context.within do |context|
     p.comment "URL of the agreement terms."
     p.range RDFS::Resource
     p.domain IB1::Agreement
+  end
+
+  RdfSchemaProperty.new(Ns.ib1("policyPurpose")) do |p|
+    p.comment "Purpose of a policy."
+    p.range IB1::PolicyPurpose
+    p.domain IB1::Policy
   end
 
   RdfSchemaProperty.new(Ns.ib1("policyText")) do |p|
