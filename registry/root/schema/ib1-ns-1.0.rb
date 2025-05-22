@@ -53,6 +53,10 @@ Context.within do |context|
   end
   versioned_classes << IB1::License
 
+  RdfSchemaClass.new(IB1::OrganizationAssuranceLevel.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+
   RdfSchemaClass.new(IB1::DatasetAssuranceLevel.uri) do |c|
     c.sub_class_of RDFS::Resource
   end
@@ -78,6 +82,10 @@ Context.within do |context|
     c.sub_class_of RDFS::Resource
   end
   versioned_classes << IB1::Agreement
+
+  RdfSchemaClass.new(IB1::PolicyPurpose.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
 
   RdfSchemaClass.new(IB1::Policy.uri) do |c|
     c.sub_class_of RDFS::Resource
@@ -195,8 +203,21 @@ Context.within do |context|
     p.domain IB1::Agreement
   end
 
+  RdfSchemaProperty.new(Ns.ib1("policyPurpose")) do |p|
+    p.comment "Purpose of a policy."
+    p.range IB1::PolicyPurpose
+    p.domain IB1::Policy
+  end
+
   RdfSchemaProperty.new(Ns.ib1("policyText")) do |p|
     p.comment "URL of the license terms."
+    p.range RDFS::Resource
+    p.domain IB1::Policy
+  end
+
+  # TODO: Defined by Assured Open Data -- should it be in a different file?
+  RdfSchemaProperty.new(Ns.ib1("allowedLicense")) do |p|
+    p.comment "URL of an allowed license."
     p.range RDFS::Resource
     p.domain IB1::Policy
   end

@@ -40,6 +40,7 @@ Context.within do |context|
     p.uses RdfUri.new("https://specification.docs.ib1.org/permission-records/1.0/", nil)
     p.uses RdfUri.new("https://specification.docs.ib1.org/provenance-records/1.0/", nil)
     p.uses RdfUri.new("https://specification.docs.ib1.org/data-catalog-records/1.0/", nil)
+    p.uses RdfUri.new("https://specification.docs.ib1.org/data-catalog-publishing/1.0/", nil)
     p.uses RdfUri.new("https://specification.docs.ib1.org/generic-dataset-assurance-levels/1.0/", nil)
     p.uses RdfUri.new("https://specification.docs.ib1.org/generic-sensitivity-classes/1.0/", nil)
   end

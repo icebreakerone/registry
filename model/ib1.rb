@@ -14,17 +14,23 @@ module IB1
   SchemeCatalogRequirements = RdfClass.new(Ns.ib1("SchemeCatalogRequirements"))
   RequiredMetadata = RdfClass.new(Ns.ib1("RequiredMetadata"))
   License = RdfClass.new(Ns.ib1("License"))
+  OrganizationAssuranceLevel = RdfClass.new(Ns.ib1("OrganizationAssuranceLevel"))
   DatasetAssuranceLevel = RdfClass.new(Ns.ib1("DatasetAssuranceLevel"))
   SensitivityClass = RdfClass.new(Ns.ib1("SensitivityClass"))
   SensitivityClassRequirement = RdfClass.new(Ns.ib1("SensitivityClassRequirement"))
   SourceType = RdfClass.new(Ns.ib1("SourceType"))
   Process = RdfClass.new(Ns.ib1("Process"))
   Agreement = RdfClass.new(Ns.ib1("Agreement"))
+  PolicyPurpose = RdfClass.new(Ns.ib1("PolicyPurpose"))
   Policy = RdfClass.new(Ns.ib1("Policy"))
 
   # URIs for generic assurance levels as DatasetAssuranceLevel::GenericLevel1 ... 4
   GENERIC_ASSURANCE_LEVELS = (1..4).map do |level|
-    ["Level#{level}", "Assurance level #{level}"]
+    ["Level#{level}", "Dataset Assurance level #{level}"]
+  end
+  # URIs for generic assurance levels as OrganizationAssuranceLevel::GenericLevel1 ... 4
+  GENERIC_ORGANIZATION_ASSURANCE_LEVELS = (1..4).map do |level|
+    ["Level#{level}", "Organizational Assurance level #{level}"]
   end
   # URIs for generic sensitivity classes as SensitivityClass::IB1_C etc (hyphen replaced with underscore)
   GENERIC_SENSITIVITY_CLASSES = [
@@ -39,6 +45,12 @@ module IB1
     ['Authentication', 'Access requires authentication'],
     ['FAPI', 'Access requires use of FAPI compliant APIs'],
     ['EndUserPermission', 'Access requires permission from end user']
+  ]
+  # URIs for Policy purposes
+  POLICY_PURPOSES =[
+    ['DataProtection', 'A policy for compliance with data protection legislation, for example, GDPR.'],
+    ['Operational', 'A policy to address the operation of the Scheme.'],
+    ['Legal', 'A policy to address legal requirements.']
   ]
 end
 
@@ -225,6 +237,22 @@ end
 
 # ---------------------------------------------------------------------------
 
+class OrganizationAssuranceLevel < RegistryResource
+  def generate_uri_suffix
+    "organization-assurance-level/" + first_label()
+  end
+  rdf_class IB1::OrganizationAssuranceLevel.uri
+  property :label, Ns.rdfs("label"), String
+  property :comment, Ns.rdfs("comment"), String
+  property :trust_framework, Ns.ib1("trustFramework"), TrustFramework
+  property :scheme, Ns.ib1("scheme"), Scheme
+end
+IB1::GENERIC_ORGANIZATION_ASSURANCE_LEVELS.each do |label, comment|
+  uri = Ns.ib1root("organization-assurance-level/#{label}").as(OrganizationAssuranceLevel::URI)
+  OrganizationAssuranceLevel.const_set("Generic#{label}".to_sym, uri)
+end
+
+
 class DatasetAssuranceLevel < RegistryResource
   def generate_uri_suffix
     "dataset-assurance-level/" + first_label()
@@ -312,11 +340,25 @@ end
 
 # ---------------------------------------------------------------------------
 
+class PolicyPurpose < RegistryResource
+  rdf_class IB1::PolicyPurpose.uri
+  def generate_uri_suffix
+    "policy-purpose/" + first_label()
+  end
+  property :label, Ns.rdfs("label"), String
+  property :comment, Ns.rdfs("comment"), String
+end
+IB1::POLICY_PURPOSES.each do |label, comment|
+  uri = Ns.ib1root("policy-purpose/#{label}").as(PolicyPurpose::URI)
+  PolicyPurpose.const_set(label.to_sym, uri)
+end
+
 class Policy < VersionedSchemeResource
   rdf_class IB1::Policy.uri
   type_name_for_url "policy"
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
+  property :policy_purpose, Ns.ib1("policyPurpose"), PolicyPurpose
   property :policy_text, Ns.ib1("policyText"), PolicyFile, PdfFile
 end
 
@@ -355,3 +397,9 @@ class SchemeCatalogRequirements < VersionedSchemeResource
   property :require_any_value, Ns.ib1("requireAnyValue"), RequiredMetadata::PropertyURI
   property :require_absence_of, Ns.ib1("requireAbsenceOf"), RequiredMetadata::PropertyURI
 end
+
+# ---------------------------------------------------------------------------
+
+# Additional models defined by Specifications
+require "#{File.dirname(__FILE__)}/ib1/specification/open-data.rb"
+require "#{File.dirname(__FILE__)}/ib1/specification/assured-open-data.rb"

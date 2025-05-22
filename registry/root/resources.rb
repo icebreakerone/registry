@@ -13,7 +13,13 @@ begin
 end
 
 # Registry resources
+require "#{REGISTRY_SOURCE}/registry/policy-purposes.rb"
+require "#{REGISTRY_SOURCE}/registry/organization-assurance-levels.rb"
 require "#{REGISTRY_SOURCE}/registry/dataset-assurance-levels.rb"
 require "#{REGISTRY_SOURCE}/registry/sensitivity-classes.rb"
 
 require "#{REGISTRY_SOURCE}/registry/trust-frameworks.rb"
+
+# Additional resources defined by Specifications
+require "#{REGISTRY_SOURCE}/registry/specification/open-data.rb"
+require "#{REGISTRY_SOURCE}/registry/specification/assured-open-data.rb"
