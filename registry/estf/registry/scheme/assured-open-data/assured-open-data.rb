@@ -37,7 +37,7 @@ Context.within do |context|
     p.uses RdfUri.new("https://specification.docs.ib1.org/assured-open-data/1.0/", nil)
   end
 
-context.files "#{File.dirname(__FILE__)}/files", "scheme/assured-open-data"
+  context.files "#{File.dirname(__FILE__)}/files", "scheme/assured-open-data"
 
 # Assured Open Data publication doesn't require roles
 #  require "#{File.dirname(__FILE__)}/roles.rb"
@@ -48,7 +48,7 @@ context.files "#{File.dirname(__FILE__)}/files", "scheme/assured-open-data"
 #  require "#{File.dirname(__FILE__)}/assurance.rb"
 #  require "#{File.dirname(__FILE__)}/processes.rb"
 
-require "#{File.dirname(__FILE__)}/agreements.rb"
-#  require "#{File.dirname(__FILE__)}/policies.rb"
+  require "#{File.dirname(__FILE__)}/agreements.rb"
+  #  require "#{File.dirname(__FILE__)}/policies.rb"
 
 end
