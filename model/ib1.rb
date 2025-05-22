@@ -14,6 +14,7 @@ module IB1
   SchemeCatalogRequirements = RdfClass.new(Ns.ib1("SchemeCatalogRequirements"))
   RequiredMetadata = RdfClass.new(Ns.ib1("RequiredMetadata"))
   License = RdfClass.new(Ns.ib1("License"))
+  OrganizationAssuranceLevel = RdfClass.new(Ns.ib1("OrganizationAssuranceLevel"))
   DatasetAssuranceLevel = RdfClass.new(Ns.ib1("DatasetAssuranceLevel"))
   SensitivityClass = RdfClass.new(Ns.ib1("SensitivityClass"))
   SensitivityClassRequirement = RdfClass.new(Ns.ib1("SensitivityClassRequirement"))
@@ -25,7 +26,11 @@ module IB1
 
   # URIs for generic assurance levels as DatasetAssuranceLevel::GenericLevel1 ... 4
   GENERIC_ASSURANCE_LEVELS = (1..4).map do |level|
-    ["Level#{level}", "Assurance level #{level}"]
+    ["Level#{level}", "Dataset Assurance level #{level}"]
+  end
+  # URIs for generic assurance levels as OrganizationAssuranceLevel::GenericLevel1 ... 4
+  GENERIC_ORGANIZATION_ASSURANCE_LEVELS = (1..4).map do |level|
+    ["Level#{level}", "Organizational Assurance level #{level}"]
   end
   # URIs for generic sensitivity classes as SensitivityClass::IB1_C etc (hyphen replaced with underscore)
   GENERIC_SENSITIVITY_CLASSES = [
@@ -231,6 +236,22 @@ class License < VersionedSchemeResource
 end
 
 # ---------------------------------------------------------------------------
+
+class OrganizationAssuranceLevel < RegistryResource
+  def generate_uri_suffix
+    "organization-assurance-level/" + first_label()
+  end
+  rdf_class IB1::OrganizationAssuranceLevel.uri
+  property :label, Ns.rdfs("label"), String
+  property :comment, Ns.rdfs("comment"), String
+  property :trust_framework, Ns.ib1("trustFramework"), TrustFramework
+  property :scheme, Ns.ib1("scheme"), Scheme
+end
+IB1::GENERIC_ORGANIZATION_ASSURANCE_LEVELS.each do |label, comment|
+  uri = Ns.ib1root("organization-assurance-level/#{label}").as(OrganizationAssuranceLevel::URI)
+  OrganizationAssuranceLevel.const_set("Generic#{label}".to_sym, uri)
+end
+
 
 class DatasetAssuranceLevel < RegistryResource
   def generate_uri_suffix

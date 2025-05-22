@@ -53,6 +53,10 @@ Context.within do |context|
   end
   versioned_classes << IB1::License
 
+  RdfSchemaClass.new(IB1::OrganizationAssuranceLevel.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+
   RdfSchemaClass.new(IB1::DatasetAssuranceLevel.uri) do |c|
     c.sub_class_of RDFS::Resource
   end

@@ -14,6 +14,7 @@ end
 
 # Registry resources
 require "#{REGISTRY_SOURCE}/registry/policy-purposes.rb"
+require "#{REGISTRY_SOURCE}/registry/organization-assurance-levels.rb"
 require "#{REGISTRY_SOURCE}/registry/dataset-assurance-levels.rb"
 require "#{REGISTRY_SOURCE}/registry/sensitivity-classes.rb"
 
