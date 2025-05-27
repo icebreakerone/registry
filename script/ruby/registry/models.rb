@@ -137,6 +137,12 @@ class Resource
     @@all_resources << self
   end
 
+  def each_value_of_class(klass)
+    @properties.each do |uri, value, symbol|
+      yield value, symbol, uri if value.kind_of?(klass)
+    end
+  end
+
   # Private for template
   def _properties_for_template
     @properties
