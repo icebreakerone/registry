@@ -1,0 +1,128 @@
+# Perseus Assurance Metadata for Provenance Records
+
+This specification defines the source types and assurance metadata used in Provenance Records under the Perseus Scheme.
+
+In addition to the structures defined here, Provenance Records within Perseus also reference RDF resources from the Registry, including:
+
+ * Licenses
+ * API standards (as URLs of Scheme Catalog Requirements)
+ * Processes
+
+All URLs in this document refer to resources in the production Registry environment. When used in other environments (e.g., pilot), participants must substitute the hostname with that of the appropriate Registry instance, while maintaining the same URL path structure.
+
+
+## Source types
+
+Origin steps include a source type in the `sourceType` property.
+
+#### Meter
+
+`https://registry.core.trust.ib1.org/scheme/perseus/source-type/Meter`
+
+The data originated from an energy meter.
+
+
+#### VirtualMeter
+
+`https://registry.core.trust.ib1.org/scheme/perseus/source-type/VirtualMeter`
+
+The data originated from zero or more energy meters and other data sources, and has been processed to provide an estimate of consumption.
+
+
+#### GridCarbonIntensity
+
+`https://registry.core.trust.ib1.org/scheme/perseus/source-type/GridCarbonIntensity`
+
+The data originated from the Carbon Intensity API.
+
+
+## Perseus Assurance Signals
+
+Assurance signals are embedded in the corresponding steps in the Provenance Record within the `perseus:assurance` property.
+
+
+### Missing data
+
+This signal indicates whether the dataset has any missing data. It is included in the EDP’s Origin step and the CAP’s Origin and Process steps in the `perseus:assurance.missingData` property.
+
+
+#### Complete
+
+`https://registry.core.trust.ib1.org/scheme/perseus/assurance/missing-data/Complete`
+
+Data is available for every measurement period.
+
+
+#### Missing
+
+`https://registry.core.trust.ib1.org/scheme/perseus/assurance/missing-data/Missing`
+
+Some measurement periods do not have data.
+
+
+#### Substituted
+
+`https://registry.core.trust.ib1.org/scheme/perseus/assurance/missing-data/Substituted`
+
+Some measurement periods use data that has been substituted for actual readings, for example, estimates based on usage patterns to interpolate between available data.
+
+
+
+### Origin Method
+
+Origin steps contain signals which describe the process needed as data enters the Trust Framework. These signals are included in the EDP’s Origin step in the `perseus:assurance.originMethod` property.
+
+
+#### SmartDCCOtherUser
+
+`https://registry.core.trust.ib1.org/scheme/perseus/assurance/origin-method/SmartDCCOtherUser`
+
+The values for consumption, tariff, export were passed through unchanged from those received from SmartDCC.
+
+
+#### Exact 
+
+`https://registry.core.trust.ib1.org/scheme/perseus/assurance/origin-method/Exact`
+
+The values for consumption, tariff, export have been processed to provide accurate half-hourly readings.
+
+
+#### Derived
+
+`https://registry.core.trust.ib1.org/scheme/perseus/assurance/origin-method/Derived`
+
+The values for consumption, tariff, export were derived from another data source which may involve estimations.
+
+
+### Derived Origin Method 
+
+The Derived calculations have an additional signal to describe the method used to allocate consumption to the virtual meter in the `perseus:assurance.originMethodDerived` property:
+
+
+#### AreaOccupied
+
+`https://registry.core.trust.ib1.org/scheme/perseus/assurance/origin-method-derived/AreaOccupied`
+
+Proportional to the area occupied by this occupant within the area supplied by the meter.
+
+
+#### NumberOfOccupants
+
+`https://registry.core.trust.ib1.org/scheme/perseus/assurance/origin-method-derived/NumberOfOccupants`
+
+Proportional to the number of people using the area.
+
+
+#### AdditionalMetering
+
+`https://registry.core.trust.ib1.org/scheme/perseus/assurance/origin-method-derived/AdditionalMetering`
+
+Measurement by a meter in addition to the supply meter.
+
+
+#### Other
+
+`https://registry.core.trust.ib1.org/scheme/perseus/assurance/origin-method-derived/Other`
+
+Another method.
+
