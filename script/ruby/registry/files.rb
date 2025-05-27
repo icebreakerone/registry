@@ -2,8 +2,15 @@
 
 require 'digest'
 
+class FileUri < RdfUri
+  attr_reader :pathname
+  def with_pathname(pathname)
+    @pathname = pathname
+    self
+  end
+end
 
-class OpenAPIFile < RdfUri
+class OpenAPIFile < FileUri
   def self.name(api_name, version)
     raise "Bad API name" unless api_name =~ /\A[a-z0-9-]+\z/
     raise "Bad version" unless version =~ /\A([0-9]+-)*[0-9]+\z/
@@ -12,7 +19,7 @@ class OpenAPIFile < RdfUri
   end
 end
 
-class MarkdownFile < RdfUri
+class MarkdownFile < FileUri
   @@allow_directory_names = {}
   def self.allowed_directory?(directory_name)
     @@allow_directory_names[directory_name]
@@ -28,13 +35,16 @@ class MarkdownFile < RdfUri
       end
     end
   end
+  def render
+    MarkdownRenderer.new.render(File.read(self.pathname))
+  end
 end
 
 LicenseTermsFile = MarkdownFile.make_class("terms")
 LicensePermissionTextFile = MarkdownFile.make_class("permission-text")
 PolicyFile = MarkdownFile.make_class("policy")
 
-class PdfFile < RdfUri
+class PdfFile < FileUri
   def self.name(api_name, version)
     raise "Bad PDF name" unless api_name =~ /\A[A-Za-z0-9-]+\z/
     raise "Bad version" unless version =~ /\A([0-9]+-)*[0-9]+\z/
@@ -57,8 +67,8 @@ class RegistryFiles
 
   def self.find_in_context_stack(name, klass)
     Context._current_files.each do |rf|
-      file = rf._maybe_file(name)
-      return file.as(klass) if file
+      file, pathname = rf._maybe_file(name)
+      return file.as(klass).with_pathname(pathname) if file
     end
     raise "File #{name} does not exist in any RegistryFiles available within the Context stack -- check name and version exists"
   end
@@ -68,7 +78,7 @@ class RegistryFiles
     return nil unless File.exist?(pathname)
     suffix = "#{@destination}#{@destination.empty? ? '' : '/'}#{name}\#"
     suffix += Digest::SHA256.file(pathname).hexdigest
-    Ns.registry(suffix)
+    [Ns.registry(suffix), pathname]
   end
 
   # -------------------------------------------------------------------------
@@ -125,7 +135,7 @@ class RegistryFiles
   }]
   
   def validate_markdown(contents)
-    # No validation needed
+    MarkdownRenderer.new.render(contents)
   end
 
   def validate_pdf(contents)

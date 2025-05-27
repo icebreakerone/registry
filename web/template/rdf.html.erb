@@ -1,6 +1,25 @@
 <%
   if (resources.length == 1) && (basename != "#{OUTPUT_DIR}/registry")
-#    write_rdf_as_html = []
+
+    # Links to PDF files with thumbnails
+    resources.first.each_value_of_class(PdfFile) do |pdf, symbol, uri|
+      %><div class="pdf-thumbnail">
+        <a href="/<%= ERB::Util.h(pdf.suffix) %>">
+          <img src="<%= PdfRenderer.first_page_data_url(pdf.pathname, 196) %>">
+        </a>
+      </div><%
+    end
+
+    # Render in linked Markdown files
+    resources.first.each_value_of_class(MarkdownFile) do |markdown, symbol, uri|
+      %><div class="text-of-resource"><%=
+        markdown.render().
+          # Remove title from document if it matches exactly, to avoid repeating the title of the page.
+          # This won't necessarily get everything, but is good enough to tidy.
+          sub(/\s*<h1[^>]*>\s*#{Regexp.escape(title)}\s*<\/h1>\s*/i, '')
+      %></div><%
+    end
+
     write_rdf_as_html = Proc.new do |resource, with_uri|
       %><table class="rdf-resource"><%
       if with_uri
