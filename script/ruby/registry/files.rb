@@ -40,6 +40,7 @@ class MarkdownFile < FileUri
   end
 end
 
+SpecificationFile = MarkdownFile.make_class("specification")
 LicenseTermsFile = MarkdownFile.make_class("terms")
 LicensePermissionTextFile = MarkdownFile.make_class("permission-text")
 PolicyFile = MarkdownFile.make_class("policy")

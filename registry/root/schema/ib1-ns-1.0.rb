@@ -30,6 +30,11 @@ Context.within do |context|
     c.sub_class_of RDFS::Resource
   end
 
+  RdfSchemaClass.new(IB1::Specification.uri) do |c|
+    c.sub_class_of RDFS::Resource
+  end
+  versioned_classes << IB1::Specification
+
   RdfSchemaClass.new(IB1::TechnicalProfile.uri) do |c|
     c.sub_class_of RDFS::Resource
   end
@@ -161,6 +166,12 @@ Context.within do |context|
 
   # -------------------------------------------------------------------------
 
+  RdfSchemaProperty.new(Ns.ib1("specificationText")) do |p|
+    p.comment "URL of the specification text."
+    p.range RDFS::Resource
+    p.domain IB1::Specification
+  end
+
   RdfSchemaProperty.new(Ns.ib1("uses")) do |p|
     p.comment "URL of a document that is used by the entity represented by the resource."
     p.range RDFS::Resource
@@ -210,7 +221,7 @@ Context.within do |context|
   end
 
   RdfSchemaProperty.new(Ns.ib1("policyText")) do |p|
-    p.comment "URL of the license terms."
+    p.comment "URL of the policy text."
     p.range RDFS::Resource
     p.domain IB1::Policy
   end
