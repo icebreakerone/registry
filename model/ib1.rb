@@ -9,6 +9,7 @@ module IB1
   TrustFramework = RdfClass.new(Ns.ib1("TrustFramework"))
   TrustFrameworkGroup = RdfClass.new(Ns.ib1("TrustFrameworkGroup"))
   Scheme = RdfClass.new(Ns.ib1("Scheme"))
+  Specification = RdfClass.new(Ns.ib1("Specification"))
   TechnicalProfile = RdfClass.new(Ns.ib1("TechnicalProfile"))
   Role = RdfClass.new(Ns.ib1("Role"))
   SchemeCatalogRequirements = RdfClass.new(Ns.ib1("SchemeCatalogRequirements"))
@@ -153,12 +154,22 @@ end
 
 # ---------------------------------------------------------------------------
 
+class Specification < VersionedSchemeResource
+  rdf_class IB1::Specification.uri
+  type_name_for_url "specification"
+  property :label, Ns.rdfs("label"), String
+  property :comment, Ns.rdfs("comment"), String
+  property :specification_text, Ns.ib1("specificationText"), SpecificationFile, PdfFile
+end
+
+# ---------------------------------------------------------------------------
+
 class TechnicalProfile < VersionedSchemeResource
   rdf_class IB1::TechnicalProfile.uri
   type_name_for_url "technical-profile".to_sym
   property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
-  property :uses, Ns.ib1("uses"), RdfUri
+  property :uses, Ns.ib1("uses"), Specification, RdfUri
 end
 
 # TODO: Remove this hacky additional definition for TF profiles when the publication process does versioning automatically.

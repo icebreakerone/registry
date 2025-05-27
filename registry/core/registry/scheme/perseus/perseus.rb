@@ -24,6 +24,8 @@ Context.within do |context|
     end
   end
 
+  require "#{File.dirname(__FILE__)}/specifications.rb"
+
   TechnicalProfile.new do |p|
     p.label "perseus"
     p.comment "Perseus Technical Profile"
@@ -43,6 +45,7 @@ Context.within do |context|
     p.uses RdfUri.new("https://specification.docs.ib1.org/data-catalog-publishing/1.0/", nil)
     p.uses RdfUri.new("https://specification.docs.ib1.org/generic-dataset-assurance-levels/1.0/", nil)
     p.uses RdfUri.new("https://specification.docs.ib1.org/generic-sensitivity-classes/1.0/", nil)
+    p.uses PERSEUS_ASSURANCE_SPECIFICATION
   end
 
   context.files "#{File.dirname(__FILE__)}/files", "scheme/perseus"
