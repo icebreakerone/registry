@@ -32,6 +32,7 @@ end
 require "./script/ruby/registry/models.rb"
 require "./script/ruby/registry/files.rb"
 require "./script/ruby/registry/markdown.rb"
+require "./script/ruby/registry/pdf_renderer.rb"
 require "./script/ruby/registry/templates.rb"
 
 # Load model
