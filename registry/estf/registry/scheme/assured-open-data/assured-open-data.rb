@@ -27,14 +27,14 @@ Context.within do |context|
   TechnicalProfile.new do |p|
     p.label "assured-open-data"
     p.comment "Assured Open Data Technical Profile"
-    p.uses RdfUri.new("https://specification.docs.ib1.org/registry/1.0/", nil)
-    p.uses RdfUri.new("https://specification.docs.ib1.org/registry-versioning/1.0/", nil)
-    p.uses RdfUri.new("https://specification.docs.ib1.org/data-catalog-records/1.0/", nil)
-    p.uses RdfUri.new("https://specification.docs.ib1.org/data-catalog-publishing/1.0/", nil)
-    p.uses RdfUri.new("https://specification.docs.ib1.org/generic-sensitivity-classes/1.0/", nil)
-    p.uses RdfUri.new("https://specification.docs.ib1.org/generic-dataset-assurance-levels/1.0/", nil)
-    p.uses RdfUri.new("https://specification.docs.ib1.org/open-data/1.0/", nil)
-    p.uses RdfUri.new("https://specification.docs.ib1.org/assured-open-data/1.0/", nil)
+    p.uses RdfUri.new("https://specification.trust.ib1.org/registry/1.0/", nil)
+    p.uses RdfUri.new("https://specification.trust.ib1.org/registry-versioning/1.0/", nil)
+    p.uses RdfUri.new("https://specification.trust.ib1.org/data-catalog-records/1.0/", nil)
+    p.uses RdfUri.new("https://specification.trust.ib1.org/data-catalog-publishing/1.0/", nil)
+    p.uses RdfUri.new("https://specification.trust.ib1.org/generic-sensitivity-classes/1.0/", nil)
+    p.uses RdfUri.new("https://specification.trust.ib1.org/generic-dataset-assurance-levels/1.0/", nil)
+    p.uses RdfUri.new("https://specification.trust.ib1.org/open-data/1.0/", nil)
+    p.uses RdfUri.new("https://specification.trust.ib1.org/assured-open-data/1.0/", nil)
   end
 
   context.files "#{File.dirname(__FILE__)}/files", "scheme/assured-open-data"
