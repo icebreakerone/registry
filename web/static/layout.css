@@ -107,6 +107,10 @@
     }
 
     /* embedded documents */
+    .openapi-button {
+      margin: 16px 0 16px 24px;
+    }
+
     .pdf-thumbnail {
       margin: 16px 0 16px 24px;
     }

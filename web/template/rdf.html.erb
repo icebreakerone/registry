@@ -1,6 +1,19 @@
 <%
   if (resources.length == 1) && (basename != "#{OUTPUT_DIR}/registry")
 
+    relevant_resources = [resources.first] + resources.first._bnodes_for_template.map {|b| b[1]}
+
+    # Buttons to OpenAPI viewer
+    relevant_resources.each do |r|
+      r.each_value_of_class(OpenAPIFile) do |openapi, symbol, uri|
+        %><div class="openapi-button">
+          <a class="btn" href="/openapi-viewer/?a=/<%= ERB::Util.h(openapi.suffix.sub(/\#.+?\z/,'')) %>">
+            <%= ERB::Util.h(symbol.to_s.gsub('_',' ').gsub('description',' ').strip.capitalize) %> API documentation
+          </a>
+        </div><%
+      end
+    end
+
     # Links to PDF files with thumbnails
     resources.first.each_value_of_class(PdfFile) do |pdf, symbol, uri|
       %><div class="pdf-thumbnail">
