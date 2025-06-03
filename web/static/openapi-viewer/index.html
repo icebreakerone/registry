@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Swagger UI</title>
+    <link rel="stylesheet" type="text/css" href="swagger-ui/swagger-ui.css" />
+    <link rel="stylesheet" type="text/css" href="swagger-ui/index.css" />
+    <link rel="icon" type="image/png" href="swagger-ui/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="swagger-ui/favicon-16x16.png" sizes="16x16" />
+  </head>
+  <body>
+    <script src="swagger-ui/swagger-ui-bundle.js" charset="UTF-8"> </script>
+    <script src="swagger-ui/swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
+
+    <div id="swagger-ui"></div>
+    <script type="text/javascript">
+      window.onload = function() {
+        const params = new URLSearchParams(window.location.search);
+        const openAPIPath = params.get('a');
+        // Can only be used for OpenAPI files hosted in this Registry
+        if (!openAPIPath || !/^\/[a-zA-Z]/.test(openAPIPath)) {
+          const swaggerUI = document.getElementById('swagger-ui');
+          if (swaggerUI) {
+            swaggerUI.innerHTML = '<p style="color:red;">Invalid "a" parameter: must begin with a slash (/) followed by a letter.</p>';
+          }
+        } else {
+          window.ui = SwaggerUIBundle({
+            url: openAPIPath,
+            dom_id: '#swagger-ui',
+            deepLinking: true,
+            presets: [
+              SwaggerUIBundle.presets.apis,
+              SwaggerUIStandalonePreset
+            ],
+            plugins: [
+              SwaggerUIBundle.plugins.DownloadUrl
+            ],
+            layout: "StandaloneLayout"
+          });
+        }
+      };
+    </script>
+  </body>
+</html>
