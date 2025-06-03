@@ -16,25 +16,6 @@
     }
   ],
   "paths": {
-    "/": {
-      "get": {
-        "summary": "Root",
-        "operationId": "root__get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "title": "Response Root  Get"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/datasources": {
       "get": {
         "summary": "Datasources",
@@ -45,7 +26,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Datasources"
+                  "$ref": "#/components/schemas/DataSources"
                 }
               }
             }
@@ -78,7 +59,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Measure"
+              "title": "Measure",
+              "description": "import for energy consumed from the grid, export for energy exported to the grid"
             }
           },
           {
@@ -88,49 +70,19 @@
             "schema": {
               "type": "string",
               "format": "date",
-              "title": "From"
+              "title": "From",
+              "description": "ISO8601 timestamp with 'Z' (UTC); inclusive"
             }
           },
           {
             "name": "to",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string",
               "format": "date",
-              "title": "To"
-            }
-          },
-          {
-            "name": "x-amzn-mtls-clientcert",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-Amzn-Mtls-Clientcert"
-            }
-          },
-          {
-            "name": "x-fapi-interaction-id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-Fapi-Interaction-Id"
+              "title": "To",
+              "description": "ISO8601 timestamp with 'Z' (UTC); exclusive (defaults to 'now' if omitted)"
             }
           }
         ],
@@ -165,11 +117,14 @@
         "properties": {
           "value": {
             "type": "number",
-            "title": "Value"
+            "title": "Value",
+            "minimum": 0,
+            "description": "Positive number representing energy amount transferred."
           },
           "unitCode": {
             "type": "string",
-            "title": "Unitcode"
+            "title": "Unitcode",
+            "description": "Unit code (CEFACT): KWH, WHR, JOU. (MTQ may be added for gas later)."
           }
         },
         "type": "object",
@@ -179,22 +134,25 @@
         ],
         "title": "Consumption"
       },
-      "Datasource": {
+      "DataSource": {
         "properties": {
           "id": {
             "type": "string",
-            "title": "Id"
+            "title": "Id",
+            "description": "Opaque identifier for the data source (e.g., meter or virtual meter ID)."
           },
           "type": {
             "type": "string",
-            "title": "Type"
+            "title": "Type",
+            "description": "Must be 'Electricity' (reserved for future types like Gas, Coal, etc.)."
           },
           "availableMeasures": {
             "items": {
               "type": "string"
             },
             "type": "array",
-            "title": "Availablemeasures"
+            "title": "Availablemeasures",
+            "description": "Permitted values: 'Import', 'Export'."
           }
         },
         "type": "object",
@@ -203,13 +161,13 @@
           "type",
           "availableMeasures"
         ],
-        "title": "Datasource"
+        "title": "DataSource"
       },
-      "Datasources": {
+      "DataSources": {
         "properties": {
           "data": {
             "items": {
-              "$ref": "#/components/schemas/Datasource"
+              "$ref": "#/components/schemas/DataSource"
             },
             "type": "array",
             "title": "Data"
@@ -219,7 +177,7 @@
         "required": [
           "data"
         ],
-        "title": "Datasources"
+        "title": "DataSources"
       },
       "HTTPValidationError": {
         "properties": {
@@ -256,7 +214,8 @@
               ]
             },
             "type": "array",
-            "title": "Provenance"
+            "title": "Provenance",
+            "description": "Audit trail for source of data (e.g., transfer, receipt, user input)."
           }
         },
         "type": "object",
@@ -302,22 +261,26 @@
         "properties": {
           "type": {
             "type": "string",
-            "title": "Type"
+            "title": "Type",
+            "description": "Must be 'Electricity'. Reserved for other types like gas, coal in future."
           },
           "from": {
             "type": "string",
             "format": "date-time",
-            "title": "From"
+            "title": "From",
+            "description": "ISO8601 timestamp with 'Z' (UTC); inclusive."
           },
           "to": {
             "type": "string",
             "format": "date-time",
-            "title": "To"
+            "title": "To",
+            "description": "ISO8601 timestamp with 'Z' (UTC); exclusive."
           },
           "takenAt": {
             "type": "string",
             "format": "date-time",
-            "title": "Takenat"
+            "title": "Takenat",
+            "description": "Timestamp when reading was retrieved. Must be after 'to'."
           },
           "energy": {
             "$ref": "#/components/schemas/Consumption"
