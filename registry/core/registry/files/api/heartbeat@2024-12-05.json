@@ -1,9 +1,10 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.1.0",
   "info": {
     "title": "Standard Heartbeat",
     "version": "2024-12-05",
-    "x-ib1-registry-label": "heartbeat"
+    "x-ib1-registry-label": "heartbeat",
+    "description": "Health check endpoint for availability monitoring."
   },
   "servers": [
     {
@@ -15,18 +16,76 @@
       }
     }
   ],
+  "security": [
+    {
+      "mTLS": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Health",
+      "description": "Endpoints for monitoring service availability."
+    }
+  ],
   "paths": {
     "/heartbeat": {
-      "summary": "Heartbeat",
       "get": {
-        "summary": "",
-        "description": "",
-        "operationId": "",
+        "summary": "Service Heartbeat",
+        "description": "Returns status and timestamp to verify the service is alive.",
+        "operationId": "getServiceHeartbeat",
+        "tags": ["Health"],
         "responses": {
-          "default": {
-            "description": "Default error sample response"
+          "200": {
+            "description": "Service is available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Heartbeat"
+                },
+                "examples": {
+                  "ok": {
+                    "summary": "Healthy service response",
+                    "value": {
+                      "status": "ok",
+                      "timestamp": "2025-06-12T12:00:00Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service error"
           }
         }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Heartbeat": {
+        "type": "object",
+        "title": "Heartbeat",
+        "description": "Simple heartbeat response indicating availability and time.",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["ok"],
+            "description": "Must be 'ok' if service is operational.",
+            "example": "ok"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC time when heartbeat was generated."
+          }
+        },
+        "required": ["status", "timestamp"]
+      }
+    },
+    "securitySchemes": {
+      "mTLS": {
+        "type": "mutualTLS"
       }
     }
   }
