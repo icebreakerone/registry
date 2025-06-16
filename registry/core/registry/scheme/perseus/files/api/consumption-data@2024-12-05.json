@@ -1,9 +1,10 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.1.0",
   "info": {
     "title": "Consumption data",
     "version": "2024-12-05",
-    "x-ib1-registry-label": "consumption-data"
+    "x-ib1-registry-label": "consumption-data",
+    "description": "API for retrieving energy consumption data and metadata from energy meters or virtual sources."
   },
   "servers": [
     {
@@ -15,11 +16,23 @@
       }
     }
   ],
+  "security": [
+    {
+      "mTLS": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Consumption",
+      "description": "Operations for retrieving energy consumption data and metadata."
+    }
+  ],
   "paths": {
     "/datasources": {
       "get": {
         "summary": "Datasources",
-        "operationId": "datasources_datasources_get",
+        "operationId": "getConsumptionSources",
+        "tags": ["Consumption"],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -30,19 +43,19 @@
                 }
               }
             }
-          }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden - insufficient permissions" },
+          "404": { "description": "Not Found - source or measure not found" },
+          "500": { "description": "Internal Server Error" }
         }
       }
     },
     "/datasources/{id}/{measure}": {
       "get": {
         "summary": "Consumption",
-        "operationId": "consumption_datasources__id___measure__get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
+        "operationId": "getConsumptionData",
+        "tags": ["Consumption"],
         "parameters": [
           {
             "name": "id",
@@ -60,6 +73,8 @@
             "schema": {
               "type": "string",
               "title": "Measure",
+              "enum": ["import", "export"],
+              "default": "import",
               "description": "import for energy consumed from the grid, export for energy exported to the grid"
             }
           },
@@ -69,7 +84,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "date",
+              "format": "date-time",
               "title": "From",
               "description": "ISO8601 timestamp with 'Z' (UTC); inclusive"
             }
@@ -80,7 +95,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "format": "date",
+              "format": "date-time",
               "title": "To",
               "description": "ISO8601 timestamp with 'Z' (UTC); exclusive (defaults to 'now' if omitted)"
             }
@@ -93,10 +108,50 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MeterData"
+                },
+                "examples": {
+                  "meters": {
+                    "summary": "Example meter data",
+                    "value": {
+                      "data": [
+                        {
+                          "cumulative": {
+                            "unitCode": "WHR",
+                            "value": 1234.5
+                          },
+                          "energy": {
+                            "unitCode": "WHR",
+                            "value": 123.45
+                          },
+                          "from": "2023-10-18T00:00:00Z",
+                          "takenAt": "2023-10-19T00:00:00Z",
+                          "to": "2023-10-18T00:30:00Z",
+                          "type": "Electricity"
+                        }
+                      ],
+                      "provenance": {
+                        "ib1:provenance": "https://registry.example.trust.ib1.org/trust-framework",
+                        "origins": ["Esfjwwyjh2iMa-LEHO1N"],
+                        "steps": [
+                          "eyJpZCI6IlVSZDB3Z3MiLCJ0eXBlIjoidHJhbnNmZXIiLCJmcm9tIjoiaHR0cHM6...MyOjU2WiJ9",
+                          "eyJpZCI6Iml0SU5zR3RVIiwidHlwZSI6InJlY2VpcHQiLCJmcm9tIjoiaHR0cH...jE2OjMxWiJ9",
+                          [
+                            0,
+                            "123456",
+                            "2024-10-17T12:16:31Z",
+                            "MEUCIQDNk3nS64bmGvMJwfdVWfyGuheGDEbB8-b5Ur2H9Iat9gIgc...eGO3GvzH2EJut707lA="
+                          ]
+                        ]
+                      }
+                    }
+                  }
                 }
               }
             }
           },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden - insufficient permissions" },
+          "404": { "description": "Not Found - source or measure not found" },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -106,7 +161,8 @@
                 }
               }
             }
-          }
+          },
+          "500": { "description": "Internal Server Error" }
         }
       }
     }
@@ -123,8 +179,9 @@
           },
           "unitCode": {
             "type": "string",
-            "title": "Unitcode",
-            "description": "Unit code (CEFACT): KWH, WHR, JOU. (MTQ may be added for gas later)."
+            "title": "Unit Code",
+            "enum": ["KWH", "WHR"],
+            "description": "Unit code (CEFACT): KWH, WHR. (MTQ may be added for gas later)."
           }
         },
         "type": "object",
@@ -144,14 +201,17 @@
           "type": {
             "type": "string",
             "title": "Type",
+            "enum": ["Electricity"],
+            "default": "Electricity",
             "description": "Must be 'Electricity' (reserved for future types like Gas, Coal, etc.)."
           },
           "availableMeasures": {
             "items": {
-              "type": "string"
+              "type": "string",
+              "enum": ["Import", "Export"]
             },
             "type": "array",
-            "title": "Availablemeasures",
+            "title": "Available Measures",
             "description": "Permitted values: 'Import', 'Export'."
           }
         },
@@ -202,20 +262,7 @@
             "title": "Data"
           },
           "provenance": {
-            "items": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "items": {},
-                  "type": "array"
-                }
-              ]
-            },
-            "type": "array",
-            "title": "Provenance",
-            "description": "Audit trail for source of data (e.g., transfer, receipt, user input)."
+            "$ref": "#/components/schemas/Provenance"
           }
         },
         "type": "object",
@@ -223,39 +270,7 @@
           "data",
           "provenance"
         ],
-        "title": "MeterData",
-        "examples": [
-          {
-            "data": [
-              {
-                "cumulative": {
-                  "unitCode": "WHR",
-                  "value": 1234.5
-                },
-                "energy": {
-                  "unitCode": "WHR",
-                  "value": 123.45
-                },
-                "from": "2023-10-18T00:00:00Z",
-                "takenAt": "2023-10-19T00:00:00Z",
-                "to": "2023-10-18T00:30:00Z",
-                "type": "Electricity"
-              }
-            ],
-            "provenance": [
-              [
-                "eyJpZCI6IlVSZDB3Z3MiLCJ0eXBlIjoidHJhbnNmZXIiLCJmcm9tIjoiaHR0cHM6...MyOjU2WiJ9",
-                "eyJpZCI6Iml0SU5zR3RVIiwidHlwZSI6InJlY2VpcHQiLCJmcm9tIjoiaHR0cH...jE2OjMxWiJ9",
-                [
-                  0,
-                  "123456",
-                  "2024-10-17T12:16:31Z",
-                  "MEUCIQDNk3nS64bmGvMJwfdVWfyGuheGDEbB8-b5Ur2H9Iat9gIgc...eGO3GvzH2EJut707lA="
-                ]
-              ]
-            ]
-          }
-        ]
+        "title": "MeterData"
       },
       "Reading": {
         "properties": {
@@ -279,7 +294,7 @@
           "takenAt": {
             "type": "string",
             "format": "date-time",
-            "title": "Takenat",
+            "title": "Taken At",
             "description": "Timestamp when reading was retrieved. Must be after 'to'."
           },
           "energy": {
@@ -298,6 +313,39 @@
           "cumulative"
         ],
         "title": "Reading"
+      },
+      "ProvenanceStep": {
+        "type": "array",
+        "items": {
+          "anyOf": [
+            { "type": "string" },
+            { "$ref": "#/components/schemas/ProvenanceStep" }
+          ]
+        },
+        "description": "Recursive structure representing a series of audit steps for data provenance."
+      },
+      "Provenance": {
+        "type": "object",
+        "properties": {
+          "ib1:provenance": {
+            "type": "string",
+            "format": "uri",
+            "description": "URI identifying the Trust Framework."
+          },
+          "origins": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Array of identifiers indicating data origin."
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProvenanceStep"
+            },
+            "description": "Provenance steps; each item may be a step or a nested array of steps."
+          }
+        },
+        "required": ["ib1:provenance", "origins", "steps"]
       },
       "ValidationError": {
         "properties": {
@@ -334,9 +382,8 @@
       }
     },
     "securitySchemes": {
-      "HTTPBearer": {
-        "type": "http",
-        "scheme": "bearer"
+      "mTLS": {
+        "type": "mutualTLS"
       }
     }
   }
