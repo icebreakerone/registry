@@ -126,7 +126,7 @@
                           "from": "2023-10-18T00:00:00Z",
                           "takenAt": "2023-10-19T00:00:00Z",
                           "to": "2023-10-18T00:30:00Z",
-                          "type": "Electricity"
+                          "type": "electricity"
                         }
                       ],
                       "provenance": {
@@ -201,18 +201,18 @@
           "type": {
             "type": "string",
             "title": "Type",
-            "enum": ["Electricity"],
-            "default": "Electricity",
-            "description": "Must be 'Electricity' (reserved for future types like Gas, Coal, etc.)."
+            "enum": ["electricity"],
+            "default": "electricity",
+            "description": "Must be 'electricity' (reserved for future types like Gas, Coal, etc.)."
           },
           "availableMeasures": {
             "items": {
               "type": "string",
-              "enum": ["Import", "Export"]
+              "enum": ["import", "export"]
             },
             "type": "array",
             "title": "Available Measures",
-            "description": "Permitted values: 'Import', 'Export'."
+            "description": "Permitted values: 'import', 'export'."
           }
         },
         "type": "object",
@@ -277,7 +277,9 @@
           "type": {
             "type": "string",
             "title": "Type",
-            "description": "Must be 'Electricity'. Reserved for other types like gas, coal in future."
+            "enum": ["electricity"],
+            "default": "electricity",
+            "description": "Must be 'electricity'. Reserved for other types like gas, coal in future."
           },
           "from": {
             "type": "string",
