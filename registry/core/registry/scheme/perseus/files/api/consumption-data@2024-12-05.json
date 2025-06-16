@@ -307,6 +307,7 @@
         "type": "object",
         "required": [
           "type",
+          "from",
           "to",
           "takenAt",
           "energy",
