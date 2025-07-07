@@ -169,6 +169,33 @@
               }
             }
           },
+          "202": {
+            "description": "The data source is valid but consumption data is not yet available.",
+            "headers": {
+              "Retry-After": {
+                "description": "Time after which the client should retry the request. Can be seconds or an HTTP-date.",
+                "schema": {
+                  "type": "string",
+                  "description": "Seconds as integer or RFC 7231 date-time format."
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataNotReady"
+                },
+                "examples": {
+                  "notReady": {
+                    "summary": "Example data not ready response",
+                    "value": {
+                      "message": "Meter readings have been requested from the operator, but are not yet available."
+                    }
+                  }
+                }
+              }
+            }
+          },
           "401": { "description": "Unauthorized" },
           "403": { "description": "Forbidden - insufficient permissions" },
           "404": { "description": "Not Found - source or measure not found" },
@@ -294,6 +321,18 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "DataNotReady": {
+        "type": "object",
+        "title": "Data Not Ready",
+        "description": "Response indicating that consumption data is not yet available.",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Human readable explanation."
+          }
+        },
+        "required": ["message"]
       },
       "MeterData": {
         "properties": {
