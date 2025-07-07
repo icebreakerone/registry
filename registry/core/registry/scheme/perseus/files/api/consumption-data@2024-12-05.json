@@ -40,6 +40,23 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DataSources"
+                },
+                "examples": {
+                  "datasources": {
+                    "summary": "Example data sources",
+                    "value": {
+                      "data": [
+                        {
+                          "id": "S90/r2+mSV2",
+                          "type": "electricity",
+                          "location": {
+                            "ukPostcodeOutcode": "CF99"
+                          },
+                          "availableMeasures": ["import", "export"]
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             }
@@ -129,6 +146,9 @@
                           "type": "electricity"
                         }
                       ],
+                      "location": {
+                        "ukPostcodeOutcode": "CF99"
+                      },
                       "provenance": {
                         "ib1:provenance": "https://registry.example.trust.ib1.org/trust-framework",
                         "origins": ["Esfjwwyjh2iMa-LEHO1N"],
@@ -143,6 +163,33 @@
                           ]
                         ]
                       }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "The data source is valid but consumption data is not yet available.",
+            "headers": {
+              "Retry-After": {
+                "description": "Time after which the client should retry the request. Can be seconds or an HTTP-date.",
+                "schema": {
+                  "type": "string",
+                  "description": "Seconds as integer or RFC 7231 date-time format."
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataNotReady"
+                },
+                "examples": {
+                  "notReady": {
+                    "summary": "Example data not ready response",
+                    "value": {
+                      "message": "Meter readings have been requested from the operator, but are not yet available."
                     }
                   }
                 }
@@ -169,6 +216,25 @@
   },
   "components": {
     "schemas": {
+      "LowResolutionLocation": {
+        "type": "object",
+        "title": "Low Resolution Location",
+        "description": "Low-resolution, privacy-preserving location information.",
+        "properties": {
+          "ukPostcodeOutcode": {
+            "type": "string",
+            "description": "UK postcode outcode (e.g., 'CF99', 'SW1A', 'B1', 'EH99').",
+            "pattern": "^[A-Z]{1,2}[0-9][0-9A-Z]?$"
+          }
+        },
+        "additionalProperties": false,
+        "anyOf": [
+          { "required": ["ukPostcodeOutcode"] }
+        ],
+        "example": {
+          "ukPostcodeOutcode": "CF99"
+        }
+      },
       "Consumption": {
         "properties": {
           "value": {
@@ -205,6 +271,9 @@
             "default": "electricity",
             "description": "Must be 'electricity' (reserved for future types like Gas, Coal, etc.)."
           },
+          "location": {
+            "$ref": "#/components/schemas/LowResolutionLocation"
+          },
           "availableMeasures": {
             "items": {
               "type": "string",
@@ -219,6 +288,7 @@
         "required": [
           "id",
           "type",
+          "location",
           "availableMeasures"
         ],
         "title": "DataSource"
@@ -252,6 +322,18 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "DataNotReady": {
+        "type": "object",
+        "title": "Data Not Ready",
+        "description": "Response indicating that consumption data is not yet available.",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Human readable explanation."
+          }
+        },
+        "required": ["message"]
+      },
       "MeterData": {
         "properties": {
           "data": {
@@ -261,6 +343,9 @@
             "type": "array",
             "title": "Data"
           },
+          "location": {
+            "$ref": "#/components/schemas/LowResolutionLocation"
+          },
           "provenance": {
             "$ref": "#/components/schemas/Provenance"
           }
@@ -268,6 +353,7 @@
         "type": "object",
         "required": [
           "data",
+          "location",
           "provenance"
         ],
         "title": "MeterData"
