@@ -33,7 +33,7 @@ Context.within do |context|
     p.uses RdfUri.new("https://specification.trust.ib1.org/generic-sensitivity-classes/1.0/", nil)
   end
 
-  IncludeIn.environment('pilot', 'Persues Scheme') do
+  IncludeIn.environment(['development', 'pilot', 'sandbox'], 'Persues Scheme') do
     require "#{File.dirname(__FILE__)}/scheme/perseus/perseus.rb"
   end
 end

@@ -98,10 +98,11 @@ end
 
 module IncludeIn
   def self.environment(env, name)
-    if ENVIRONMENT == env
+    env = [env] unless env.kind_of? Array
+    if env.include?(ENVIRONMENT)
       yield
     else
-      puts "\n*** Omitting '#{name}' as environment is not '#{env}'\n\n"
+      puts "\n*** Omitting '#{name}' as environment is not#{env.length > 1 ? ' one of' : ''} '#{env.join("', '")}'\n\n"
     end
   end
 end
