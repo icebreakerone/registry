@@ -2,8 +2,8 @@
 
 This repository contains:
 
-  * A tool to use a definition in another repository to create a Registry for a Trust Framework, outputting a static site.
-  * The definition for the IB1 Root Registry, which includes IB1's RDF Schema.
+- A tool to use a definition in another repository to create a Registry for a Trust Framework, outputting a static site.
+- The definition for the IB1 Root Registry, which includes IB1's RDF Schema.
 
 Registry definitions use Ruby code to create RDF Resources in memory, which are written to files using Apache Jena. The use of Ruby allows definitions to be "type safe" to make it hard to write invalid RDF, and use a full programming language to write definitions which are more concise than raw RDF.
 
@@ -40,9 +40,8 @@ docker build -t ib1-registry .
 Then run the tool:
 
 ```
-docker run -v  $(pwd):/code ib1-registry ib1-registry production ib1-root-registry
+docker run --rm -v `pwd`/output/sandbox:/code/output-sandbox -e OUTPUT_DIR='output-sandbox' builder bash -c "script/ib1-registry sandbox registry/core"
 ```
-
 
 ## Preview web server
 
@@ -66,8 +65,8 @@ script/ib1-registry production registry/root
 
 The root registry contains:
 
-  * The RDF schema definition with the namespace `https://registry.trust.ib1.org/ns/1.0#`
-  * A "Trust Framework Group" listing all known Trust Frameworks.
+- The RDF schema definition with the namespace `https://registry.trust.ib1.org/ns/1.0#`
+- A "Trust Framework Group" listing all known Trust Frameworks.
 
 ## Generating a Registry from a definition in this repository
 
