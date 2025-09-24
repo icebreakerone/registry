@@ -86,6 +86,8 @@ script/ib1-registry production ../registry-example
 
 ## Guided tour
 
+[README](README/) -- Documentation for managing Registries.
+
 [registry](registry) -- registry definitions
 
 [registry/root](registry/root/) -- the definition for the root registry.
