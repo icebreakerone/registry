@@ -33,7 +33,7 @@ Context.within do |context|
     p.uses RdfUri.new("https://specification.trust.ib1.org/generic-sensitivity-classes/1.0/", nil)
   end
 
-  IncludeIn.environment('sandbox', 'Assured Open Data') do
+  IncludeIn.environment(['production', 'sandbox'], 'Assured Open Data') do
     require "#{File.dirname(__FILE__)}/scheme/assured-open-data/assured-open-data.rb"
   end
 end

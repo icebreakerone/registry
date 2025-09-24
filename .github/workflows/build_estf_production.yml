@@ -1,0 +1,39 @@
+name: Build ESTF Production Output
+
+on:
+  workflow_run:
+    workflows: ["Python tests"]
+    branches: [main]
+    types:
+      - completed
+  workflow_dispatch:
+    branches:
+      - kip/*
+
+env:
+  AWS_REGION: us-east-1 # set this to your preferred AWS region, e.g. us-west-1
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Deploy estf production registry
+        uses: ./.github/templates/build/
+        with:
+          registry: estf
+          registry_environment: production
+          output_folder: estf_production_registry
+          domain_name: registry.estf.trust.ib1.org
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Update estf production registry content types
+        uses: ./.github/templates/content-types/
+        with:
+          stackname: ContentNegotiationStack-production-estf
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
