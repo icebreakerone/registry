@@ -16,20 +16,44 @@
 <!-- Fixed Top Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <img src="/1.2-IB1-Roundel-Dark-Blue-X-Small-rgb-230x230.png" alt="IB1 Round Logo" class="logo"> 
-            
+        <a class="navbar-brand" style="margin-right:20px" href="#">
+            <img src="/1.2-IB1-Roundel-Dark-Blue-X-Small-rgb-230x230.png" alt="IB1 Round Logo" class="logo">
         </a>
-        <h1><%= ERB::Util.h(REGISTRY_NAME) %></h1>
+        <h1 class="text-center-xs"><%= ERB::Util.h(REGISTRY_NAME) %></h1>
     </div>
 </nav>
 <div class="container content-container">
   <div class="row">
     <div class="col">
-        <h2><%= ERB::Util.h(title) %></h2>
+        <h2 class="text-center-xs"><%= ERB::Util.h(title) %></h2>
 *CONTENT_TEMPLATE*
     </div>
   </div>
 </div>
 </body>
+<style>
+      @media (max-width: 575.98px) {
+        body { font-size: 0.875rem; }
+        h1 { font-size: 1.5rem; }
+        h2 { font-size: 1.25rem; }
+        h3 { font-size: 1.125rem; }
+        .rdf-resource th, .rdf-resource td { font-size: 0.8rem; }
+        .btn { font-size: 0.8rem; padding: 0.25rem 0.5rem; }
+        .text-center-xs {
+            text-align: center;
+            width: 100%;
+        }
+        .navbar-brand {
+            text-align: center;
+            width: 100%;
+        }
+        .pdf-thumbnail {
+            text-align: center;
+        }
+        .rdf-resource td {
+            word-break: break-all;
+            overflow-wrap: anywhere;
+        }
+      }
+    </style>
 </html>
