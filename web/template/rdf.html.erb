@@ -1,5 +1,6 @@
 <%
   if (resources.length == 1) && (basename != "#{OUTPUT_DIR}/registry")
+    # Added responsive styling for mobile
 
     relevant_resources = [resources.first] + resources.first._bnodes_for_template.map {|b| b[1]}
 
@@ -37,7 +38,7 @@
     write_rdf_as_html = Proc.new do |resource, with_uri|
       %><table class="rdf-resource"><%
       if with_uri
-        %><tr><th>URI</th><td><div><%= ERB::Util.h(resource.uri.to_uri_s) %></div></td></tr><%
+        %><tr><th>URI</th><td><a href="<%= ERB::Util.h(resource.uri.to_uri_s) %>"><%= ERB::Util.h(resource.uri.to_uri_s) %></a></td></tr><%
       end
       props = resource._properties_for_template.group_by { |_,_,symbol| symbol }
       props.each do |symbol, values|
@@ -79,7 +80,7 @@
 
     linked = resources.first.find_all_linked_resources
     unless linked.empty?
-      %><h2>Related resources</h2><%
+      %><h2 class="text-center-xs">Related resources</h2><%
       by_classname = Hash.new {|h,k| h[k] = [] }
       linked.each do |lr|
         if lr.respond_to?(:human_readable_name) && !lr.is_bnode?
@@ -103,13 +104,15 @@
   end
 %>
 
-<h2>Definitive version (machine readable)</h2>
-<p>A GET request made to this URI uses HTTP Content Negotiation. However, if you explicitly wish to retrieve a particular serialisation, you can also do so using the following URLs:</p>
+<div class="text-center-xs">
+    <h2>Definitive version (machine readable)</h2>
+    <p>A GET request made to this URI uses HTTP Content Negotiation. However, if you explicitly wish to retrieve a particular serialisation, you can also do so using the following URLs:</p>
 
-<dl><%
-  OUTPUT_FORMATS.each do |_, extension, name|
-    filename = ERB::Util.h(File.basename(basename)) + extension
-    %><dt><a href="<%= filename %>"><%= filename %></a></dt><%=
-    %><dd><%= name %><%
-  end
-%></dl>
+    <dl><%
+      OUTPUT_FORMATS.each do |_, extension, name|
+        filename = ERB::Util.h(File.basename(basename)) + extension
+        %><dt><a href="<%= filename %>"><%= filename %></a></dt><%=
+        %><dd><%= name %><%
+      end
+    %></dl>
+</div>
