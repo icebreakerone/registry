@@ -11,6 +11,7 @@ from aws_cdk import (
     aws_s3_deployment as s3_deployment,
     aws_route53 as route53,
     aws_route53_targets as targets,
+    Tags,
 )
 from constructs import Construct
 
@@ -22,6 +23,7 @@ class ContentNegotiationStack(Stack):
         domain_name = (
             self.node.try_get_context("domainName") or "registry.trust.ib1.org"
         )
+        deployment_name = self.node.try_get_context("deploymentName") or "development"
         folder_path = self.node.try_get_context("folderPath") or "output"
         lambda_edge_role = iam.Role(
             self,
@@ -33,6 +35,9 @@ class ContentNegotiationStack(Stack):
                 )
             ],
         )
+
+        Tags.of(self).add("ib1:p-perseus:owner", "kip.parker@ib1.org")
+        Tags.of(self).add("ib1:p-perseus:stage", deployment_name)
 
         lambda_edge_function = _lambda.Function(
             self,
@@ -58,7 +63,6 @@ class ContentNegotiationStack(Stack):
             removal_policy=RemovalPolicy.DESTROY,
             server_access_logs_bucket=s3.Bucket(self, "LogsBucket"),
         )
-
         origin_access_identity = cloudfront.OriginAccessIdentity(
             self, "OAI", comment="Connects CF with S3"
         )
