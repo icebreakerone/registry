@@ -1,12 +1,5 @@
 
 Policy.new do |p|
-  p.label "enforcement"
-  p.comment "Assured Open Data Enforcement Policy"
-  p.policy_purpose OpenData::PolicyPurpose::OpenDataEnforcement
-  p.policy_text PdfFile.name("estf-assured-open-data-enforcement-policy", INITIAL_REGISTRY_VERSION)
-end
-
-Policy.new do |p|
   p.label "allowed-licenses"
   p.comment "Assured Open Data Allowed Licences Policy"
   p.policy_purpose AssuredOpenData::PolicyPurpose::AllowedLicenses

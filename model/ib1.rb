@@ -165,9 +165,11 @@ end
 # ---------------------------------------------------------------------------
 
 class TechnicalProfile < VersionedSchemeResource
+  def generate_uri_suffix
+    self.first_scheme.uri.suffix + "/technical-profile/" + self.first_version.to_s
+  end
   rdf_class IB1::TechnicalProfile.uri
   type_name_for_url "technical-profile".to_sym
-  property :label, Ns.rdfs("label"), String
   property :comment, Ns.rdfs("comment"), String
   property :uses, Ns.ib1("uses"), Specification, RdfUri
 end
@@ -175,7 +177,7 @@ end
 # TODO: Remove this hacky additional definition for TF profiles when the publication process does versioning automatically.
 class TechnicalProfileTF < RegistryResource
   def generate_uri_suffix
-    "technical-profile/" + self.first_label.to_s + "/" + self.first_version.to_s
+    "technical-profile/" + self.first_version.to_s
   end
   def self.class_human_readable_name
     "TechnicalProfile"

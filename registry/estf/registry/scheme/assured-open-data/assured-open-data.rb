@@ -25,7 +25,6 @@ Context.within do |context|
   end
 
   TechnicalProfile.new do |p|
-    p.label "assured-open-data"
     p.comment "Assured Open Data Technical Profile"
     p.uses RdfUri.new("https://specification.trust.ib1.org/registry/1.0/", nil)
     p.uses RdfUri.new("https://specification.trust.ib1.org/registry-versioning/1.0/", nil)
