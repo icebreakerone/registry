@@ -4,7 +4,7 @@ aod = Scheme.new do |s|
   s.comment "Assured Open Data Scheme"
 end
 
-INITIAL_REGISTRY_VERSION = "2025-03-27"
+INITIAL_REGISTRY_VERSION = "2025-10-20"
 initial_aod_change = RegistryChange.new do |c|
   c.label INITIAL_REGISTRY_VERSION
   c.comment "ESTF Assured Open Data scheme initial Registry contents"
