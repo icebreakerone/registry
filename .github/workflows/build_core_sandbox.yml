@@ -1,4 +1,4 @@
-name: Build Core Pilot Output
+name: Build Core Sandbox Output
 
 on:
   workflow_run:
