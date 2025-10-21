@@ -1,4 +1,4 @@
-# Use of Perseus consent text in Scheme data transfers
+# Use of Perseus permission text in Scheme data transfers
 
 All data transferred between participants must use a license where an immutable definitive version is stored in the Registry as an RDF resource (‘License Resource’).
 
@@ -6,4 +6,4 @@ Each License Resource has a URL where the License Resource can be retrieved and 
 
 Where the License Resource in the Registry includes an `ib1:permissionText` term, the party (Perseus member) providing the data must:
 1. have obtained permission using the wording in that term, and
-2. assert that they can provide evidence of consent by including a Permission step within the Provenance record, and including the `id` of this step in the `permissions` property of the Transfer step.
+2. assert that they can provide evidence of permission by including a Permission step within the Provenance record, and including the `id` of this step in the `permissions` property of the Transfer step.
