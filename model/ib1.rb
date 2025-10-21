@@ -175,7 +175,7 @@ end
 # TODO: Remove this hacky additional definition for TF profiles when the publication process does versioning automatically.
 class TechnicalProfileTF < RegistryResource
   def generate_uri_suffix
-    "technical-profile/" + self.first_label.to_s + "/" + self.first_version.to_s
+    "technical-profile/" + self.first_version.to_s
   end
   def self.class_human_readable_name
     "TechnicalProfile"
