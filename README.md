@@ -91,11 +91,12 @@ The registries are deployed to AWS using the cdk stack in content_negotiation/. 
 ```bash
 cdk --context deploymentName=sandbox-core \
     --context domainName=registry.core.sandbox.trust.ib1.org \
-    --context folderPath=core_sandbox_registry deploy \
-    --require-approval never
+    --context folderPath=core_sandbox_registry deploy
 ```
 
-Actions are enabled that will build and deploy all production registries when the main branch is updated.
+Actions are enabled that will build and deploy all production and sandbox registries when the main branch is updated. 
+
+__Please check deployments complete successfully after pushing changes to main__
 
 ## Guided tour
 
