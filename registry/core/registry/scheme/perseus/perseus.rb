@@ -34,7 +34,7 @@ Context.within do |context|
     p.uses RdfUri.new("https://specification.trust.ib1.org/machine-readable-data-licenses/1.0/", nil)
     p.uses RdfUri.new("https://specification.trust.ib1.org/role-based-access-control/1.0/", nil)
     p.uses RdfUri.new("https://specification.trust.ib1.org/member-identity-digital-certificates/1.0/", nil)
-    p.uses RdfUri.new("https://specification.trust.ib1.org/directory-issued-server-tls-certificates/1.0/", nil)
+    p.uses RdfUri.new("https://specification.trust.ib1.org/public-ca-issued-server-tls-certificates-with-directory-allowlist/1.0/", nil)
     p.uses RdfUri.new("https://specification.trust.ib1.org/baseline-tls-configuration/1.0/", nil)
     p.uses RdfUri.new("https://specification.trust.ib1.org/oauth-with-member-identity-certificates/1.0/", nil)
     p.uses RdfUri.new("https://specification.trust.ib1.org/message-delivery-to-applications/1.0/", nil)
