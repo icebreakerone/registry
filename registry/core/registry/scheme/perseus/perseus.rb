@@ -4,7 +4,7 @@ perseus = Scheme.new do |s|
   s.comment "Perseus Scheme"
 end
 
-INITIAL_REGISTRY_VERSION = "2024-12-05"
+INITIAL_REGISTRY_VERSION = "2025-10-23"
 initial_perseus_change = RegistryChange.new do |c|
   c.label INITIAL_REGISTRY_VERSION
   c.comment "Perseus Pilot initial Registry contents"
