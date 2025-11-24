@@ -1,0 +1,129 @@
+{
+    "openapi": "3.1.0",
+    "info":
+    {
+        "title": "Standard Heartbeat",
+        "version": "2025-10-23",
+        "x-ib1-registry-label": "heartbeat",
+        "description": "Health check endpoint for availability monitoring."
+    },
+    "servers":
+    [
+        {
+            "url": "{endpointURL}",
+            "variables":
+            {
+                "endpointURL":
+                {
+                    "default": "https://endpointurl-not-specified.ib1.org"
+                }
+            }
+        }
+    ],
+    "security":
+    [
+        {
+            "mTLS":
+            []
+        }
+    ],
+    "tags":
+    [
+        {
+            "name": "Health",
+            "description": "Endpoints for monitoring service availability."
+        }
+    ],
+    "paths":
+    {
+        "/heartbeat":
+        {
+            "get":
+            {
+                "summary": "Service Heartbeat",
+                "description": "Returns status and timestamp to verify the service is alive.",
+                "operationId": "getServiceHeartbeat",
+                "tags":
+                [
+                    "Health"
+                ],
+                "responses":
+                {
+                    "200":
+                    {
+                        "description": "Service is available",
+                        "content":
+                        {
+                            "application/json":
+                            {
+                                "schema":
+                                {
+                                    "$ref": "#/components/schemas/Heartbeat"
+                                },
+                                "examples":
+                                {
+                                    "ok":
+                                    {
+                                        "summary": "Healthy service response",
+                                        "value":
+                                        {
+                                            "status": "ok",
+                                            "timestamp": "2025-06-12T12:00:00Z"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500":
+                    {
+                        "description": "Service error"
+                    }
+                }
+            }
+        }
+    },
+    "components":
+    {
+        "schemas":
+        {
+            "Heartbeat":
+            {
+                "type": "object",
+                "title": "Heartbeat",
+                "description": "Simple heartbeat response indicating availability and time.",
+                "properties":
+                {
+                    "status":
+                    {
+                        "type": "string",
+                        "enum":
+                        [
+                            "ok"
+                        ],
+                        "description": "Must be 'ok' if service is operational.",
+                        "example": "ok"
+                    },
+                    "timestamp":
+                    {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "UTC time when heartbeat was generated."
+                    }
+                },
+                "required":
+                [
+                    "status",
+                    "timestamp"
+                ]
+            }
+        },
+        "securitySchemes":
+        {
+            "mTLS":
+            {
+                "type": "mutualTLS"
+            }
+        }
+    }
+}

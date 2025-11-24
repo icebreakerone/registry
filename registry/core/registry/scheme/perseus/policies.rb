@@ -12,3 +12,10 @@ Policy.new do |p|
   p.policy_purpose PolicyPurpose::DataProtection
   p.policy_text PdfFile.name("information-provision-policy", INITIAL_REGISTRY_VERSION)
 end
+
+Policy.new do |p|
+  p.label "data-retention"
+  p.comment "Data Retention"
+  p.policy_purpose PolicyPurpose::DataProtection
+  p.policy_text PolicyFile.name("data-retention", INITIAL_REGISTRY_VERSION)
+end
