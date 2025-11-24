@@ -37,7 +37,7 @@ As an alternative to installing Java and Maven, you can use the included Dockerf
 docker build -t ib1-registry .
 ```
 
-Then run the tool:
+Then to build and output the registry files:
 
 ```
 docker run --rm -v `pwd`/output/sandbox:/code/output-sandbox -e OUTPUT_DIR='output-sandbox' builder bash -c "script/ib1-registry sandbox registry/core"
@@ -83,6 +83,20 @@ Clone the repository which contains the definition for the registry next to this
 ```
 script/ib1-registry production ../registry-example
 ```
+
+## Deployment
+
+The registries are deployed to AWS using the cdk stack in content_negotiation/. The stack expects a number of inputs: for example, to deploy the core sandbox registry:
+
+```bash
+cdk --context deploymentName=sandbox-core \
+    --context domainName=registry.core.sandbox.trust.ib1.org \
+    --context folderPath=core_sandbox_registry deploy
+```
+
+Actions are enabled that will build and deploy all production and sandbox registries when the main branch is updated. 
+
+__Please check deployments complete successfully after pushing changes to main__
 
 ## Guided tour
 
