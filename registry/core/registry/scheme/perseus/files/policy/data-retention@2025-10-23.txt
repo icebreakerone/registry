@@ -1,0 +1,12 @@
+# Data Retention Policy for Perseus
+Version: v2025-11-24 DRAFT
+
+This policy provides information for members of the Perseus data sharing scheme. Any queries can be directed to perseus@ib1.org. 
+
+Where not defined in this policy, capitalised terms have the meaning given to them in the scheme agreement.
+
+## Deletion Date
+The Deletion Date is six (6) months after data collection
+
+## Data retention
+Participants should retain data for the minimum viable period required to execute their roles and responsibilities within this Scheme. Participants in the data transfer (incorporating the Consumption Data Provider and Carbon Accounting Provider) must delete data at the latest by its Deletion Date. The Financial Service Provider will retain data in line with statutory and fund requirements. This authorisation may be extended by a party with proportionate legal ground to process the data, subject to Participant permission, to continue to retain data for a defined period related to a specific purpose.
