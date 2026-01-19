@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'date'
+require 'fileutils'
 
 
 class RdfClass
@@ -339,6 +340,23 @@ class RdfModel
     end
     File.open("#{basename}.html", "w") do |f|
       f.write Templates::TEMPLATES['rdf.html.erb'].result(binding)
+    end
+    if @resources.length == 1
+      _write_linked_type_pages(@resources.first, basename, title)
+    end
+  end
+
+  def _write_linked_type_pages(resource, basename, title)
+    related_groups = resource.grouped_linked_resources
+    return if related_groups.empty?
+    related_groups.each do |classname, linked_resources|
+      safe_classname = classname.gsub(/[^A-Za-z0-9_-]+/, '-')
+      title = "#{classname} related to #{resource.human_readable_name}"
+      related_basename = "#{OUTPUT_DIR}/#{resource.uri.suffix}/_#{safe_classname}"
+      FileUtils.mkdir_p(File.dirname(related_basename))
+      File.open("#{related_basename}.html", "w") do |f|
+        f.write Templates::TEMPLATES['linked_resources.html.erb'].result(binding)
+      end
     end
   end
 end

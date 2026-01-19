@@ -1,0 +1,16 @@
+<% resource_name = resource.human_readable_name %>
+<p>
+  <a href="/<%= ERB::Util.h(resource.uri.suffix) %>">&larr; Back to <%= ERB::Util.h(resource_name) %></a>
+</p>
+
+<p>Resources of type <strong><%= ERB::Util.h(classname) %></strong> related to this resource:</p>
+
+<% if linked_resources.empty? %>
+  <p>No related resources found.</p>
+<% else %>
+  <ul>
+    <% linked_resources.each do |r| %>
+      <li><a href="/<%= ERB::Util.h(r.uri.suffix) %>"><%= ERB::Util.h(r.human_readable_name) %></a></li>
+    <% end %>
+  </ul>
+<% end %>
