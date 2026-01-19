@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'date'
+require 'fileutils'
 
 
 class RdfClass
@@ -223,6 +224,24 @@ class Resource
     false
   end
 
+  def grouped_linked_resources
+    by_classname = Hash.new { |h, k| h[k] = [] }
+    find_all_linked_resources.each do |linked_resource|
+      next unless linked_resource.respond_to?(:human_readable_name)
+      next if linked_resource.is_bnode?
+      klass = linked_resource.class
+      classname = (klass.respond_to?(:class_human_readable_name) ? klass.class_human_readable_name : klass.name) || '_Anon'
+      by_classname[classname] << linked_resource
+    end
+    by_classname.keys.sort.map do |classname|
+      [
+        classname,
+        by_classname[classname].sort_by(&:human_readable_name),
+        classname.gsub(/[^A-Za-z0-9_-]+/, '-')
+      ]
+    end
+  end
+
   def _to_rdf_value(jmodel)
     jmodel.createResource(self.uri.to_uri_s)
   end
@@ -325,6 +344,22 @@ class RdfModel
     end
     File.open("#{basename}.html", "w") do |f|
       f.write Templates::TEMPLATES['rdf.html.erb'].result(binding)
+    end
+    if @resources.length == 1
+      _write_linked_type_pages(@resources.first, basename, title)
+    end
+  end
+
+  def _write_linked_type_pages(resource, basename, title)
+    related_groups = resource.grouped_linked_resources
+    return if related_groups.empty?
+    related_groups.each do |classname, linked_resources, safe_classname|
+      title = "#{classname} related to #{resource.human_readable_name}"
+      related_basename = "#{OUTPUT_DIR}/#{resource.uri.suffix}/_#{safe_classname}"
+      FileUtils.mkdir_p(File.dirname(related_basename))
+      File.open("#{related_basename}.html", "w") do |f|
+        f.write Templates::TEMPLATES['linked_resources.html.erb'].result(binding)
+      end
     end
   end
 end
