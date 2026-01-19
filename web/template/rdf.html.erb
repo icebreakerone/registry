@@ -83,7 +83,10 @@
       %><h2 class="text-center-xs">Related resources</h2><%
       related_groups.each do |classname, res, safe_classname|
         %>
-          <h3 id="<%= ERB::Util.h(safe_classname) %>"><%= ERB::Util.h(classname) %></h3>
+          <h3 id="<%= ERB::Util.h(safe_classname) %>">
+            <%= ERB::Util.h(classname) %>
+            <small class="text-muted"><a class="text-muted" style="font-size:12px;text-decoration:none" href="/<%= ERB::Util.h(resources.first.uri.suffix) %>/_<%= ERB::Util.h(safe_classname) %>">#</a></small>
+          </h3>
           <ul>
         <%
         res.each do |r|
