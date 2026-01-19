@@ -223,6 +223,20 @@ class Resource
     false
   end
 
+  def grouped_linked_resources
+    by_classname = Hash.new { |h, k| h[k] = [] }
+    find_all_linked_resources.each do |linked_resource|
+      next unless linked_resource.respond_to?(:human_readable_name)
+      next if linked_resource.is_bnode?
+      klass = linked_resource.class
+      classname = (klass.respond_to?(:class_human_readable_name) ? klass.class_human_readable_name : klass.name) || '_Anon'
+      by_classname[classname] << linked_resource
+    end
+    by_classname.keys.sort.map do |classname|
+      [classname, by_classname[classname].sort_by(&:human_readable_name)]
+    end
+  end
+
   def _to_rdf_value(jmodel)
     jmodel.createResource(self.uri.to_uri_s)
   end
