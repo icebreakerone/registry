@@ -81,9 +81,9 @@
     related_groups = resources.first.grouped_linked_resources
     unless related_groups.empty?
       %><h2 class="text-center-xs">Related resources</h2><%
-      related_groups.each do |classname, res|
+      related_groups.each do |classname, res, safe_classname|
         %>
-          <h3 id="<%= ERB::Util.h(classname) %>"><%= ERB::Util.h(classname) %></h3>
+          <h3 id="<%= ERB::Util.h(safe_classname) %>"><%= ERB::Util.h(classname) %></h3>
           <ul>
         <%
         res.each do |r|

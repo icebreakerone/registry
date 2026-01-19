@@ -234,7 +234,11 @@ class Resource
       by_classname[classname] << linked_resource
     end
     by_classname.keys.sort.map do |classname|
-      [classname, by_classname[classname].sort_by(&:human_readable_name)]
+      [
+        classname,
+        by_classname[classname].sort_by(&:human_readable_name),
+        classname.gsub(/[^A-Za-z0-9_-]+/, '-')
+      ]
     end
   end
 
@@ -349,8 +353,7 @@ class RdfModel
   def _write_linked_type_pages(resource, basename, title)
     related_groups = resource.grouped_linked_resources
     return if related_groups.empty?
-    related_groups.each do |classname, linked_resources|
-      safe_classname = classname.gsub(/[^A-Za-z0-9_-]+/, '-')
+    related_groups.each do |classname, linked_resources, safe_classname|
       title = "#{classname} related to #{resource.human_readable_name}"
       related_basename = "#{OUTPUT_DIR}/#{resource.uri.suffix}/_#{safe_classname}"
       FileUtils.mkdir_p(File.dirname(related_basename))
