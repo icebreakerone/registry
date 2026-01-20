@@ -355,7 +355,7 @@ class RdfModel
     return if related_groups.empty?
     related_groups.each do |classname, linked_resources, safe_classname|
       title = "#{classname} related to #{resource.human_readable_name}"
-      related_basename = "#{OUTPUT_DIR}/#{resource.uri.suffix}/_#{safe_classname}"
+      related_basename = "#{OUTPUT_DIR}/#{resource.uri.suffix}/#{Templates::Helper.url_name_for_class(classname)}"
       FileUtils.mkdir_p(File.dirname(related_basename))
       File.open("#{related_basename}.html", "w") do |f|
         f.write Templates::TEMPLATES['linked_resources.html.erb'].result(binding)

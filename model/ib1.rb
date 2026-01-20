@@ -226,6 +226,7 @@ class SchemeEnum < SchemeResource
       c.type_name_for_url "#{enum_class.type_name_for_url}/#{enum_class.first_label}"
       property :label, Ns.rdfs("label"), String
       property :comment, Ns.rdfs("comment"), String
+      Object.const_set(class_name, c)
     end
     @klass.new do |n|
       n.label symbol

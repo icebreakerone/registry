@@ -85,7 +85,7 @@
         %>
           <h3 id="<%= ERB::Util.h(safe_classname) %>">
             <%= ERB::Util.h(classname) %>
-            <small class="text-muted"><a class="text-muted" style="font-size:12px;text-decoration:none" href="/<%= ERB::Util.h(resources.first.uri.suffix) %>/_<%= ERB::Util.h(safe_classname) %>">#</a></small>
+            <small class="text-muted"><a class="text-muted" style="font-size:12px;text-decoration:none" href="/<%= ERB::Util.h(resources.first.uri.suffix) %>/<%= ERB::Util.h(Templates::Helper.url_name_for_class(classname)) %>">#</a></small>
           </h3>
           <ul>
         <%

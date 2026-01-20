@@ -13,4 +13,11 @@ module Templates
       )
     end
   end
+
+  class Helper
+    def self.url_name_for_class(klass)
+      klass = Object.const_get(klass) unless klass.is_a?(Class)
+      klass.name.gsub(/::/, '-').gsub(/([A-Z]+)([A-Z][a-z])/,'\1-\2').gsub(/([a-z\d])([A-Z])/,'\1-\2').downcase
+    end
+  end
 end
