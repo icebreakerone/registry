@@ -2,13 +2,14 @@
 SchemeCatalogRequirements.new do |v|
   # Using "version" (not change) because it is a version, the Change resource just describes it.
   v.version "PERSEUS-INITIAL" do |r|
-    r.available_from :CHANGE # could specify a date explicitly, but this just uses the date of the Change resource.
+    r.available_from :CHANGE # could specify a date explicitly, but this just uses the label of the Change resource interpreted as a date
     r.label "energy-consumption-data"
     r.comment "Energy Consumption Data API"
     r.required_type DCAT::DataService
     r.role_required_to_publish Role.at("scheme/perseus/role/energy-data-provider")
     r.required_metadata do |m|
-                                              # Using the Change ID here, explicitly
+      # Using the Change ID for the version of the file, explicitly. Could leave it out to imply the current
+      # version being described.
       m.endpoint_description OpenAPIFile.name("consumption-data", "PERSEUS-INITIAL")
       m.heartbeat_description OpenAPIFile.name("heartbeat", "PERSEUS-INITIAL")
       m.license License.at("scheme/perseus/license/energy-consumption-data/#{Change.id("PERSEUS-INITIAL")}")
@@ -22,6 +23,14 @@ SchemeCatalogRequirements.new do |v|
     r.require_any_one_of RequiredMetadata::DATASET_ASSURANCE # Effect is "at least level 2"
   end
 
+  v.version "DISTRIBUTOR-ACCESS" do |r|
+    # Old role needs to be repeated, could have additional syntax to append terms.
+    r.role_required_to_publish Role.at("scheme/perseus/role/energy-data-provider")
+    # New role.
+    r.role_required_to_publish Role.at("scheme/perseus/role/distributor")
+  end
+
+  # Change a license and deprecate the initial version
   v.version "INDUSTRY-COMPLIANCE-2024" do |r|
     r.required_metadata do |m|
       m.license License.at("scheme/perseus/license/energy-consumption-data/#{Change.id("INDUSTRY-COMPLIANCE-2024")}")
@@ -30,6 +39,8 @@ SchemeCatalogRequirements.new do |v|
     # because it wouldn't be associated with the right change.
     # Change resource will need a "changesDeprecationOf" term to link to the older versions it modifies.
     r.deprecate_other_version "PERSEUS-INITIAL", "2026-06-01"
+    # And deprecate the version after that, because it also used the old license.
+    r.deprecate_other_version "DISTRIBUTOR-ACCESS", "2026-06-01"
   end
 end
 

@@ -19,8 +19,8 @@ end
 
 Change.new do |v|
   v.label "2024-07-01"
-  v.comment "Updated access control policies and role-based authorization rules for Auditors"
-  v.id "AUDITORS-ACCESS"
+  v.comment "Updated access control policies to allow distributors to publish energy data APIs"
+  v.id "DISTRIBUTOR-ACCESS"
 end
 
 Change.new do |v|
@@ -32,10 +32,11 @@ Change.new do |v|
 end
 
 Change.new do |v|
-  # This will throw and error because :proprod is not in the list.
+  # This will result in an error preventing deployment because :proprod is not in the list:
+  v.only_in_environments :production
+  # Changes must have a (non-strict) superset of the environments of previous changes.
   # This restriction is because changes are written as deltas from the previous version.
   # So if you add a change in the middle of the sequence, it would alter versions after it.
-  v.only_in_environments :production
   v.label "2024-09-20"
   v.comment "Enhanced logging and monitoring for transaction tracking"
   v.id "TRANSACTION-LOGGING-2024"
