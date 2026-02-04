@@ -24,7 +24,7 @@ Change.new do |v|
 end
 
 Change.new do |v|
-  # We're not using branching, we're just going to say that some changes aren't in all environments.
+  # We're not using git branching, we're just going to say that some changes aren't in all environments.
   v.only_in_environments :sandbox, :preprod
   v.label "2024-08-15"
   v.comment "Updated Policies for new industry compliance requirements"
