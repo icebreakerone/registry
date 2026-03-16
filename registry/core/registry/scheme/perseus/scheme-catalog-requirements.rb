@@ -26,6 +26,7 @@ SchemeCatalogRequirements.new do |r|
   r.required_metadata do |m|
     # TODO: OpenAPI file for emissions report
     # m.endpoint_description RegistryFiles.openapi("emissions-report", INITIAL_REGISTRY_VERSION)
+    m.endpoint_description OpenAPIFile.name("emissions-data", INITIAL_REGISTRY_VERSION)
     m.heartbeat_description OpenAPIFile.name("heartbeat", INITIAL_REGISTRY_VERSION)
     m.license License.at("scheme/perseus/license/emissions-report/#{INITIAL_REGISTRY_VERSION}")
     m.sensitivity_class SensitivityClass::IB1_SP
