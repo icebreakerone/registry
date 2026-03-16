@@ -3,7 +3,7 @@
     "info":
     {
         "title": "Standard Heartbeat",
-        "version": "2025-10-23",
+        "version": "2026-03-12",
         "x-ib1-registry-label": "heartbeat",
         "description": "Health check endpoint for availability monitoring."
     },

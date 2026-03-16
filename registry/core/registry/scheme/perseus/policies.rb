@@ -19,3 +19,17 @@ Policy.new do |p|
   p.policy_purpose PolicyPurpose::DataProtection
   p.policy_text PolicyFile.name("data-retention", INITIAL_REGISTRY_VERSION)
 end
+
+Policy.new do |p|
+  p.label "data-license-terms"
+  p.comment "Data License Terms"
+  p.policy_purpose PolicyPurpose::DataProtection
+  p.policy_text PolicyFile.name("data-license-terms", INITIAL_REGISTRY_VERSION)
+end
+
+Policy.new do |p|
+  p.label "license-metadata-definitions"
+  p.comment "License Metadata Definitions"
+  p.policy_purpose PolicyPurpose::DataProtection
+  p.policy_text PolicyFile.name("license-metadata-definitions", INITIAL_REGISTRY_VERSION)
+end

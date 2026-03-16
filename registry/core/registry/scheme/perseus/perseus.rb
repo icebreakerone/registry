@@ -4,10 +4,10 @@ perseus = Scheme.new do |s|
   s.comment "Perseus Scheme"
 end
 
-INITIAL_REGISTRY_VERSION = "2025-10-23"
+INITIAL_REGISTRY_VERSION = "2026-03-12"
 initial_perseus_change = RegistryChange.new do |c|
   c.label INITIAL_REGISTRY_VERSION
-  c.comment "Perseus Pilot initial Registry contents"
+  c.comment "2026-03-12 Perseus Registry release"
   c.scheme perseus
   # TODO: Rest of the change information
 end
@@ -23,6 +23,8 @@ Context.within do |context|
       resource.available_from Date.parse(INITIAL_REGISTRY_VERSION) # TODO: Date time?
     end
   end
+
+  context.files "#{File.dirname(__FILE__)}/files", "scheme/perseus"
 
   require "#{File.dirname(__FILE__)}/specifications.rb"
 
@@ -47,8 +49,6 @@ Context.within do |context|
     p.uses RdfUri.new("https://specification.trust.ib1.org/generic-sensitivity-classes/1.0/", nil)
     p.uses PERSEUS_ASSURANCE_SPECIFICATION
   end
-
-  context.files "#{File.dirname(__FILE__)}/files", "scheme/perseus"
 
   require "#{File.dirname(__FILE__)}/roles.rb"
   require "#{File.dirname(__FILE__)}/licenses.rb"

@@ -1,0 +1,32 @@
+# Licence metadata definitions
+This policy defines licence metadata to be used in any licence in accordance with the [Data License Terms](../data-license-terms/2025-10-23). 
+
+All licences contain the following licence metadata:
+
+| Field | Required value |
+|------------|---------|
+| **ib1:licenseTerritory** | United Kingdom
+
+## Consumption Data licensed to a CAP
+
+Licences of Consumption Data given by a CAP should contain the following additional metadata:
+
+| Field | Required value |
+|------------|---------|
+| **ib1:licenseDuration** | 12 months
+| **ib1:permittedUse** | Estimate a Resource Consumer’s greenhouse gas emissions
+| **ib1:permittedUse** | Prepare estimates of projected greenhouse gas emissions by a Resource Consumer  following any proposed intervention(s) that could be financed: for each intervention a one-off estimate prior to the intervention, delivered once
+| **ib1:permittedUse** | Prepare annual updates to corroborate projected emissions savings using derived greenhouse gas  emissions at monthly resolution
+| **ib1:permittedUse** | Share emissions data with a Financial Service Provider of the Resource Consumer’s choice, to facilitate that Resource Consumer’s access to green finance products from that financial institution
+| **ib1:permittedUse** | Produce personalised recommendations of actions that the Resource Consumer  could take to decarbonise (either financed or non-financed)
+
+## Derivative Data licensed to an FSP
+
+Licences of Derivative Data to an FSP should contain the following additional metadata:
+
+| Field | Required value |
+|------------|---------|
+| **ib1:licenseDuration** | 12 months
+| **ib1:permittedUse** | In order to consider a Resource Consumer’s eligibility for green finance products
+| **ib1:permittedUse** | If a Resource Consumer is offered any green finance products as a consequence of the receipt of emissions data to them, in order to manage the Resource Consumer’s use of that product, including monitoring their compliance with any conditions imposed by it
+| **ib1:additionalCondition** | If the recipient of this data uses the data as the basis for the issuing of a financial instrument, the licence duration shall be extended to the duration of any compliance requirements related to that instrument 
