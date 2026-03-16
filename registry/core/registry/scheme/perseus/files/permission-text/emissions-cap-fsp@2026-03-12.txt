@@ -1,0 +1,29 @@
+As a reminder, [CAP] (“we”) need to have your consent to access the following data provided by [EDP]:
+
+* Your electricity and gas consumption (taken every 30 minutes) 
+* Electricity and gas tariff data
+
+In order to compute the following (“emissions data”):
+* An estimate of your current GHG emissions, sourced from the preceding 12 months of data where available
+* An estimate of projected emissions following any proposed intervention(s) that could be financed: a one-off estimate prior to the intervention, delivered once.
+* A periodic update to corroborate projected emissions savings: derived GHG emissions at monthly resolution, delivered annually
+
+and then use the emissions data as follows:
+
+* Share it with your chosen financial service provider(s) to facilitate your access to green finance products from that provider or providers.
+* Produce personalised recommendations of actions that your business could take to decarbonise (either financed or non-financed)
+
+_For customers providing data via a smart meter:_
+
+We use the [EDP] service that interfaces with the national smart meter systems and other energy industry databases in order to collect, store, manage and share your smart data with us. Their service operates in compliance with the Smart Energy Code (https://smartenergycodecompany.co.uk). You can find out more about [EDP] and its privacy policy here [EDP privacy policy link].
+
+Now, on behalf of [FSP], we seek your consent for them to process the emissions data:
+
+* In order to consider your eligibility for green finance products
+* If you are offered any green finance products as a consequence of our providing emissions data to them,  in order to allow them to manage your use of that product, including monitoring your compliance with any conditions imposed by it.
+
+You can withdraw your consent at any time by [CAP process], at which point we and your financial service provider will stop processing your data.  If you choose not to consent or you withdraw your consent you will not be able to receive personalised recommendations from us and your finance provider may refuse to consider, offer you, or revoke your access to, green finance products or services.
+
+For more information on how we use your information and your rights under the GDPR, please see the [Perseus Information Provision Policy](https://registry.core.trust.ib1.org/scheme/perseus/policy/information-provision/2026-03-12). 
+
+This consent will expire one year after it is granted unless renewed by you. 
