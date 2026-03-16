@@ -13,3 +13,8 @@ SourceType.new do |t|
   t.label "GridCarbonIntensity"
   t.comment "Data source is grid carbon intensity data from NESO"
 end
+
+SourceType.new do |t|
+  t.label "GasGreenhouseGasFactor"
+  t.comment "Data source is greenhouse gas emissions factors from DEFRA"
+end
