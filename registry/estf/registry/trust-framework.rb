@@ -13,7 +13,7 @@ Context.within do |context|
   TechnicalProfileTF.new do |p|
     p.label "estf"
     p.comment "Energy Sector Trust Framework Technical Profile"
-    p.version "2025-10-20"
+    p.version "2026-02-18"
     p.uses RdfUri.new("https://specification.trust.ib1.org/registry/1.0/", nil)
     p.uses RdfUri.new("https://specification.trust.ib1.org/registry-versioning/1.0/", nil)
     p.uses RdfUri.new("https://specification.trust.ib1.org/registry-process-resources/1.0/", nil)
