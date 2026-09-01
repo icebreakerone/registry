@@ -408,7 +408,7 @@ class SchemeCatalogRequirements < VersionedSchemeResource
   bnode :required_metadata, Ns.ib1("requiredMetadata"), RequiredMetadata
   property :require_all_and_allow_additional, Ns.ib1("requireAllAndAllowAdditional"), RequiredMetadata::PropertyURI
   property :require_any_one_of, Ns.ib1("requireAnyOneOf"), RequiredMetadata::PropertyURI
-  property :require_any_one_or_more_of, Ns.ib1("requireAnyOneOrMoreOf"), RequiredMetadata::PropertyURI
+  property :require_any_one_or_more_of, Ns.ib1("requireOneOrMoreOf"), RequiredMetadata::PropertyURI
   property :require_any_value, Ns.ib1("requireAnyValue"), RequiredMetadata::PropertyURI
   property :require_absence_of, Ns.ib1("requireAbsenceOf"), RequiredMetadata::PropertyURI
 end
