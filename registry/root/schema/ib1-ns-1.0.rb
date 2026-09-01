@@ -320,6 +320,12 @@ Context.within do |context|
     p.domain IB1::SchemeCatalogRequirements
   end
 
+  RdfSchemaProperty.new(Ns.ib1("requireOneOrMoreOf")) do |p|
+    p.comment "One or more of the values in the requirements must be included for this term. No other values are allowed."
+    p.range RDFS::Property
+    p.domain IB1::SchemeCatalogRequirements
+  end
+
   RdfSchemaProperty.new(Ns.ib1("requireAnyValue")) do |p|
     p.comment "The term must be present, with any valid value."
     p.range RDFS::Property

@@ -7,3 +7,5 @@ Each License Resource has a URL where the License Resource can be retrieved and 
 Where the License Resource in the Registry includes an `ib1:permissionText` term, the party (Perseus member) providing the data must:
 1. have obtained permission using the wording in that term, and
 2. assert that they can provide evidence of permission by including a Permission step within the Provenance record, and including the `id` of this step in the `permissions` property of the Transfer step.
+
+Where the transfer is made under a right to sublicense arising from an `ib1:permittedUse` of another License, permission obtained using the wording of that License satisfies requirement 1. The Permission step required by requirement 2 is the one recorded for that License, and need not have been created by the party making the transfer.
