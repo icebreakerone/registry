@@ -17,7 +17,7 @@ SchemeCatalogRequirements.new do |r|
   end
   r.require_all_and_allow_additional RequiredMetadata::ROLE_REQUIRED_TO_ACCESS
   r.require_any_one_of RequiredMetadata::DATASET_ASSURANCE # Effect is "at least level 2"
-  r.require_any_one_or_more_of RequiredMetadata::LICENSE # Either the single-leg license, the pass-through license, or both
+  r.require_one_or_more_of RequiredMetadata::LICENSE # Either the single-leg license, the pass-through license, or both
 end
 
 SchemeCatalogRequirements.new do |r|
