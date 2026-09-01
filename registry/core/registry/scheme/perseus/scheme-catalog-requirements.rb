@@ -8,6 +8,7 @@ SchemeCatalogRequirements.new do |r|
     m.endpoint_description OpenAPIFile.name("consumption-data", INITIAL_REGISTRY_VERSION)
     m.heartbeat_description OpenAPIFile.name("heartbeat", INITIAL_REGISTRY_VERSION)
     m.license License.at("scheme/perseus/license/energy-consumption-edp-cap/#{INITIAL_REGISTRY_VERSION}")
+    m.license License.at("scheme/perseus/license/energy-consumption-emissions-edp-cap-fsp/#{INITIAL_REGISTRY_VERSION}")
     m.sensitivity_class SensitivityClass::IB1_SP
     m.dataset_assurance DatasetAssuranceLevel::GenericLevel2
     m.dataset_assurance DatasetAssuranceLevel::GenericLevel3
@@ -16,6 +17,7 @@ SchemeCatalogRequirements.new do |r|
   end
   r.require_all_and_allow_additional RequiredMetadata::ROLE_REQUIRED_TO_ACCESS
   r.require_any_one_of RequiredMetadata::DATASET_ASSURANCE # Effect is "at least level 2"
+  r.require_any_one_or_more_of RequiredMetadata::LICENSE # Either the single-leg license, the pass-through license, or both
 end
 
 SchemeCatalogRequirements.new do |r|
